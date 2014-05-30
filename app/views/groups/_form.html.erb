@@ -1,4 +1,4 @@
-<%= form_for(@group) do |f| %>
+<%= simple_form_for(@group) do |f| %>
   <% if @group.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
@@ -11,15 +11,15 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="form-group">
+    <%= f.label 'Nombre Del Grupo' %><br>
+    <%= f.text_field :name, :class => 'form-control'  %>
   </div>
-  <div class="field">
-    <%= f.label :candidate_id %><br>
-    <%= f.number_field :candidate_id %>
+  <div class="form-group">
+    <%= f.association :candidate,  :input_html => { :class => 'form-control' }  %>
+
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Guardar', :class=>'btn btn-primary' %>
   </div>
 <% end %>

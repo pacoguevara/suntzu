@@ -1,4 +1,4 @@
-<%= form_for(@militant) do |f| %>
+<%= simple_form_for(@militant) do |f| %>
   <% if @militant.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@militant.errors.count, "error") %> prohibited this militant from being saved:</h2>
@@ -12,7 +12,7 @@
   <% end %>
   <div class="form-group">
     <%= f.label 'Fecha de Registro' %><br>
-    <%= f.date_select :register_date, class: "form-control" %>
+    <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
   </div>
   <div class="form-group">
     <%= f.label 'Apellido Paterno' %><br>
@@ -28,7 +28,7 @@
   </div>
   <div class="form-group">
     <%= f.label 'Fecha de Nacimiento' %><br>
-    <%= f.datetime_select :bird, class: "form-control" %>
+    <%= f.date_select :bird, class: "form-control", :order => [:day, :month, :year], :start_year => 1950 %>
   </div>
   <div class="form-group">
     <%= f.label 'RNM' %><br>
@@ -43,8 +43,7 @@
     <%= f.text_field :sub_linking, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label 'Grupo' %><br>
-    <%= f.text_field :group_id, class: "form-control" %>
+    <%= f.association :group,  :input_html => { :class => 'form-control' }  %>
   </div>
   <div class="form-group">
     <%= f.label 'Colonia' %><br>
