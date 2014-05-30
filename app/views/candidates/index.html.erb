@@ -1,13 +1,9 @@
-<h1>Listing candidates</h1>
-
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
+      <th>Nombre</th>
+      <th>Edad</th>
       <th>Sex</th>
-      <th></th>
-      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -18,9 +14,9 @@
         <td><%= candidate.name %></td>
         <td><%= candidate.age %></td>
         <td><%= candidate.sex %></td>
-        <td><%= link_to 'Show', candidate %></td>
-        <td><%= link_to 'Edit', edit_candidate_path(candidate) %></td>
-        <td><%= link_to 'Destroy', candidate, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to 'Editar', edit_candidate_path(candidate), :class=> 'btn btn-primary' %><%= link_to 'Eliminar', candidate, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'btn btn-danger'%>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New Candidate', new_candidate_path %>
+<%= link_to 'Agregar Candidato', new_candidate_path, :class=>"btn btn-success" %>

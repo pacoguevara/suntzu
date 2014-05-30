@@ -1,26 +1,22 @@
-<h1>Listing militants</h1>
-
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th>Register date</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Name</th>
-      <th>Bird</th>
-      <th>Rnm</th>
-      <th>Linking</th>
-      <th>Sub linking</th>
-      <th>Group</th>
-      <th>Suburb</th>
-      <th>Section</th>
+      <th>Fecha de Ingreso</th>
+      <th>Apellido Paterno</th>
+      <th>Apellido Materno</th>
+      <th>Nombre</th>
+      <th>Fecha de Nacimiento</th>
+      <th>RNM</th>
+      <th>Enlcace</th>
+      <th>Subenlace</th>
+      <th>Grupo</th>
+      <th>Colonia</th>
+      <th>Sección</th>
       <th>Sector</th>
-      <th>Cp</th>
-      <th>Phone</th>
-      <th>Cellphone</th>
-      <th>Email</th>
-      <th></th>
-      <th></th>
+      <th>CP</th>
+      <th>Telefono</th>
+      <th>Celular</th>
+      <th>Correo Electónico</th>
       <th></th>
     </tr>
   </thead>
@@ -44,9 +40,10 @@
         <td><%= militant.phone %></td>
         <td><%= militant.cellphone %></td>
         <td><%= militant.email %></td>
-        <td><%= link_to 'Show', militant %></td>
-        <td><%= link_to 'Edit', edit_militant_path(militant) %></td>
-        <td><%= link_to 'Destroy', militant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to 'Editar', edit_militant_path(militant) %>
+          <%= link_to 'Eliminar', militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -54,4 +51,4 @@
 
 <br>
 
-<%= link_to 'New Militant', new_militant_path %>
+<%= link_to 'Agregar Militante', new_militant_path, :class => 'btn btn-success' %>

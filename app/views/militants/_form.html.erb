@@ -10,72 +10,71 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :register_date %><br>
-    <%= f.datetime_select :register_date %>
+  <div class="form-group">
+    <%= f.label 'Fecha de Registro' %><br>
+    <%= f.date_select :register_date, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
+  <div class="form-group">
+    <%= f.label 'Apellido Paterno' %><br>
+    <%= f.text_field :first_name, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
+  <div class="form-group">
+    <%= f.label 'Apellido Materno' %><br>
+    <%= f.text_field :last_name, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="form-group">
+    <%= f.label 'Nombre' %><br>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :bird %><br>
-    <%= f.datetime_select :bird %>
+  <div class="form-group">
+    <%= f.label 'Fecha de Nacimiento' %><br>
+    <%= f.datetime_select :bird, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :rnm %><br>
-    <%= f.text_field :rnm %>
+  <div class="form-group">
+    <%= f.label 'RNM' %><br>
+    <%= f.text_field :rnm, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :linking %><br>
-    <%= f.text_field :linking %>
+  <div class="form-group">
+    <%= f.label 'Enlace' %><br>
+    <%= f.text_field :linking, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :sub_linking %><br>
-    <%= f.text_field :sub_linking %>
+  <div class="form-group">
+    <%= f.label 'SubEnlace' %><br>
+    <%= f.text_field :sub_linking, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :group_id %><br>
-    <%= f.text_field :group_id %>
+  <div class="form-group">
+    <%= f.label 'Grupo' %><br>
+    <%= f.text_field :group_id, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :suburb %><br>
-    <%= f.text_field :suburb %>
+  <div class="form-group">
+    <%= f.label 'Colonia' %><br>
+    <%= f.text_field :suburb, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :section %><br>
-    <%= f.text_field :section %>
+  <div class="form-group">
+    <%= f.label 'Sección' %><br>
+    <%= f.text_field :section, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :sector %><br>
-    <%= f.text_field :sector %>
+  <div class="form-group">
+    <%= f.label 'Sector' %><br>
+    <%= f.text_field :sector , class: "form-control"%>
   </div>
-  <div class="field">
-    <%= f.label :cp %><br>
-    <%= f.text_field :cp %>
+  <div class="form-group">
+    <%= f.label 'Código Postal' %><br>
+    <%= f.text_field :cp, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :phone %><br>
-    <%= f.text_field :phone %>
+  <div class="form-group">
+    <%= f.label 'Telefono' %><br>
+    <%= f.text_field :phone, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :cellphone %><br>
-    <%= f.text_field :cellphone %>
+  <div class="form-group">
+    <%= f.label 'Celular' %><br>
+    <%= f.text_field :cellphone, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
+  <div class="form-group">
+    <%= f.label 'Correo Electrónico' %><br>
+    <%= f.text_field :email, class: "form-control" %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Agregar', :class=>"btn btn-primary" %>
   </div>
 <% end %>
