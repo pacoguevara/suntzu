@@ -1,4 +1,6 @@
 Pan::Application.routes.draw do
+  resources :militants
+
   root "pages#dashboard"
   devise_for :users
   resources :groups

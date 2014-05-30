@@ -1,0 +1,1 @@
+json.extract! @militant, :id, :register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :created_at, :updated_at

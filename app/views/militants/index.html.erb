@@ -1,0 +1,57 @@
+<h1>Listing militants</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Register date</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Name</th>
+      <th>Bird</th>
+      <th>Rnm</th>
+      <th>Linking</th>
+      <th>Sub linking</th>
+      <th>Group</th>
+      <th>Suburb</th>
+      <th>Section</th>
+      <th>Sector</th>
+      <th>Cp</th>
+      <th>Phone</th>
+      <th>Cellphone</th>
+      <th>Email</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @militants.each do |militant| %>
+      <tr>
+        <td><%= militant.register_date %></td>
+        <td><%= militant.first_name %></td>
+        <td><%= militant.last_name %></td>
+        <td><%= militant.name %></td>
+        <td><%= militant.bird %></td>
+        <td><%= militant.rnm %></td>
+        <td><%= militant.linking %></td>
+        <td><%= militant.sub_linking %></td>
+        <td><%= militant.group_id %></td>
+        <td><%= militant.suburb %></td>
+        <td><%= militant.section %></td>
+        <td><%= militant.sector %></td>
+        <td><%= militant.cp %></td>
+        <td><%= militant.phone %></td>
+        <td><%= militant.cellphone %></td>
+        <td><%= militant.email %></td>
+        <td><%= link_to 'Show', militant %></td>
+        <td><%= link_to 'Edit', edit_militant_path(militant) %></td>
+        <td><%= link_to 'Destroy', militant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Militant', new_militant_path %>

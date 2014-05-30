@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529192028) do
+ActiveRecord::Schema.define(version: 20140530004814) do
 
   create_table "candidates", force: true do |t|
     t.string   "name"
@@ -29,6 +29,29 @@ ActiveRecord::Schema.define(version: 20140529192028) do
   end
 
   add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id"
+
+  create_table "militants", force: true do |t|
+    t.datetime "register_date"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "name"
+    t.datetime "bird"
+    t.string   "rnm"
+    t.string   "linking"
+    t.string   "sub_linking"
+    t.integer  "group_id"
+    t.string   "suburb"
+    t.string   "section"
+    t.string   "sector"
+    t.string   "cp"
+    t.string   "phone"
+    t.string   "cellphone"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "militants", ["group_id"], name: "index_militants_on_group_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

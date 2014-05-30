@@ -17,7 +17,14 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav navbar-right">
-      <li><%= link_to "Grupo", groups_path %></li> 
+      <% if !user_signed_in? %> 
+      <li><%= link_to "IniciarSesión", new_user_session_path%></li> 
+      <% else %>
+        <li><%= link_to "Grupos", groups_path %></li> 
+        <li><%= link_to "Militantes", militants_path %></li> 
+        <li><%= link_to "Candidatos", candidates_path %></li>
+        <li><%= link_to "Cerrar Sesión", destroy_user_session_path, :method => 'delete' %></li> 
+      <% end %>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>

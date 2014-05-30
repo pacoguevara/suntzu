@@ -1,0 +1,2 @@
+module MilitantsHelper
+end
