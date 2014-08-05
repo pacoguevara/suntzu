@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530004814) do
+ActiveRecord::Schema.define(version: 20140804025917) do
 
   create_table "candidates", force: true do |t|
     t.string   "name"
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 20140530004814) do
     t.datetime "updated_at"
   end
 
+  create_table "cities", force: true do |t|
+    t.string  "name"
+    t.integer "state_id"
+  end
+
+  add_index "cities", ["state_id"], name: "index_cities_on_state_id"
+
   create_table "groups", force: true do |t|
     t.string   "name"
     t.integer  "candidate_id"
@@ -29,6 +36,14 @@ ActiveRecord::Schema.define(version: 20140530004814) do
   end
 
   add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id"
+
+  create_table "messages", force: true do |t|
+    t.text    "message"
+    t.string  "depth"
+    t.integer "user_id"
+  end
+
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id"
 
   create_table "militants", force: true do |t|
     t.datetime "register_date"
@@ -53,6 +68,20 @@ ActiveRecord::Schema.define(version: 20140530004814) do
 
   add_index "militants", ["group_id"], name: "index_militants_on_group_id"
 
+  create_table "states", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "user_messages", force: true do |t|
+    t.boolean "is_sms"
+    t.boolean "is_mail"
+    t.integer "user_id"
+    t.integer "message_id"
+  end
+
+  add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id"
+  add_index "user_messages", ["user_id"], name: "index_user_messages_on_user_id"
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -74,5 +103,13 @@ ActiveRecord::Schema.define(version: 20140530004814) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "votes", force: true do |t|
+    t.integer "militant_id"
+    t.integer "candidate_id"
+  end
+
+  add_index "votes", ["candidate_id"], name: "index_votes_on_candidate_id"
+  add_index "votes", ["militant_id"], name: "index_votes_on_militant_id"
 
 end

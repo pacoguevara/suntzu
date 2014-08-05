@@ -1,3 +1,95 @@
+<div class="well">
+	<div class="row">
+		<div class="col-md-3">
+			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
+		</div>
+		<div class="col-md-9">
+			<h3><%= @militant.name %> <%= @militant.first_name %> <%= @militant.last_name %></h3>
+			<hr />
+			<b>RNM:</b> <%= @militant.rnm %><br />
+			<b>Email:</b> <a href="mailto:<%= @militant.email %>"><%= @militant.email %></a><br />
+			<b>Teléfono:</b>  <%= @militant.phone %> | <b>Celular:</b>  <%= @militant.cellphone %><br />
+			<b>Dirección:</b> <%= @militant.suburb %>, CP <%= @militant.cp %><br />
+			<hr />
+			<div class="col-md-6"><%= link_to 'Back', militants_path, class: "btn btn-primary btn-block"%></div>
+			<div class="col-md-6"><%= link_to 'Edit', edit_militant_path(@militant), class: "btn btn-default btn-block"%></div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<h4>Nivel Jerárquico</h4>
+		<select multiple class="form-control">
+		  <option>Militante</option>
+		  <option>Subenlace</option>
+		  <option>Enlace</option>
+		  <option>Coordinador</option>
+		  <option>Candidato</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<h4>Reporta A</h4>
+		<select multiple class="form-control">
+		  <option>Pedro Picapiedra</option>
+		  <option>Juan Pérez</option>
+		  <option>Pablo Mármol</option>
+		  <option>Bugs Bunny</option>
+		  <option>John Doe</option>
+		</select>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-5">
+		<h4>Género:</h4>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked="true"> Hombre
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Mujer
+		</label>
+	</div>
+	<div class="col-md-7">
+		<h4>Fecha de Nacimiento:</h4>
+		<div class='input-group date' id='datetimepicker1'>
+	        <input type='text' class="form-control" value="19/04/1990"/>
+	        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+	        </span>
+	    </div>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14382.847505622154!2d-100.35000321501155!3d25.680844141075344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1407204778020" width="100%" height="180" frameborder="0" style="border:0"></iframe>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<h3>Registro de Votaciones</h3>
+	</div>
+	<div class="col-md-4">
+		<select class="form-control">
+		  <option>Votación Interna PAN 14</option>
+		  <option>Votación Interna PAN 08</option>
+		</select>
+	</div>
+	<div class="col-md-5">
+		<div class='input-group date' id='datetimepicker1'>
+	        <input type='text' class="form-control" value="05/08/2014"/>
+	        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+	        </span>
+	    </div>
+	</div>
+	<div class="col-md-3">
+		<a class="btn btn-primary btn-block">Registrar Voto</a>
+	</div>
+</div>
+<br />
+<br />
+<!--
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -6,28 +98,8 @@
 </p>
 
 <p>
-  <strong>First name:</strong>
-  <%= @militant.first_name %>
-</p>
-
-<p>
-  <strong>Last name:</strong>
-  <%= @militant.last_name %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @militant.name %>
-</p>
-
-<p>
   <strong>Bird:</strong>
   <%= @militant.bird %>
-</p>
-
-<p>
-  <strong>Rnm:</strong>
-  <%= @militant.rnm %>
 </p>
 
 <p>
@@ -46,11 +118,6 @@
 </p>
 
 <p>
-  <strong>Suburb:</strong>
-  <%= @militant.suburb %>
-</p>
-
-<p>
   <strong>Section:</strong>
   <%= @militant.section %>
 </p>
@@ -60,25 +127,6 @@
   <%= @militant.sector %>
 </p>
 
-<p>
-  <strong>Cp:</strong>
-  <%= @militant.cp %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @militant.phone %>
-</p>
-
-<p>
-  <strong>Cellphone:</strong>
-  <%= @militant.cellphone %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @militant.email %>
-</p>
-
-<%= link_to 'Edit', edit_militant_path(@militant) %> |
+ 
 <%= link_to 'Back', militants_path %>
+-->

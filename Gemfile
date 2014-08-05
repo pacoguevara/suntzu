@@ -50,11 +50,6 @@ gem 'devise'
 gem "cancancan", '~> 1.7'
 gem 'bootstrap-sass'
 
-group :production do
-     gem 'pg'
-     gem 'rails_12factor'
-end
-
 gem 'gmaps4rails'
 gem 'underscore-rails'
 gem 'simple_form'
