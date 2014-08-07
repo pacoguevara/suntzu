@@ -1,6 +1,6 @@
 class CreateCandidateVotations < ActiveRecord::Migration
   def change
-	drop_table :candidate_votations
+	  #drop_table :candidate_votations
     create_table :candidate_votations do |t|
       t.integer :candidate_id
       t.integer :polling_id
