@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804025917) do
+ActiveRecord::Schema.define(version: 20140807143158) do
+
+  create_table "candidate_votations", force: true do |t|
+    t.integer  "candidate_id"
+    t.integer  "polling_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "candidate_votations", ["candidate_id"], name: "index_candidate_votations_on_candidate_id"
+  add_index "candidate_votations", ["polling_id"], name: "index_candidate_votations_on_polling_id"
 
   create_table "candidates", force: true do |t|
     t.string   "name"
@@ -67,6 +77,14 @@ ActiveRecord::Schema.define(version: 20140804025917) do
   end
 
   add_index "militants", ["group_id"], name: "index_militants_on_group_id"
+
+  create_table "pollings", force: true do |t|
+    t.string   "name"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "states", force: true do |t|
     t.string "name"

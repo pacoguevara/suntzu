@@ -1,0 +1,25 @@
+<h1>Listing candidate_votations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @candidate_votations.each do |candidate_votation| %>
+      <tr>
+        <td><%= link_to 'Show', candidate_votation %></td>
+        <td><%= link_to 'Edit', edit_candidate_votation_path(candidate_votation) %></td>
+        <td><%= link_to 'Destroy', candidate_votation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Candidate votation', new_candidate_votation_path %>

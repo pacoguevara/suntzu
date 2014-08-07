@@ -1,8 +1,27 @@
-<table class="table">
+<h2>Grupos</h2>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Grupo--</option><option>Zapatista</option><option>Villista</option></select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Candidato--</option><option>Eduardo de la Cruz</option><option>Amber Di Stefano</option></select>
+	</div>
+	<div class="col-md-2">
+		<%= link_to new_group_path, :class=>"btn btn-success btn-block" do%>
+			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+		<%end%>
+	</div>
+</div>
+<br />
+<table class="table table-hover table-triped table-bordered">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Candidate</th>
+      <th>Nombre</th>
+      <th>Candidato</th>
       <th></th>
       <th></th>
     </tr>
@@ -13,13 +32,13 @@
       <tr>
         <td><%= group.name %></td>
         <td><%= group.candidate_id %></td>
-        <td><%= link_to 'Edit', edit_group_path(group) %></td>
-        <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="center">
+            <%= link_to edit_group_path(group), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
+        </td>
+        <td class="center">
+        	<%= link_to group, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Group', new_group_path %>

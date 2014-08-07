@@ -1,0 +1,20 @@
+<%= simple_form_for(@candidate_votation) do |f| %>
+  <%= f.error_notification %>
+  <div class="row">
+	  <div class="row">
+		  <div class="col-md-6">
+		  	<%= f.association :polling,  :input_html => { :class => 'form-control' }  %>
+		  </div>
+		  <div class="col-md-6">
+		    <%= f.association :candidate,  :input_html => { :class => 'form-control' }  %>
+		  </div>
+	  </div>
+	  <hr />
+	  <div class="row">
+		  <div class="col-md-6 pull-right">
+			  <%= f.button :submit, 'Guardar', :class => "btn btn-primary btn-block" %>
+		  </div>
+	  </div>
+  </div>
+		  
+<% end %>

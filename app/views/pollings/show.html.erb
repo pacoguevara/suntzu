@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @polling.name %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @polling.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @polling.end_date %>
+</p>
+
+<%= link_to 'Edit', edit_polling_path(@polling) %> |
+<%= link_to 'Back', pollings_path %>

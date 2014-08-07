@@ -1,4 +1,7 @@
 Pan::Application.routes.draw do
+  resources :candidate_votations
+  resources :pollings
+
   resources :militants
 
   root "pages#dashboard"

@@ -1,0 +1,50 @@
+<h2>Votaciones</h2>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--A partir de Inicio--</option><option>Zapatista</option><option>Villista</option></select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Hasta Fin--</option><option>Eduardo de la Cruz</option><option>Amber Di Stefano</option></select>
+	</div>
+	<div class="col-md-2">
+		<%= link_to new_polling_path, :class=>"btn btn-success btn-block" do%>
+			<span class="glyphicon glyphicon-plus-sign"></span> Nueva
+		<%end%>
+	</div>
+</div>
+<br />
+<table class="table table-hover table-triped table-bordered">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Inicio</th>
+      <th>Fin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pollings.each do |polling| %>
+      <tr>
+        <td><%= polling.name %></td>
+        <td><%= polling.start_date %></td>
+        <td><%= polling.end_date %></td>
+        <td class="center">
+            <%= link_to polling, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+        </td>
+        <td class="center">
+            <%= link_to edit_group_path(polling), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
+        </td>
+        <td class="center">
+        	<%= link_to polling, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,9 +1,30 @@
-<table class="table">
+<h2>Candidatos</h2>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Género--</option><option>Masculino</option><option>Femenino</option></select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Edad--</option><option>Masculino</option><option>Femenino</option></select>
+	</div>
+	<div class="col-md-2">
+		<%= link_to new_candidate_path, :class=>"btn btn-success btn-block" do%>
+			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+		<%end%>
+	</div>
+</div>
+<br />
+<table class="table table-hover table-bordered table-striped">
   <thead>
     <tr>
       <th>Nombre</th>
-      <th>Edad</th>
-      <th>Sex</th>
+      <th class="center">Edad</th>
+      <th class="center">Género</th>
+      <th></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -12,16 +33,31 @@
     <% @candidates.each do |candidate| %>
       <tr>
         <td><%= candidate.name %></td>
-        <td><%= candidate.age %></td>
-        <td><%= candidate.sex %></td>
-        <td>
-          <%= link_to 'Editar', edit_candidate_path(candidate), :class=> 'btn btn-primary' %><%= link_to 'Eliminar', candidate, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'btn btn-danger'%>
+        <td class="center"><%= candidate.age %></td>
+        <td class="center"><%= candidate.sex %></td>
+        <td class="center">
+            <%= link_to edit_candidate_path(candidate), :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+        </td>
+        <td class="center">
+            <%= link_to edit_candidate_path(candidate), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
+        </td>
+        <td class="center">
+        	<%= link_to candidate, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'Agregar Candidato', new_candidate_path, :class=>"btn btn-success" %>
+<hr />
+<div class="col-md-12 center">
+	<ul class="pagination">
+	  <li class="disabled"><a href="#">&laquo;</a></li>
+	  <li class="active"><a href="#">1</a></li>
+	  <li><a href="#">2</a></li>
+	  <li><a href="#">3</a></li>
+	  <li><a href="#">4</a></li>
+	  <li><a href="#">5</a></li>
+	  <li><a href="#">&raquo;</a></li>
+	</ul>
+</div>
