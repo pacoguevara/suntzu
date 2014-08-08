@@ -69,22 +69,23 @@
 	<div class="col-md-12">
 		<h3>Registro de Votaciones</h3>
 	</div>
-	<div class="col-md-4">
-		<select class="form-control">
-		  <option>Votación Interna PAN 14</option>
-		  <option>Votación Interna PAN 08</option>
-		</select>
-	</div>
-	<div class="col-md-5">
-		<div class='input-group date' id='datetimepicker1'>
-	        <input type='text' class="form-control" value="05/08/2014"/>
-	        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-	        </span>
-	    </div>
-	</div>
-	<div class="col-md-3">
-		<a class="btn btn-primary btn-block">Registrar Voto</a>
-	</div>
+	<%= form_tag("/votes", method: "post") do %>
+		<div class="col-md-4">
+			<select class="form-control" name="militant_id">
+			  <option value="1">Votación Interna PAN 14</option>
+			  <option value="2">Votación Interna PAN 08</option>
+			</select>
+		</div>
+		<div class="col-md-5">
+			<select class="form-control" name="candidate_id">
+			  <option value="1">Candidato A</option>
+			  <option value="2">Candidato B</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<%= submit_tag("Registrar Voto", class:"btn btn-primary btn-block") %>
+		</div>
+	<% end %>
 </div>
 <br />
 <br />

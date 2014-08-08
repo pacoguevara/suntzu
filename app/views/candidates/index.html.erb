@@ -36,7 +36,7 @@
         <td class="center"><%= candidate.age %></td>
         <td class="center"><%= candidate.sex %></td>
         <td class="center">
-            <%= link_to edit_candidate_path(candidate), :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+            <%= link_to candidate, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
         </td>
         <td class="center">
             <%= link_to edit_candidate_path(candidate), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>

@@ -44,7 +44,7 @@
         <td><%= militant.group_id %></td>
         <td><%= militant.section %></td>
         <td class="center">
-            <%= link_to edit_candidate_path(militant), :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+            <%= link_to militant, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
         </td>
         <td class="center">
             <%= link_to edit_militant_path(militant), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
