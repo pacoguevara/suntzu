@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_vote_path(@vote) %> |
-<%= link_to 'Back', votes_path %>
+<div class="alert alert-success" role="alert">
+    Hola <b><%= current_user.name %> <%= current_user.last_name %></b>, hemos registrado tu voto por <b><%= @vote.candidate.name%></b>.
+</div>
