@@ -69,8 +69,9 @@
 	<div class="col-md-12">
 		<h3>Registro de Votaciones</h3>
 	</div>
-	<%= form_tag("/votes", method: "post") do %>
+	<%= simple_form_for Vote.new do |f| %>
 		<div class="col-md-4">
+			<%= f.association :candidate, :include_blank => false, :class=>"form-control" %>
 			<select class="form-control" name="militant_id">
 			  <option value="1">Votación Interna PAN 14</option>
 			  <option value="2">Votación Interna PAN 08</option>

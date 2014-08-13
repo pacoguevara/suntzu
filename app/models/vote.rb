@@ -1,4 +1,4 @@
 class Vote < ActiveRecord::Base
-	has_one :militant
-	has_one :candidate
+	belongs_to :polling
+	belongs_to :candidate
 end

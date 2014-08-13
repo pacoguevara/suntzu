@@ -1,3 +1,3 @@
 class Polling < ActiveRecord::Base
-	belongs_to :candidate_votations
+	has_many :votes, :through => :militants
 end

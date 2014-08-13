@@ -9,22 +9,22 @@ $ ->
 	  text: "Grupo 1 vs Grupo 2"
 	 xAxis:
 	  categories: [
-	   "Jan"
+	   "Ene"
 	   "Feb"
 	   "Mar"
-	   "Apr"
+	   "Abr"
 	   "May"
 	   "Jun"
 	   "Jul"
-	   "Aug"
+	   "Ago"
 	   "Sep"
 	   "Oct"
 	   "Nov"
-	   "Dec"
+	   "Dic"
 	   ]
 	 yAxis:
 	  title:
-	   text: "Temperature (°C)"
+	   text: "Tendencias (%)"
 	 plotOptions:
 	  line:
 	   dataLabels:
@@ -32,7 +32,7 @@ $ ->
 	   enableMouseTracking: false
 	 series: [
 	  {
-	   name: "Tokyo"
+	   name: "Felipe Calderón Hinojosa"
 	   data: [
 	    7.0
 	    6.9
@@ -49,7 +49,7 @@ $ ->
 	   ]
 	  }
 	  {
-	   name: "London"
+	   name: "Vicente Fox Quesada"
 	   data: [
 	    3.9
 	    4.2
@@ -73,29 +73,29 @@ $ ->
 	  text: "Adquisición de Nuevos Militantes por Grupo"
 	 xAxis:
 	  categories: [
-	   "Jan"
+	   "Ene"
 	   "Feb"
 	   "Mar"
-	   "Apr"
+	   "Abr"
 	   "May"
 	   "Jun"
 	   "Jul"
-	   "Aug"
+	   "Ago"
 	   "Sep"
 	   "Oct"
 	   "Nov"
-	   "Dec"
+	   "Dic"
 	   ]
 	 yAxis:
 	  title:
-	   text: "Temperature (°C)"
+	   text: "Tendencias (%)"
 	 plotOptions:
 	  column:
 	   pointPadding: 0.2
 	   borderWidth: 0
 	 series: [
 	  {
-	   name: "Vicente Fox"
+	   name: "Vicente Fox Quesada"
 	   data: [
 	    49.9
 	    71.5
@@ -112,7 +112,7 @@ $ ->
 	   ]
 	  }
 	  {
-	   name: "Felipe Calderon"
+	   name: "Felipe Calderón Hinojosa"
 	   data: [
 	    83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3
 	   ]
@@ -138,8 +138,8 @@ $ ->
 	  {
 	   name: "Pie"
 	   data: [
-	    ['Felipe Calderón',   55.0]
-     ['Vicente Fox',       45.0]
+	    ['Felipe Calderón Hinojosa',   55.0]
+     ['Vicente Fox Quesada',       45.0]
 	   ]
 	  }
 	 ]
@@ -162,11 +162,11 @@ $ ->
 	  	depth:25
 	 series: [
 	 	{
-	 		name: 'Felipe Calderon'
+	 		name: 'Felipe Calderon Hinojosa'
 	   data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 	  }
 	  {
-	 		name: 'Vicente Fox'
+	 		name: 'Vicente Fox Quesada'
 	   data: [39.9, 81.5, 206.4, 159.2, 244.0, 136.0, 13.6, 80.5, 216.4, 124.1, 65.6, 154.4]
 	  }
 	 ]
