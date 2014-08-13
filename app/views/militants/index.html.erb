@@ -1,4 +1,4 @@
-<h2>Militantes</h2>
+<h2><% if !@canedit %>Seleccionar<%end%> Militantes</h2>
 <hr />
 <div class="row">
 	<div class="col-md-4">
@@ -10,11 +10,13 @@
 	<div class="col-md-3">
 		<select class="form-control"><option>--Seleccione Sección--</option><option>Masculino</option><option>Femenino</option></select>
 	</div>
-	<div class="col-md-2">
-		<%= link_to new_candidate_path, :class=>"btn btn-success btn-block" do%>
-			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
-		<%end%>
-	</div>
+  <%if @canedit%>
+  	<div class="col-md-2">
+  		<%= link_to new_candidate_path, :class=>"btn btn-success btn-block" do%>
+  			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+  		<%end%>
+  	</div>
+  <%end%>
 </div>
 <br />
 <table class="table table-hover table-bordered table-striped">
