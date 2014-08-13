@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807143158) do
+ActiveRecord::Schema.define(version: 20140813014351) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -125,9 +125,11 @@ ActiveRecord::Schema.define(version: 20140807143158) do
   create_table "votes", force: true do |t|
     t.integer "militant_id"
     t.integer "candidate_id"
+    t.integer "polling_id"
   end
 
   add_index "votes", ["candidate_id"], name: "index_votes_on_candidate_id"
   add_index "votes", ["militant_id"], name: "index_votes_on_militant_id"
+  add_index "votes", ["polling_id"], name: "index_votes_on_polling_id"
 
 end
