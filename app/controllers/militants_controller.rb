@@ -7,7 +7,12 @@ class MilitantsController < ApplicationController
     @militants = Militant.all
     @canedit = true
   end
-
+  def links
+  end
+  def sublinks
+  end
+  def coordinators
+  end
   # GET /militants/1
   # GET /militants/1.json
   def show

@@ -12,14 +12,14 @@
 	</div>
   <%if @canedit%>
   	<div class="col-md-2">
-  		<%= link_to new_candidate_path, :class=>"btn btn-success btn-block" do%>
+  		<%= link_to new_militant_path, :class=>"btn btn-success btn-block" do%>
   			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
   		<%end%>
   	</div>
   <%end%>
 </div>
 <br />
-<table class="table table-hover table-bordered table-striped">
+<table class="table table-hover table-bordered table-striped" id="militants_table">
   <thead>
     <tr>
       <th>RNM</th>
@@ -30,8 +30,10 @@
       <th>Grupo</th>
       <th>Sección</th>
       <th></th>
-      <th></th>
-      <th></th>
+      <% if @canedit %>
+        <th></th>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
 
@@ -41,19 +43,23 @@
       	<td><%= militant.rnm %></td>
         <td><%= militant.first_name %> <%= militant.last_name %> <%= militant.name %></td>
         <td><%= militant.cp %></td>
-        <td><%= militant.cellphone %></td>
+        <td class="cellphone"><%= militant.cellphone %></td>
         <td><a href="mailto:<%= militant.email %>"><%= militant.email %></a></td>
         <td><%= militant.group_id %></td>
         <td><%= militant.section %></td>
         <td class="center">
+          <% if @canedit %>
             <%= link_to militant, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+          <% end %>
         </td>
-        <td class="center">
-            <%= link_to edit_militant_path(militant), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
-        </td>
-        <td class="center">
-        	<%= link_to militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
-        </td>
+        <% if @canedit %>
+          <td class="center">
+              <%= link_to edit_militant_path(militant), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
+          </td>
+          <td class="center">
+          	<%= link_to militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

@@ -4,14 +4,7 @@
 	    <div class="panel panel-default">
 	      <div class="panel-heading">
 	        <div class="panel-title">
-	        	<div class="row">
-        			<div class="col-md-8">
-		          	<h3>Enviar Mensaje Masivo</h3>
-		        	</div>
-		        	<div class="col-md-4">
-		          	<%= f.submit 'Guardar Mensaje', :class => "btn btn-primary" %>
-		        	</div>
-		        </div>
+          	<h3>Enviar Mensaje Masivo</h3>
 	        </div>
        	</div>
 				<div class="panel-body">
@@ -26,6 +19,11 @@
 				    <%= f.text_field :deep, class: "form-control" %>
 				  </div> -->
 				</div>
+				<div class="panel-footer">
+        	<%= f.submit 'Guardar Mensaje', :class => "btn btn-primary" %>
+        	<a href="#" class="btn btn-primary" id="send_twilio">Enviar SMS Masivo</a>
+        	<a href="#" class="btn btn-primary">Enviar Correo Masivo</a>
+      	</div>
 			<% end %>
 		</div>
 		<table>

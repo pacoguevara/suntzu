@@ -1,6 +1,11 @@
+require 'api_constraints'
 Pan::Application.routes.draw do
   resources :messages
-
+  namespace :api, defaults: {format: 'json'} do 
+    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
+      resources :messages
+    end
+  end
   resources :candidate_votations
   resources :pollings
 
@@ -13,6 +18,9 @@ Pan::Application.routes.draw do
   resources :candidates
 
   resources :votes
+  get "/links" => "militants#links"
+  get "/sublinks" => "militants#links"
+  get "/coordinators" => "militants#coordinators"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
