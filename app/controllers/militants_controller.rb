@@ -5,6 +5,7 @@ class MilitantsController < ApplicationController
   # GET /militants.json
   def index
     @militants = Militant.all
+    @canedit = true
   end
 
   # GET /militants/1

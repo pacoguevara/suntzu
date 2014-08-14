@@ -10,7 +10,6 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-
 ActiveRecord::Schema.define(version: 20140814040348) do
 
   create_table "candidate_votations", force: true do |t|
@@ -48,9 +47,11 @@ ActiveRecord::Schema.define(version: 20140814040348) do
   add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id"
 
   create_table "messages", force: true do |t|
-    t.text    "message"
-    t.string  "depth"
-    t.integer "user_id"
+    t.integer  "user_id"
+    t.text     "message"
+    t.string   "deep"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "messages", ["user_id"], name: "index_messages_on_user_id"

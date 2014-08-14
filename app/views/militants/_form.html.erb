@@ -10,70 +10,81 @@
       </ul>
     </div>
   <% end %>
-  <div class="form-group">
-    <%= f.label 'Fecha de Registro' %><br>
-    <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Apellido Paterno' %><br>
-    <%= f.text_field :first_name, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Apellido Materno' %><br>
-    <%= f.text_field :last_name, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Nombre' %><br>
-    <%= f.text_field :name, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Fecha de Nacimiento' %><br>
-    <%= f.date_select :bird, class: "form-control", :order => [:day, :month, :year], :start_year => 1950 %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'RNM' %><br>
-    <%= f.text_field :rnm, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Enlace' %><br>
-    <%= f.text_field :linking, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'SubEnlace' %><br>
-    <%= f.text_field :sub_linking, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.association :group,  :input_html => { :class => 'form-control' }  %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Colonia' %><br>
-    <%= f.text_field :suburb, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Sección' %><br>
-    <%= f.text_field :section, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Sector' %><br>
-    <%= f.text_field :sector , class: "form-control"%>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Código Postal' %><br>
-    <%= f.text_field :cp, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Telefono' %><br>
-    <%= f.text_field :phone, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Celular' %><br>
-    <%= f.text_field :cellphone, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label 'Correo Electrónico' %><br>
-    <%= f.text_field :email, class: "form-control" %>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Fecha de Nacimiento' %><br>
+        <%= f.date_select :bird, class: "form-control", :order => [:day, :month, :year], :start_year => 1950 %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Apellido Paterno' %><br>
+        <%= f.text_field :first_name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Apellido Materno' %><br>
+        <%= f.text_field :last_name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Nombre' %><br>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.label 'Telefono' %><br>
+        <%= f.text_field :phone, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Celular' %><br>
+        <%= f.text_field :cellphone, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Correo Electrónico' %><br>
+        <%= f.text_field :email, class: "form-control" %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Fecha de Registro' %><br>
+        <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'RNM' %><br>
+        <%= f.text_field :rnm, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Enlace' %><br>
+        <%= f.text_field :linking, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'SubEnlace' %><br>
+        <%= f.text_field :sub_linking, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.association :group,  :input_html => { :class => 'form-control' }  %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Colonia' %><br>
+        <%= f.text_field :suburb, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Sección' %><br>
+        <%= f.text_field :section, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Sector' %><br>
+        <%= f.text_field :sector , class: "form-control"%>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Código Postal' %><br>
+        <%= f.text_field :cp, class: "form-control" %>
+      </div>
+    </div>
   </div>
   <div class="actions">
+    <hr>
     <%= f.submit 'Agregar', :class=>"btn btn-primary" %>
+    <%= link_to 'Cancelar', militants_path, :class=>"btn btn-danger" %>
   </div>
 <% end %>

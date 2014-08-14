@@ -1,4 +1,6 @@
 Pan::Application.routes.draw do
+  resources :messages
+
   resources :candidate_votations
   resources :pollings
 
