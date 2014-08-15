@@ -1,4 +1,5 @@
 class PollingsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_polling, only: [:show, :edit, :update, :destroy]
 
   # GET /pollings

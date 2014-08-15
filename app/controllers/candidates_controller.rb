@@ -1,4 +1,5 @@
 class CandidatesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_candidate, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!
   # GET /candidates

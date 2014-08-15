@@ -4,4 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
+  def admin?
+  	self.role == "admin"
+  end
 end

@@ -1,5 +1,6 @@
 require 'api_constraints'
 Pan::Application.routes.draw do
+  resources :users
   resources :messages
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
@@ -8,11 +9,11 @@ Pan::Application.routes.draw do
   end
   resources :candidate_votations
   resources :pollings
-
+  resources :users
   resources :militants
 
   root "pages#dashboard"
-  devise_for :users
+  devise_for :users, :path_prefix => 'my'
   resources :groups
 
   resources :candidates

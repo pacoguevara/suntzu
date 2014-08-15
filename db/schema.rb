@@ -10,7 +10,8 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-ActiveRecord::Schema.define(version: 20140814040348) do
+
+ActiveRecord::Schema.define(version: 20140815181147) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -122,6 +123,12 @@ ActiveRecord::Schema.define(version: 20140814040348) do
     t.integer  "parent"
     t.string   "section"
     t.integer  "zipcode"
+    t.string   "role"
+    t.string   "cp"
+    t.datetime "register_date"
+    t.datetime "bird"
+    t.string   "sector"
+    t.string   "phone"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

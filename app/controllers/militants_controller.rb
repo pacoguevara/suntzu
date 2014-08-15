@@ -1,10 +1,11 @@
 class MilitantsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_militant, only: [:show, :edit, :update, :destroy]
-
+  before_filter :authenticate_user!, :except => [:show, :index]  
   # GET /militants
   # GET /militants.json
   def index
-    @militants = Militant.all
+    @militants = User.all
     @canedit = true
   end
   def links
@@ -16,11 +17,12 @@ class MilitantsController < ApplicationController
   # GET /militants/1
   # GET /militants/1.json
   def show
+    puts "show"
   end
 
   # GET /militants/new
   def new
-    @militant = Militant.new
+    @militant = User.new
   end
 
   # GET /militants/1/edit
@@ -30,7 +32,7 @@ class MilitantsController < ApplicationController
   # POST /militants
   # POST /militants.json
   def create
-    @militant = Militant.new(militant_params)
+    @militant = User.new(militant_params)
 
     respond_to do |format|
       if @militant.save
@@ -70,11 +72,11 @@ class MilitantsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_militant
-      @militant = Militant.find(params[:id])
+      @militant = User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def militant_params
-      params.require(:militant).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email)
+      params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email)
     end
 end

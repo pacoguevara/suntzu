@@ -45,11 +45,10 @@
         <td><%= militant.cp %></td>
         <td class="cellphone"><%= militant.cellphone %></td>
         <td><a href="mailto:<%= militant.email %>"><%= militant.email %></a></td>
-        <td><%= militant.group_id %></td>
         <td><%= militant.section %></td>
         <td class="center">
           <% if @canedit %>
-            <%= link_to militant, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+            <%= link_to militant_path militant, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
           <% end %>
         </td>
         <% if @canedit %>
@@ -57,7 +56,7 @@
               <%= link_to edit_militant_path(militant), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
           </td>
           <td class="center">
-          	<%= link_to militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+          	<%= link_to militant_path militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
           </td>
         <% end %>
       </tr>
@@ -89,16 +88,12 @@
       <tr>
         <td><%= militant.register_date %></td>
         <td><%= militant.bird %></td>
-        <td><%= militant.linking %></td>
-        <td><%= militant.sub_linking %></td>
-        <td><%= militant.group_id %></td>
-        <td><%= militant.suburb %></td>
         <td><%= militant.section %></td>
         <td><%= militant.sector %></td>
         <td><%= militant.phone %></td>
         <td>
           <%= link_to 'Editar', edit_militant_path(militant) %>
-          <%= link_to 'Eliminar', militant, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } %>
+
         </td>
       </tr>
     <% end %>
