@@ -1,2 +1,106 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<h2><% if !@canedit %>Seleccionar<%end%> useres</h2>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Grupo--</option><option>87060</option><option>90210</option></select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Sección--</option><option>Masculino</option><option>Femenino</option></select>
+	</div>
+  <%if @canedit%>
+  	<div class="col-md-2">
+  		<%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
+  			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+  		<%end%>
+  	</div>
+  <%end%>
+</div>
+<br />
+<table class="table table-hover table-bordered table-striped" id="users_table">
+  <thead>
+    <tr>
+      <th>RNM</th>
+      <th>Nombre</th>
+      <th>Código Postal</th>
+      <th># Celular</th>
+      <th>Email</th>
+      <th>Grupo</th>
+      <th>Sección</th>
+      <th></th>
+      <% if @canedit %>
+        <th></th>
+        <th></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+      	<td><%= user.rnm %></td>
+        <td><%= user.first_name %> <%= user.last_name %> <%= user.name %></td>
+        <td><%= user.cp %></td>
+        <td class="cellphone"><%= user.cellphone %></td>
+        <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
+        <td><%= user.section %></td>
+        <td class="center">
+          <% if @canedit %>
+            <%= link_to user_path user, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+          <% end %>
+        </td>
+        <% if @canedit %>
+          <td class="center">
+              <%= link_to edit_user_path(user), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
+          </td>
+          <td class="center">
+          	<%= link_to user_path user, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr />
+<div class="col-md-12 center">
+	<ul class="pagination">
+	  <li class="disabled"><a href="#">&laquo;</a></li>
+	  <li class="active"><a href="#">1</a></li>
+	  <li><a href="#">2</a></li>
+	  <li><a href="#">3</a></li>
+	  <li><a href="#">4</a></li>
+	  <li><a href="#">5</a></li>
+	  <li><a href="#">&raquo;</a></li>
+	</ul>
+</div>
+
+
+
+
+
+<!--
+<table class="table">
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.register_date %></td>
+        <td><%= user.bird %></td>
+        <td><%= user.section %></td>
+        <td><%= user.sector %></td>
+        <td><%= user.phone %></td>
+        <td>
+          <%= link_to 'Editar', edit_user_path(user) %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Agregar usere', new_user_path, :class => 'btn btn-success' %
+-->

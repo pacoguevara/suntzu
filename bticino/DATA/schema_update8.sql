@@ -1,0 +1,1 @@
+ALTER TABLE  `device_scene` ADD  `start` VARCHAR( 20 ) NOT NULL , ADD  `end` VARCHAR( 20 ) NOT NULL ;

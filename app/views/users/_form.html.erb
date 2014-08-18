@@ -1,0 +1,79 @@
+<%= simple_form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Fecha de Nacimiento' %><br>
+        <%= f.date_select :bird, class: "form-control", :order => [:day, :month, :year], :start_year => 1950 %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Apellido Paterno' %><br>
+        <%= f.text_field :first_name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Apellido Materno' %><br>
+        <%= f.text_field :last_name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Nombre' %><br>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.label 'Telefono' %><br>
+        <%= f.text_field :phone, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Celular' %><br>
+        <%= f.text_field :cellphone, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Correo Electrónico' %><br>
+        <%= f.text_field :email, class: "form-control" %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Fecha de Registro' %><br>
+        <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'RNM' %><br>
+        <%= f.text_field :rnm, class: "form-control" %>
+      </div>
+      <%= f.input :role, collection: User::ROLES_FILTER, :label => "Rol" %>
+    </div>
+    <div class="col-md-4">
+
+      <div class="form-group">
+        <%= f.label 'Sección' %><br>
+        <%= f.text_field :section, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Sector' %><br>
+        <%= f.text_field :sector , class: "form-control"%>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Código Postal' %><br>
+        <%= f.text_field :cp, class: "form-control" %>
+      </div>
+    </div>
+    	<%= f.password_field :password, :value => "12345678"%>
+    	<%= f.password_field :password_confirmation, :value => "12345678"%>
+  </div>
+  <div class="actions">
+    <hr>
+    <%= f.submit 'Agregar', :class=>"btn btn-primary" %>
+    <%= link_to 'Cancelar', users_path, :class=>"btn btn-danger" %>
+  </div>
+<% end %>

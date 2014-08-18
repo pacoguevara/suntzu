@@ -9,7 +9,6 @@ Pan::Application.routes.draw do
   end
   resources :candidate_votations
   resources :pollings
-  resources :users
   resources :militants
 
   root "pages#dashboard"

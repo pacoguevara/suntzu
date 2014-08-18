@@ -9,18 +9,18 @@ $ ->
 	  text: "Grupo 1 vs Grupo 2"
 	 xAxis:
 	  categories: [
-	   "Ene"
-	   "Feb"
-	   "Mar"
-	   "Abr"
-	   "May"
-	   "Jun"
-	   "Jul"
-	   "Ago"
-	   "Sep"
-	   "Oct"
-	   "Nov"
-	   "Dic"
+	   "7AM"
+	   "8AM"
+	   "9AM"
+	   "10AM"
+	   "11AM"
+	   "12AM"
+	   "1PM"
+	   "2PM"
+	   "3PM"
+	   "4PM"
+	   "5PM"
+	   "6PM"
 	   ]
 	 yAxis:
 	  title:
@@ -225,3 +225,4 @@ $ ->
 			handler.bounds.extendWith markers
 			handler.fitMapToBounds()
 			handler.getMap().setZoom(7)
+

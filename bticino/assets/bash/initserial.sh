@@ -1,0 +1,1 @@
+sudo cu -s 19200 -l /dev/ttyUSB0 > /home/pi/bticino/assets/bash/serialContent.json
