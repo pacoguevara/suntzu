@@ -18,23 +18,27 @@
 </div>
 <div class="row">
 	<div class="col-md-6">
-		<h4>Nivel Jerárquico</h4>
-		<select multiple class="form-control">
-		  <option>Militante</option>
-		  <option>Subenlace</option>
-		  <option>Enlace</option>
-		  <option>Coordinador</option>
-		  <option>Candidato</option>
-		</select>
+		<h4>Nivel Jerárquico:</h4>
+		<b><%=@user.role%></b>
 	</div>
 	<div class="col-md-6">
 		<h4>Reporta A</h4>
 		<select multiple class="form-control">
-		  <option>Pedro Picapiedra</option>
-		  <option>Juan Pérez</option>
-		  <option>Pablo Mármol</option>
-		  <option>Bugs Bunny</option>
-		  <option>John Doe</option>
+			<% if @user.jugador? %>
+				<% User.where(:role=>"subenlace").each do |user| %>
+			  	<option><%= user.name %></option>
+			  <% end %>
+		  <% end %>
+		  <% if @user.subenlace? %>
+				<% User.where(:role=>"enlace").each do |user| %>
+			  	<option><%= user.name %></option>
+			  <% end %>
+		  <% end %>
+		  <% if @user.enlace? %>
+				<% User.where(:role=>"coordinador").each do |user| %>
+			  	<option><%= user.name %></option>
+			  <% end %>
+		  <% end %>
 		</select>
 	</div>
 </div>

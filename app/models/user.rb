@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
-  
+  validates_presence_of :role
   ROLES_ADMIN =       %w[jugador enlace subenlace coordinador ]
   ROLES_COORDINADOR = %w[jugador enlace subenlace ]
   ROLES_ENLACE=       %w[jugador subenlace ]
