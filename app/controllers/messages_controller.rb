@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   def new
     @message = Message.new
-    @militants = Militant.all
+    @militants = User.all
     @canedit = false
   end
 

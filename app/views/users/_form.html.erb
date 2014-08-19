@@ -51,7 +51,20 @@
         <%= f.label 'RNM' %><br>
         <%= f.text_field :rnm, class: "form-control" %>
       </div>
-      <%= f.input :role, collection: User::ROLES_FILTER, :label => "Rol" %>
+      <div class="form-group">
+        <% if current_user.admin? %>
+          <%= f.input :role, collection: User::ROLES_ADMIN, class: "form-control"%>
+        <% end %>
+        <% if current_user.coordinador? %>
+          <%= f.input :role, collection: User::ROLES_COORDINADOR, :label => "Rol", class: "form-control"%>
+        <% end %>
+        <% if current_user.enlace? %>
+          <%= f.input :role, collection: User::ROLES_ENLACE, :label => "Rol", class: "form-control"%>
+        <% end %>
+        <% if current_user.subenlace? %>
+          <%= f.input :role, collection: User::ROLES_SUBENLACE, :label => "Rol", class: "form-control"%>
+        <% end %>
+      </div>
     </div>
     <div class="col-md-4">
 
@@ -68,8 +81,8 @@
         <%= f.text_field :cp, class: "form-control" %>
       </div>
     </div>
-    	<%= f.password_field :password, :value => "12345678"%>
-    	<%= f.password_field :password_confirmation, :value => "12345678"%>
+    	<%= f.hidden_field :password, :value => "12345678"%>
+    	<%= f.hidden_field :password_confirmation, :value => "12345678"%>
   </div>
   <div class="actions">
     <hr>

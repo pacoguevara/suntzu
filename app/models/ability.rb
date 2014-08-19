@@ -7,6 +7,12 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.admin?
         can :manage, :all
+    elsif user.enlace? || user.subenlace? || user.coordinador?
+        can :manage, User
+        can :manage, Message
+        can :read, Candidate
+        can :read, CandidateVotation
+        can :read, Polling
     else
         can :home, :whatever
     end
