@@ -12,9 +12,11 @@ message =
 		 	data:
 		 		cellphone:cell
 		 		message: msg
+		 	success:->
+		 		alert 'Se ha enviado el mensaje'
 $ ->
 	$('#send_twilio').click ->
-		
+
 		table_items = $('#militants_table > tbody > tr')
 		table_items.each -> 
 			console.log 
