@@ -14,6 +14,7 @@ message =
 		 		message: msg
 $ ->
 	$('#send_twilio').click ->
+		alert 'Enviando Mensaje'
 		table_items = $('#militants_table > tbody > tr')
 		table_items.each -> 
 			console.log 

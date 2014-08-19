@@ -1,4 +1,4 @@
-<h2><% if !@canedit %>Seleccionar<%end%> useres</h2>
+<h2><% if !@canedit %>Seleccionar<%end%></h2>
 <hr />
 <div class="row">
 	<div class="col-md-4">
@@ -27,7 +27,6 @@
       <th>Código Postal</th>
       <th># Celular</th>
       <th>Email</th>
-      <th>Grupo</th>
       <th>Sección</th>
       <th></th>
       <% if @canedit %>
@@ -56,7 +55,7 @@
               <%= link_to edit_user_path(user), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
           </td>
           <td class="center">
-          	<%= link_to user_path user, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+          	<%= link_to "/users/"+user.id.to_s, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
           </td>
         <% end %>
       </tr>

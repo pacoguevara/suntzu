@@ -1,2 +1,123 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<div class="well">
+	<div class="row">
+		<div class="col-md-3">
+			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
+		</div>
+		<div class="col-md-9">
+			<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
+			<hr />
+			<b>RNM:</b> <%= @user.rnm %><br />
+			<b>Email:</b> <a href="mailto:<%= @user.email %>"><%= @user.email %></a><br />
+			<b>Teléfono:</b>  <%= @user.phone %> | <b>Celular:</b>  <%= @user.cellphone %><br />
+			 CP <%= @user.cp %><br />
+			<hr />
+			<div class="col-md-6"><%= link_to 'Regresar', militants_path, class: "btn btn-primary btn-block"%></div>
+			<div class="col-md-6"><%= link_to 'Editar', edit_user_path(@user), class: "btn btn-default btn-block"%></div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<h4>Nivel Jerárquico</h4>
+		<select multiple class="form-control">
+		  <option>Militante</option>
+		  <option>Subenlace</option>
+		  <option>Enlace</option>
+		  <option>Coordinador</option>
+		  <option>Candidato</option>
+		</select>
+	</div>
+	<div class="col-md-6">
+		<h4>Reporta A</h4>
+		<select multiple class="form-control">
+		  <option>Pedro Picapiedra</option>
+		  <option>Juan Pérez</option>
+		  <option>Pablo Mármol</option>
+		  <option>Bugs Bunny</option>
+		  <option>John Doe</option>
+		</select>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-5">
+		<h4>Género:</h4>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked="true"> Hombre
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Mujer
+		</label>
+	</div>
+	<div class="col-md-7">
+		<h4>Fecha de Nacimiento:</h4>
+		<div class='input-group date' id='datetimepicker1'>
+	        <input type='text' class="form-control" value="19/04/1990"/>
+	        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+	        </span>
+	    </div>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14382.847505622154!2d-100.35000321501155!3d25.680844141075344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1407204778020" width="100%" height="180" frameborder="0" style="border:0"></iframe>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<h3>Registro de Votaciones</h3>
+	</div>
+	<%= simple_form_for Vote.new do |f| %>
+		<div class="col-md-4">
+			<%= f.association :polling, :include_blank => false, :class=>"form-control", label: false, input_html: { class: 'form-control' } %>
+		</div>
+		<div class="col-md-5">
+			<%= f.association :candidate, :include_blank => false, :class=>"form-control", label: false, input_html: { class: 'form-control' }%>
+		</div>
+		<div class="col-md-3">
+                        <%= f.hidden_field :militant_id, :value => current_user.id %>
+			<%= submit_tag("Registrar Voto", class:"btn btn-primary btn-block") %>
+		</div>
+	<% end %>
+</div>
+<br />
+<br />
+<!--
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Register date:</strong>
+  <%= @user.register_date %>
+</p>
+
+<p>
+  <strong>Bird:</strong>
+  <%= @user.bird %>
+</p>
+
+<p>
+  
+</p>
+
+<p>
+  
+</p>
+
+
+
+<p>
+  <strong>Section:</strong>
+  <%= @user.section %>
+</p>
+
+<p>
+  <strong>Sector:</strong>
+  <%= @user.sector %>
+</p>
+
+ 
+<%= link_to 'Back', militants_path %>
+-->

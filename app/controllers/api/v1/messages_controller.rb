@@ -1,6 +1,7 @@
 module Api
 	module V1
 		class MessagesController < ApplicationController
+			skip_authorization_check
 			respond_to :json
 			def index
 				respond_with Message.all
