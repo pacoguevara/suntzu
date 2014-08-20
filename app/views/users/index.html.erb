@@ -24,10 +24,15 @@
     <tr>
       <th>RNM</th>
       <th>Nombre</th>
-      <th>Código Postal</th>
+      <th>CP</th>
       <th># Celular</th>
       <th>Email</th>
       <th>Sección</th>
+      <th>Edad</th>
+      <th>Sexo</th>
+      <th>Calle</th>
+      <th>Colonia</th>
+      <th>Municipio</th>
       <th></th>
       <% if @canedit %>
         <th></th>
@@ -45,6 +50,11 @@
         <td class="cellphone"><%= user.cellphone %></td>
         <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
         <td><%= user.section %></td>
+        <td><%= user.age %></td>
+        <td><%= user.gender %></td>
+        <td><%= user.street_number %></td>
+        <td><%= user.neighborhood %></td>
+        <td><%= user.city %></td>
         <td class="center">
           <% if @canedit %>
             <%= link_to user_path user, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>

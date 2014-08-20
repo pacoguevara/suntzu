@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140815181147) do
+ActiveRecord::Schema.define(version: 20140820141709) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20140815181147) do
   create_table "candidates", force: true do |t|
     t.string   "name"
     t.integer  "age"
-    t.string   "sex"
+    t.string   "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -92,16 +92,6 @@ ActiveRecord::Schema.define(version: 20140815181147) do
     t.string "name"
   end
 
-  create_table "user_messages", force: true do |t|
-    t.boolean "is_sms"
-    t.boolean "is_mail"
-    t.integer "user_id"
-    t.integer "message_id"
-  end
-
-  add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id"
-  add_index "user_messages", ["user_id"], name: "index_user_messages_on_user_id"
-
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -129,6 +119,11 @@ ActiveRecord::Schema.define(version: 20140815181147) do
     t.datetime "bird"
     t.string   "sector"
     t.string   "phone"
+    t.integer  "age"
+    t.string   "gender"
+    t.string   "city"
+    t.string   "street_number"
+    t.string   "neighborhood"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
