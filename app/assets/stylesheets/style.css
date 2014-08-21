@@ -24,3 +24,6 @@ body {
 .main_logo{
 	width: 70px;
 }
+.capitalize{
+	text-transform: capitalize;
+}

@@ -72,6 +72,9 @@
         <% if current_user.subenlace? %>
           <%= f.input :role, collection: User::ROLES_SUBENLACE, :label => "Rol", class: "form-control"%>
         <% end %>
+        <% if current_user.grupo? %>
+          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control"%>
+        <% end %>
       </div>
     </div>
     <div class="col-md-4">
