@@ -40,12 +40,26 @@
 	<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
 	<%= link_to 'Editar', edit_user_path(@user), class: "btn btn-default btn-large"%>
 </div>
+<<<<<<< HEAD
 		<!--
 			<select multiple class="form-control">
 				<% if @user.jugador? %>
 					<% User.where(:role=>"subenlace").each do |user| %>
 				  	<option><%= user.name %></option>
 				  <% end %>
+=======
+<div class="row">
+	<div class="col-md-6">
+		<h4>Nivel Jerárquico:</h4>
+		<b class="capitalize"><%=@user.role%></b>
+	</div>
+	<div class="col-md-6">
+		<h4>Reporta A</h4>
+		<select multiple class="form-control">
+			<% if @user.jugador? %>
+				<% User.where(:role=>"subenlace").each do |user| %>
+			  	<option><%= user.name %></option>
+>>>>>>> 3f377b46a0e765057ada1cf49ed3f5811c3618ef
 			  <% end %>
 			  <% if @user.subenlace? %>
 					<% User.where(:role=>"enlace").each do |user| %>

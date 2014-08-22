@@ -5,10 +5,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
   validates_presence_of :role
-  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador ]
-  ROLES_COORDINADOR = %w[jugador enlace subenlace ]
-  ROLES_ENLACE=       %w[jugador subenlace ]
-  ROLES_SUBENLACE =   %w[jugador]
+  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador grupo]
+  ROLES_COORDINADOR = %w[jugador enlace subenlace grupo]
+  ROLES_ENLACE=       %w[jugador subenlace grupo]
+  ROLES_SUBENLACE =   %w[jugador grupo]
+  ROLES_GRUPO =   	  %w[grupo]
   
   def admin?
   	self.role == "admin"
@@ -24,5 +25,8 @@ class User < ActiveRecord::Base
   end
   def coordinador?
     self.role == "coordinador"
+  end
+  def grupo?
+    self.role == "grupo"
   end
 end

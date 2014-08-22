@@ -5,7 +5,15 @@
 		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
 	</div>
 	<div class="col-md-3">
-		<select class="form-control"><option>--Seleccione Grupo--</option><option>87060</option><option>90210</option></select>
+		<select class="form-control" id="role-select">
+			<option value="" disabled selected>--Seleccione un Rol--</option>
+			<option value="jugador">Todos</option>
+			<option value="subenlace">Subenlace</option>
+			<option value="enlace">Enlace</option>
+			<option value="coordinador">Coordinador</option>
+			<option value="grupo">Grupo</option>
+			<option value="candidato">Candidato</option>
+		</select>
 	</div>
 	<div class="col-md-3">
 		<select class="form-control"><option>--Seleccione Sección--</option><option>Masculino</option><option>Femenino</option></select>
@@ -84,32 +92,4 @@
 	  <li><a href="#">5</a></li>
 	  <li><a href="#">&raquo;</a></li>
 	</ul>
-</div>
-
-
-
-
-
-<!--
-<table class="table">
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.register_date %></td>
-        <td><%= user.bird %></td>
-        <td><%= user.section %></td>
-        <td><%= user.sector %></td>
-        <td><%= user.phone %></td>
-        <td>
-          <%= link_to 'Editar', edit_user_path(user) %>
-
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'Agregar usere', new_user_path, :class => 'btn btn-success' %
--->
+</div>	
