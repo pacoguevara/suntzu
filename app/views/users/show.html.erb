@@ -1,67 +1,64 @@
 <div class="well">
+	<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
+	<hr/>
 	<div class="row">
-		<div class="col-md-3">
+		<!-- <div class="col-md-3">
 			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
+		</div> -->
+		<div class="col-md-4">
+			<p>
+				<b>Fecha de Nacimiento:</b> <%= @user.bird.strftime "%m/%d/%Y" %>
+			</p>
+			<p>
+				<b>Edad:</b> <%= @user.age %>
+			</p>
+			<p>
+				<b>Sexo: </b><%= @user.gender %>
+			</p>
+			<p>
+				<b>Email:</b><a href="mailto:<%= @user.email %>"><%= @user.email %></a></p>
+			<p>
+				<b>Teléfono:</b>  <%= @user.phone %> | 
+				<b>Celular:</b><%= @user.cellphone %>
+			</p>
 		</div>
-		<div class="col-md-9">
-			<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
-			<hr />
-			<b>RNM:</b> <%= @user.rnm %><br />
-			<b>Email:</b> <a href="mailto:<%= @user.email %>"><%= @user.email %></a><br />
-			<b>Teléfono:</b>  <%= @user.phone %> | <b>Celular:</b>  <%= @user.cellphone %><br />
-			 CP <%= @user.cp %><br />
-			<hr />
-			<div class="col-md-6"><%= link_to 'Regresar', militants_path, class: "btn btn-primary btn-block"%></div>
-			<div class="col-md-6"><%= link_to 'Editar', edit_user_path(@user), class: "btn btn-default btn-block"%></div>
+		<div class="col-md-4">
+			<p><b>RNM:</b> <%= @user.rnm %></p>
+			<p><b>Fecha de Registro:</b> <%= @user.register_date.strftime "%m/%d/%Y" %></p>
+			<p ><b>Nivel Jerárquico:</b><%= @user.role %></p>
+			<p><b>Reporta a: </b><%= User.find(@user.parent).name %></p>
+		</div>
+		<div class="col-md-4">
+			<p ><b>Seccion:</b><%= @user.section %></p>
+			<p><b>Sector: </b><%= @user.sector %></p>
+			<p><b>Calle y Número: </b><%= @user.street_number %></p>
+			<p><b>Colonia: </b><%= @user.neighborhood %></p>
+			<p><b>Ciudad: </b><%= @user.city %></p>
 		</div>
 	</div>
+	<hr />
+	<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
+	<%= link_to 'Editar', edit_user_path(@user), class: "btn btn-default btn-large"%>
 </div>
-<div class="row">
-	<div class="col-md-6">
-		<h4>Nivel Jerárquico:</h4>
-		<b><%=@user.role%></b>
-	</div>
-	<div class="col-md-6">
-		<h4>Reporta A</h4>
-		<select multiple class="form-control">
-			<% if @user.jugador? %>
-				<% User.where(:role=>"subenlace").each do |user| %>
-			  	<option><%= user.name %></option>
+		<!--
+			<select multiple class="form-control">
+				<% if @user.jugador? %>
+					<% User.where(:role=>"subenlace").each do |user| %>
+				  	<option><%= user.name %></option>
+				  <% end %>
 			  <% end %>
-		  <% end %>
-		  <% if @user.subenlace? %>
-				<% User.where(:role=>"enlace").each do |user| %>
-			  	<option><%= user.name %></option>
+			  <% if @user.subenlace? %>
+					<% User.where(:role=>"enlace").each do |user| %>
+				  	<option><%= user.name %></option>
+				  <% end %>
 			  <% end %>
-		  <% end %>
-		  <% if @user.enlace? %>
-				<% User.where(:role=>"coordinador").each do |user| %>
-			  	<option><%= user.name %></option>
+			  <% if @user.enlace? %>
+					<% User.where(:role=>"coordinador").each do |user| %>
+				  	<option><%= user.name %></option>
+				  <% end %>
 			  <% end %>
-		  <% end %>
-		</select>
-	</div>
-</div>
-<hr />
-<div class="row">
-	<div class="col-md-5">
-		<h4>Género:</h4>
-		<label class="radio-inline">
-		  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked="true"> Hombre
-		</label>
-		<label class="radio-inline">
-		  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Mujer
-		</label>
-	</div>
-	<div class="col-md-7">
-		<h4>Fecha de Nacimiento:</h4>
-		<div class='input-group date' id='datetimepicker1'>
-	        <input type='text' class="form-control" value="19/04/1990"/>
-	        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-	        </span>
-	    </div>
-	</div>
-</div>
+			</select>
+		-->
 <hr />
 <div class="row">
 	<div class="col-md-12">
@@ -86,42 +83,3 @@
 		</div>
 	<% end %>
 </div>
-<br />
-<br />
-<!--
-
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Register date:</strong>
-  <%= @user.register_date %>
-</p>
-
-<p>
-  <strong>Bird:</strong>
-  <%= @user.bird %>
-</p>
-
-<p>
-  
-</p>
-
-<p>
-  
-</p>
-
-
-
-<p>
-  <strong>Section:</strong>
-  <%= @user.section %>
-</p>
-
-<p>
-  <strong>Sector:</strong>
-  <%= @user.sector %>
-</p>
-
- 
-<%= link_to 'Back', militants_path %>
--->

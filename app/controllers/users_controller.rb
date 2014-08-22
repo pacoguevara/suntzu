@@ -7,6 +7,18 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    if current_user.admin? 
+      @roles = User::ROLES_ADMIN
+    end 
+    if current_user.coordinador? 
+      @roles = User::ROLES_COORDINADOR
+    end 
+    if current_user.enlace? 
+      @roles = User::ROLES_ENLACE
+    end 
+    if current_user.subenlace? 
+      @roles = User::ROLES_SUBENLACE
+    end 
   end
   
   # POST /users
@@ -38,6 +50,22 @@ class UsersController < ApplicationController
   end
 
   def edit
+    if current_user.admin? 
+      @roles = User::ROLES_ADMIN
+    end 
+    if current_user.coordinador? 
+      @roles = User::ROLES_COORDINADOR
+    end 
+    if current_user.enlace? 
+      @roles = User::ROLES_ENLACE
+    end 
+    if current_user.subenlace? 
+      @roles = User::ROLES_SUBENLACE
+    end 
+    @sub_links = User.where(:role=>"subenlace")
+    @links = User.where(:role=>"enlace")
+    @codinators = User.where(:role=>"coordinador")
+    @groups = User.where(:role=>"grupo")
   end
 
   def destroy
@@ -61,6 +89,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood)
+    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent)
   end
 end
