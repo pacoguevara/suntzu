@@ -50,7 +50,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.where(:role => params[:role])
+  	if params[:role] == 'jugador'
+  		@users = User.all
+  	else
+	    @users = User.where(:role => params[:role])
+	end
   	@canedit = true
   end
   private
