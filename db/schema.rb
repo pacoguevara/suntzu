@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820141709) do
+ActiveRecord::Schema.define(version: 20140823054119) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.datetime "updated_at"
   end
 
-  add_index "candidate_votations", ["candidate_id"], name: "index_candidate_votations_on_candidate_id"
-  add_index "candidate_votations", ["polling_id"], name: "index_candidate_votations_on_polling_id"
+  add_index "candidate_votations", ["candidate_id"], name: "index_candidate_votations_on_candidate_id", using: :btree
+  add_index "candidate_votations", ["polling_id"], name: "index_candidate_votations_on_polling_id", using: :btree
 
   create_table "candidates", force: true do |t|
     t.string   "name"
     t.integer  "age"
-    t.string   "sex"
+    t.string   "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.integer "state_id"
   end
 
-  add_index "cities", ["state_id"], name: "index_cities_on_state_id"
+  add_index "cities", ["state_id"], name: "index_cities_on_state_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.string   "name"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.datetime "updated_at"
   end
 
-  add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id"
+  add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id", using: :btree
 
   create_table "messages", force: true do |t|
     t.integer  "user_id"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.datetime "updated_at"
   end
 
-  add_index "messages", ["user_id"], name: "index_messages_on_user_id"
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "militants", force: true do |t|
     t.datetime "register_date"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.datetime "updated_at"
   end
 
-  add_index "militants", ["group_id"], name: "index_militants_on_group_id"
+  add_index "militants", ["group_id"], name: "index_militants_on_group_id", using: :btree
 
   create_table "pollings", force: true do |t|
     t.string   "name"
@@ -91,16 +91,6 @@ ActiveRecord::Schema.define(version: 20140820141709) do
   create_table "states", force: true do |t|
     t.string "name"
   end
-
-  create_table "user_messages", force: true do |t|
-    t.boolean "is_sms"
-    t.boolean "is_mail"
-    t.integer "user_id"
-    t.integer "message_id"
-  end
-
-  add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id"
-  add_index "user_messages", ["user_id"], name: "index_user_messages_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -119,10 +109,10 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.string   "cellphone"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "rnm"
+    t.string   "rnm"
     t.integer  "parent"
     t.string   "section"
-    t.integer  "zipcode"
+    t.string   "zipcode"
     t.string   "role"
     t.string   "cp"
     t.datetime "register_date"
@@ -136,8 +126,8 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.string   "neighborhood"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "votes", force: true do |t|
     t.integer "militant_id"
@@ -145,8 +135,8 @@ ActiveRecord::Schema.define(version: 20140820141709) do
     t.integer "polling_id"
   end
 
-  add_index "votes", ["candidate_id"], name: "index_votes_on_candidate_id"
-  add_index "votes", ["militant_id"], name: "index_votes_on_militant_id"
-  add_index "votes", ["polling_id"], name: "index_votes_on_polling_id"
+  add_index "votes", ["candidate_id"], name: "index_votes_on_candidate_id", using: :btree
+  add_index "votes", ["militant_id"], name: "index_votes_on_militant_id", using: :btree
+  add_index "votes", ["polling_id"], name: "index_votes_on_polling_id", using: :btree
 
 end

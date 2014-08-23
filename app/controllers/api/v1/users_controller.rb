@@ -3,13 +3,11 @@ module Api
 		class UsersController < ApplicationController
 			skip_authorization_check
 			respond_to :json
-			def index
-				
+			def index			
 				respond_with User.where( 
 					"role LIKE ? AND email LIKE ? AND cellphone LIKE ? AND rnm LIKE ? AND name LIKE ? AND parent = ?	",
 					"%#{params[:role]}%","%#{params[:email]}%","%#{params[:cellphone]}%", "%#{params[:rnm]}%", "%#{params[:name]}%", "#{params[:parent]}"
 				 )
-				
 			end
 		end
 	end
