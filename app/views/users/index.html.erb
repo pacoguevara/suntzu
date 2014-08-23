@@ -1,69 +1,49 @@
 <h2><% if !@canedit %>Seleccionar<%end%></h2>
 <hr />
-<div class="row">
-	<div class="col-md-4">
-		    <input type="text" class="form-control" placeholder="Buscar por Nombre">
-	</div>
-	<div class="col-md-3">
-		<select class="form-control" id="role-select">
-			<option value="" disabled selected>--Seleccione un Rol--</option>
-			<option value="jugador">Todos</option>
-			<option value="subenlace">Subenlace</option>
-			<option value="enlace">Enlace</option>
-			<option value="coordinador">Coordinador</option>
-			<option value="grupo">Grupo</option>
-			<option value="candidato">Candidato</option>
-		</select>
-	</div>
-	<div class="col-md-3">
-		<select class="form-control"><option>--Seleccione Sección--</option><option>Masculino</option><option>Femenino</option></select>
-	</div>
-  <%if @canedit%>
-  	<div class="col-md-2">
-  		<%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
-  			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
-  		<%end%>
-  	</div>
-  <%end%>
-</div>
 <br />
 <table class="table table-hover table-bordered table-striped" id="users_table">
   <thead>
     <tr>
       <th>
-        RNM
+        <input type="text" placeholder="RNM" class="form-control search" name="rnm"/>
       </th>
       <th>
-        Nombre
+        <input type="text" placeholder="Nombre" class="form-control search" name="name"/>
       </th>
       <th>
-        CP
+        <input type="text" placeholder="CP" class="form-control search"/>
       </th>
       <th>
-        Celular
+        <input type="text" placeholder="Cel" class="form-control search"/>
       </th>
       <th>
-        Email
+        <input type="text" placeholder="Correo" class="form-control search"
+        name="email"/>
       </th>
       <th>
-        Sección
+        <input type="text" placeholder="Seccion" class="form-control search"/>
       </th>
       <th>
-        Edad
+        <input type="text" placeholder="Edad" class="form-control search"/>
       </th>
       <th>
-        Sexo
+        <input type="text" placeholder="Sexo" class="form-control search"/>
       </th>
       <th>
-        Reporta a
+        <input type="text" placeholder="Nivel" class="form-control search"/>
       </th>
       <th>
-        Colonia
+        <input type="text" placeholder="Reporta a" class="form-control search"/>
       </th>
-      <th></th>
-      <% if @canedit %>
-        <th></th>
-      <% end %>
+
+      <th>
+        <input type="text" placeholder="Colonia" class="form-control search"/>
+      </th>
+      <th colspan="2">
+        <%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
+        <span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+      <%end%>
+      </th>
     </tr>
   </thead>
 
@@ -78,6 +58,9 @@
         <td><%= user.section %></td>
         <td><%= user.age %></td>
         <td><%= user.gender %></td>
+        <td>
+          <%= user.role %>
+        </td>
         <td><%= user.parent != 0 ? User.find(user.parent).name : 'Nadie' %></td>
         <td><%= user.neighborhood %></td>
         <td class="center">
