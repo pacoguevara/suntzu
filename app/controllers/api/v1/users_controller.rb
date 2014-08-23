@@ -9,7 +9,10 @@ module Api
 					"role LIKE ? AND email LIKE ? AND cellphone LIKE ? AND rnm LIKE ? AND name LIKE ? AND first_name LIKE ? AND last_name LIKE ? AND parent = ?	",
 					"%#{params[:role]}%","%#{params[:email]}%","%#{params[:cellphone]}%", "%#{params[:rnm]}%", "%#{params[:name]}%","%#{params[:name]}%","%#{params[:name]}%", "#{params[:parent]}"
 				 )
-				
+			end
+			def parents
+				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", "enlace"=>"coordinador", "coordinador"=>"grupo	"}
+				respond_with User.where(:role => parent[params[:role]])
 			end
 		end
 	end
