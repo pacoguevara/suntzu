@@ -9,6 +9,7 @@ group :development, :test do
 	#gem 'sqlite3'
 	gem 'pg'
 end
+gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
