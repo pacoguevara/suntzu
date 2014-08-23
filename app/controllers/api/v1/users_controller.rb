@@ -9,6 +9,10 @@ module Api
 					"%#{params[:role]}%","%#{params[:email]}%","%#{params[:cellphone]}%", "%#{params[:rnm]}%", "%#{params[:name]}%", "#{params[:parent]}"
 				 )
 			end
+			def parents
+				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", "enlace"=>"coordinador", "coordinador"=>"grupo	"}
+				respond_with User.where(:role => parent[params[:role]])
+			end
 		end
 	end
 end

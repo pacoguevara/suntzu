@@ -5,7 +5,11 @@ Pan::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :messages
-      resources :users
+      resources :users do 
+      	collection do
+      		get "parents", :action=>"parents"
+      	end
+      end
     end
   end
   resources :candidate_votations

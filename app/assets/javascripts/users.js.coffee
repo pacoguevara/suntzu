@@ -4,3 +4,12 @@
 $(document).on "change", "#role-select", ->
   window.location = "/users?role=" + $("option:selected", this).val()
   return
+
+$(document).on "change", "#role_select_form", ->
+	$.get "/api/users/parents?role="+$("option:selected", this).val(), (data) ->
+		data.forEach (entry) ->
+			$("#parent-select").empty()
+			$("#parent-select").append "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"
+			return
+		return
+	return

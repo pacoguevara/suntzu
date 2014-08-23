@@ -6,9 +6,11 @@
 			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
 		</div> -->
 		<div class="col-md-4">
-			<p>
-				<b>Fecha de Nacimiento:</b> <%= @user.bird.strftime "%m/%d/%Y" %>
-			</p>
+			<%if not @user.bird.nil?%>
+				<p>
+					<b>Fecha de Nacimiento:</b> <%= @user.bird.strftime "%m/%d/%Y" %>
+				</p>
+			<%end%>
 			<p>
 				<b>Edad:</b> <%= @user.age %>
 			</p>
@@ -24,9 +26,13 @@
 		</div>
 		<div class="col-md-4">
 			<p><b>RNM:</b> <%= @user.rnm %></p>
-			<p><b>Fecha de Registro:</b> <%= @user.register_date.strftime "%m/%d/%Y" %></p>
+			<%if not @user.register_date.nil?%>
+				<p><b>Fecha de Registro:</b> <%= @user.register_date.strftime "%m/%d/%Y" %></p>
+			<%end%>
 			<p ><b>Nivel Jerárquico:</b><%= @user.role %></p>
-			<p><b>Reporta a: </b><%= User.find(@user.parent).name %></p>
+			<%if not @user.parent.nil?%>
+				<p><b>Reporta a: </b><%= User.find(@user.parent).name %></p>
+			<%end%>
 		</div>
 		<div class="col-md-4">
 			<p ><b>Seccion:</b><%= @user.section %></p>

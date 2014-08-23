@@ -62,7 +62,7 @@
       <div class="form-group">
         <%= f.label 'Nivel Jerárquico:' %>
         <% if current_user.admin? %>
-          <%= f.input_field :role, collection: User::ROLES_ADMIN, class: "form-control"%>
+          <%= f.input_field :role, collection: User::ROLES_ADMIN, class: "form-control", id: "role_select_form"%>
         <% end %>
         <% if current_user.coordinador? %>
           <%= f.input_field :role, collection: User::ROLES_COORDINADOR, :label => "Rol", class: "form-control"%>
@@ -79,11 +79,7 @@
       </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
-        <%= f.input :parent, collection: User::ROLES_ENLACE, :label => false, class: "form-control"%>
-      </div>
-      <div class="form-group">
-        <%= f.label 'Reporta a:' %>
-        <%= f.input_field :parent, collection: @codinators, :label => "Rol", class: "form-control"%>
+        <select id="parent-select" name="user[parent]" class="form-control"></select>
       </div>
     </div>
     <div class="col-md-4">
