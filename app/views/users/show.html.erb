@@ -31,7 +31,7 @@
 			<%end%>
 			<p ><b>Nivel Jerárquico:</b><%= @user.role %></p>
 			<%if not @user.parent.nil?%>
-				<p><b>Reporta a: </b><%= User.find(@user.parent).name %></p>
+				<p><b>Reporta a: </b><%= User.find(@user.parent).name if @user.parent != 0%></p>
 			<%end%>
 		</div>
 		<div class="col-md-4">
