@@ -3,7 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-	console.log 'jquery loaded'
 	$(document).on "change", "#role-select", ->
 	  window.location = "/users?role=" + $("option:selected", this).val()
 	  return
@@ -22,18 +21,51 @@ $ ->
 		params = {}
 		$inputs.each ->
 			unless $(this).val() is ''
-				console.log this.name
+			
 				params[this.name] = $(this).val()
 		if params
 			$.ajax 
-				url:"/api/users/parents"
+				url:"/api/users"
 				data:
-					role: params['role']
+					role: if params['role'] isnt undefined then params['role'] else window.role
 					email: params['email']
 					cellphone: params['cellphone']
+					gender: params['gender']
 					rnm: params['rnm']
 					name: params['name']
 					parent: params['parent']
 				success: (data) ->
 					console.log data
-		console.log $(this).val()
+					fill_table('#users_table', data)
+
+	$('.page_number').click (e) ->
+		page_number=$(this).data('num')
+		console.log page_number
+		$.ajax 
+			url:"/api/users"
+			data:
+				role: window.role
+				page: page_number
+			success: (data) ->
+				console.log data
+				fill_table('#users_table',data)
+	fill_table = (table_id, data) ->
+		$("tr:has(td)").remove();
+		$.each data, (i, item) ->
+			#remove rows
+			tds = "<td>" + data[i].rnm + "</td>" +
+			"<td>" + data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].name + "</td>" +
+			"<td>" + data[i].zipcode + "</td>"+
+			"<td>" + data[i].cellphone+ "</td>"+
+			"<td>" + data[i].email + "</td>"+
+			"<td>" + data[i].section + "</td>"+
+			"<td>" + data[i].age + "</td>"+
+			"<td>" + data[i].gender + "</td>"+
+			"<td>" + data[i].role + "</td>"+
+			"<td>" + data[i].parent + "</td>"+
+			"<td>" + data[i].neighborhood + "</td>"+
+			'<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
+			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
+			'<span class="glyphicon glyphicon-remove"></span></a></td>'
+			console.log $('<tr>').html(tds)
+			$('<tr>').html(tds).appendTo table_id

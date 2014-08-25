@@ -1,4 +1,4 @@
-<h2><% if !@canedit %>Seleccionar<%end%></h2>
+<h2><%= params[:role].capitalize.pluralize %></h2>
 <hr />
 <br />
 <table class="table table-hover table-bordered table-striped" id="users_table">
@@ -7,42 +7,66 @@
       <th>
         <input type="text" placeholder="RNM" class="form-control search" name="rnm"/>
       </th>
-      <th>
+      <th colspan="2">
         <input type="text" placeholder="Nombre" class="form-control search" name="name"/>
       </th>
       <th>
-        <input type="text" placeholder="CP" class="form-control search"/>
+        <input type="text" placeholder="Cel" class="form-control search" name="cellphone"/>
       </th>
-      <th>
-        <input type="text" placeholder="Cel" class="form-control search"/>
-      </th>
-      <th>
+      <th colspan="2">
         <input type="text" placeholder="Correo" class="form-control search"
         name="email"/>
       </th>
       <th>
-        <input type="text" placeholder="Seccion" class="form-control search"/>
+        
       </th>
       <th>
-        <input type="text" placeholder="Edad" class="form-control search"/>
+        <input type="text" placeholder="Sexo" class="form-control search" name="gender"/>
       </th>
       <th>
-        <input type="text" placeholder="Sexo" class="form-control search"/>
+        <input type="text" placeholder="Nivel" class="form-control search" name="role"/>
       </th>
       <th>
-        <input type="text" placeholder="Nivel" class="form-control search"/>
+        
       </th>
       <th>
-        <input type="text" placeholder="Reporta a" class="form-control search"/>
-      </th>
-
-      <th>
-        <input type="text" placeholder="Colonia" class="form-control search"/>
+        
       </th>
       <th colspan="2">
         <%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
         <span class="glyphicon glyphicon-plus-sign"></span> Nuevo
       <%end%>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        <p class="small">RNM</p>
+      </th>
+      <th colspan="2">
+        <p class="small">Nombre</p>
+      </th>
+      <th >
+        <p class="small">Celular</p>
+      </th>
+      <th colspan="2">
+        <p class="small">Correo</p>
+      </th>
+      <th>
+        <p class="small">Edad</p>
+      </th>
+      <th>
+        <p class="small">Sexo</p>
+      </th>
+      <th>
+        <p class="small">Nivel</p>
+      </th>
+      <th>
+        <p class="small">Reporta a</p>
+      </th>
+      <th>
+        <p class="small">Sección</p>
+      </th>
+      <th colspan="2">
       </th>
     </tr>
   </thead>
@@ -51,18 +75,18 @@
     <% @users.each do |user| %>
       <tr>
       	<td><%= user.rnm %></td>
-        <td><%= user.first_name %> <%= user.last_name %> <%= user.name %></td>
-        <td><%= user.cp %></td>
+        <td colspan="2"><%= user.first_name %> <%= user.last_name %> <%= user.name %></td>
         <td class="cellphone"><%= user.cellphone %></td>
-        <td><%= user.email %></td>
-        <td><%= user.section %></td>
+        <td colspan="2"><%= user.email %></td>
         <td><%= user.age %></td>
         <td><%= user.gender %></td>
         <td>
           <%= user.role %>
         </td>
-        <td><%= user.parent != 0 ? User.find(user.parent).name : 'Nadie' %></td>
-        <td><%= user.neighborhood %></td>
+        <td>
+          <%= user.parent != 0 ? User.find(user.parent).name : 'Nadie' %>
+        </td>
+        <td><%= user.section %></td>
         <td class="center">
           <% if @canedit %>
             <%= link_to user_path user, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
@@ -81,12 +105,11 @@
 <hr />
 <div class="col-md-12 center">
 	<ul class="pagination">
-	  <li class="disabled"><a href="#">&laquo;</a></li>
-	  <li class="active"><a href="#">1</a></li>
-	  <li><a href="#">2</a></li>
-	  <li><a href="#">3</a></li>
-	  <li><a href="#">4</a></li>
-	  <li><a href="#">5</a></li>
-	  <li><a href="#">&raquo;</a></li>
+	  <!-- <li class="disabled"><a href="#">&laquo;</a></li> -->
+    <% pages = (@users_t.count / User.per_page).round%>
+    <% pages.times.each do |i|%>
+  	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+    <% end %>
+    <!-- <li><a href="#">&raquo;</a></li> -->
 	</ul>
 </div>	

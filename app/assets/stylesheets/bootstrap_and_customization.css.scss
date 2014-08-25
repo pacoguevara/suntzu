@@ -1,5 +1,8 @@
-@import 'bootstrap';
+$navbar-inverse-bg: #05276c;
+$navbar-inverse-link-color: white;
 
 .table tr td{
 	font-size:12px;
 }
+
+@import 'bootstrap';
