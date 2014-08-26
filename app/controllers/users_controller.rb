@@ -79,9 +79,11 @@ class UsersController < ApplicationController
 
   def index
   	if params[:role] == 'jugador'
-  		@users = User.all
+  		@users = User.all.limit(User.per_page).offset(1)
+      @users_t = User.all
   	else
-	    @users = User.where(:role => params[:role])
+	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(1)
+      @users_t = User.where(:role => params[:role])
 	end
   	@canedit = true
   end

@@ -31,12 +31,13 @@
 			<%end%>
 			<p ><b>Nivel Jerárquico:</b><%= @user.role %></p>
 			<%if not @user.parent.nil?%>
-				<p><b>Reporta a: </b><%= User.find(@user.parent).name %></p>
+				<p><b>Reporta a: </b><%= User.find(@user.parent).name if @user.parent != 0%></p>
 			<%end%>
 		</div>
 		<div class="col-md-4">
 			<p ><b>Seccion:</b><%= @user.section %></p>
 			<p><b>Sector: </b><%= @user.sector %></p>
+			<p><b>Código Postal: </b><%= @user.zipcode %></p>
 			<p><b>Calle y Número: </b><%= @user.street_number %></p>
 			<p><b>Colonia: </b><%= @user.neighborhood %></p>
 			<p><b>Ciudad: </b><%= @user.city %></p>

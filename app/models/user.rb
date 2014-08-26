@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   ROLES_ENLACE=       %w[jugador subenlace grupo]
   ROLES_SUBENLACE =   %w[jugador grupo]
   ROLES_GRUPO =   	  %w[grupo]
-  
+  self.per_page = 10
   def admin?
   	self.role == "admin"
   end

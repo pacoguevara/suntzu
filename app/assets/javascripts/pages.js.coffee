@@ -175,11 +175,18 @@ $ ->
 	$container2=$('#container2')
 	$container3=$('#container3')
 	$container4=$('#container4')
-
-	$container1.highcharts typed_cfg
-	$container2.highcharts line_cfg
-	$container3.highcharts bar_cfg
-	$container4.highcharts pie_cfg
+	if container1?
+		$container1.highcharts typed_cfg
+		return 
+	if $container2?
+		$container2.highcharts line_cfg
+		return
+	if container3?
+		$container3.highcharts bar_cfg
+		return
+	if $container4?
+		$container4.highcharts pie_cfg
+		return
 
 	handler = Gmaps.build('Google')
 	handler.buildMap
