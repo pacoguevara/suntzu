@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
     'Roll'=>23,
     'Reporta'=>24
   }
-  self.per_page = 10
+  self.per_page = 50
   def admin?
   	self.role == "admin"
   end
@@ -68,28 +68,29 @@ class User < ActiveRecord::Base
   private
   def self.save_row(spreadsheet, i)
     user = User.new
-    user.email = spreadsheet.cell(i, CELLS['email'])
-    user.name = spreadsheet.cell(i, CELLS['name'])
-    user.first_name= spreadsheet.cell(i,CELLS['first_name'])
-    user.last_name= spreadsheet.cell(i,CELLS['last_name'])
-    user.cellphone= spreadsheet.cell(i,CELLS['cellphone'])
-    user.section= spreadsheet.cell(i,CELLS['section'])
-    user.zipcode= spreadsheet.cell(i,CELLS['zipcode'])
-    user.role= spreadsheet.cell(i,CELLS['role'])
-    user.register_date= spreadsheet.cell(i,CELLS['register_date'])
-    user.bird= spreadsheet.cell(i,CELLS['bird'])
-    user.phone= spreadsheet.cell(i,CELLS['phone'])
-    user.age= spreadsheet.cell(i,CELLS['age'])
-    user.gender= spreadsheet.cell(i,CELLS['gender'])
-    user.city= spreadsheet.cell(i,CELLS['city'])
-    user.street_number= spreadsheet.cell(i,CELLS['street_number'])
-    user.neighborhood= spreadsheet.cell(i,CELLS['neighborhood'])
-    user.dto_fed= spreadsheet.cell(i,CELLS['dto_fed'])
-    user.dto_loc= spreadsheet.cell(i,CELLS['dto_loc'])
-    user.internal_number= spreadsheet.cell(i,CELLS['internal_number'])
-    user.ife_key= spreadsheet.cell(i,CELLS['ife_key'])
-    user.outside_number= spreadsheet.cell(i,CELLS['outside_number'])
+    user.email = spreadsheet.cell(i, CELLS['email']) || ""
+    user.name = spreadsheet.cell(i, CELLS['name']) || ""
+    user.first_name= spreadsheet.cell(i,CELLS['first_name']) || ""
+    user.last_name= spreadsheet.cell(i,CELLS['last_name'])  || ""
+    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i
+    user.section= spreadsheet.cell(i,CELLS['section']) || ""
+    user.zipcode= spreadsheet.cell(i,CELLS['zipcode']) || ""
+    user.role= spreadsheet.cell(i,CELLS['role']) || ""
+    user.register_date= spreadsheet.cell(i,CELLS['register_date']) || ""
+    user.bird= spreadsheet.cell(i,CELLS['bird'])  || ""
+    user.phone= spreadsheet.cell(i,CELLS['phone'])  || ""
+    user.age= spreadsheet.cell(i,CELLS['age'])  || ""
+    user.gender= spreadsheet.cell(i,CELLS['gender'])  || ""
+    user.city= spreadsheet.cell(i,CELLS['city'])  || ""
+    user.street_number= spreadsheet.cell(i,CELLS['street_number']) || ""
+    user.neighborhood= spreadsheet.cell(i,CELLS['neighborhood']) || ""
+    user.dto_fed= spreadsheet.cell(i,CELLS['dto_fed']) || ""
+    user.dto_loc= spreadsheet.cell(i,CELLS['dto_loc']) || ""
+    user.internal_number= spreadsheet.cell(i,CELLS['internal_number']) || ""
+    user.ife_key= spreadsheet.cell(i,CELLS['ife_key']) || ""
+    user.outside_number= spreadsheet.cell(i,CELLS['outside_number']) || ""
     user.password= '12345678'
+    user.parent = 0
     user.password_confirmation= '12345678'
     user.save
   end
