@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140823054119) do
+ActiveRecord::Schema.define(version: 20140826193513) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20140823054119) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
+    t.string   "email",                  default: ""
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -124,9 +124,13 @@ ActiveRecord::Schema.define(version: 20140823054119) do
     t.string   "city"
     t.string   "street_number"
     t.string   "neighborhood"
+    t.integer  "dto_fed"
+    t.integer  "dto_loc"
+    t.integer  "internal_number"
+    t.string   "ife_key"
+    t.integer  "outside_number"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "votes", force: true do |t|
