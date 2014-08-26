@@ -14,5 +14,14 @@ module Api
 				respond_with User.where(:role => parent[params[:role]])
 			end
 		end
+		class PollingsController < ApplicationController
+			skip_authorization_check
+			respond_to :json
+			def index
+				respond_with Polling.where( 
+					"id = ?","%#{params[:id]}%"
+				 )
+			end
+		end
 	end
 end
