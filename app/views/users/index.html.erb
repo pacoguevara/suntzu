@@ -7,8 +7,14 @@
       <th>
         <input type="text" placeholder="RNM" class="form-control search" name="rnm"/>
       </th>
-      <th colspan="2">
+      <th colspan="1">
         <input type="text" placeholder="Nombre" class="form-control search" name="name"/>
+      </th>
+      <th colspan="1">
+        <input type="text" placeholder="Nombre" class="form-control search" name="first_name"/>
+      </th>
+      <th colspan="1">
+        <input type="text" placeholder="Nombre" class="form-control search" name="last_name"/>
       </th>
       <th>
         <input type="text" placeholder="Cel" class="form-control search" name="cellphone"/>
@@ -42,8 +48,14 @@
       <th>
         <p class="small">RNM</p>
       </th>
-      <th colspan="2">
+      <th >
         <p class="small">Nombre</p>
+      </th>
+      <th >
+        <p class="small">Apellido Paterno</p>
+      </th>
+      <th >
+        <p class="small">Apellido Materno</p>
       </th>
       <th >
         <p class="small">Celular</p>
@@ -75,7 +87,9 @@
     <% @users.each do |user| %>
       <tr>
       	<td><%= user.rnm %></td>
-        <td colspan="2"><%= user.first_name %> <%= user.last_name %> <%= user.name %></td>
+        <td ><%= user.name %></td>
+        <td ><%= user.last_name %></td>
+        <td ><%= user.first_name %></td>
         <td class="cellphone"><%= user.cellphone %></td>
         <td colspan="2"><%= user.email %></td>
         <td><%= user.age %></td>

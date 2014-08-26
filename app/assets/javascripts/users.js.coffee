@@ -54,16 +54,16 @@ $ ->
 		$.each data, (i, item) ->
 			#remove rows
 			tds = "<td>" + data[i].rnm + "</td>" +
-			"<td>" + data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].name + "</td>" +
-			"<td>" + data[i].zipcode + "</td>"+
+			"<td>" + data[i].name + "</td>" +
+			"<td>" + data[i].first_name + "</td>" +
+			"<td>" + data[i].last_name + "</td>" +
 			"<td>" + data[i].cellphone+ "</td>"+
-			"<td>" + data[i].email + "</td>"+
-			"<td>" + data[i].section + "</td>"+
+			'<td colspan="2">'+ data[i].email + "</td>"+
 			"<td>" + data[i].age + "</td>"+
 			"<td>" + data[i].gender + "</td>"+
 			"<td>" + data[i].role + "</td>"+
 			"<td>" + data[i].parent + "</td>"+
-			"<td>" + data[i].neighborhood + "</td>"+
+			"<td>" + data[i].section + "</td>"+
 			'<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
 			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
 			'<span class="glyphicon glyphicon-remove"></span></a></td>'
