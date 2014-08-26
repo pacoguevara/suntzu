@@ -52,13 +52,13 @@
         <div class="col-md-6">
           <div class="form-group">
             <%= f.label 'Telefono' %><br>
-            <%= f.text_field :phone, class: "form-control" %>
+            <%= f.number_field :phone, class: "form-control only-numbers", max: "9999999999", min:"-9999999999" %>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <%= f.label 'Celular' %><br>
-            <%= f.text_field :cellphone, class: "form-control" %>
+            <%= f.number_field :cellphone, class: "form-control only-numbers", max: "9999999999", min:"-9999999999"%>
           </div>
         </div>
       </div>
@@ -76,24 +76,24 @@
       <div class="form-group">
         <%= f.label 'Nivel Jerárquico:' %>
         <% if current_user.admin? %>
-          <%= f.input_field :role, collection: User::ROLES_ADMIN, class: "form-control", id: "role_select_form"%>
+          <%= f.input_field :role, collection: User::ROLES_ADMIN, class: "form-control", id: "role_select_form", required: true%>
         <% end %>
         <% if current_user.coordinador? %>
-          <%= f.input_field :role, collection: User::ROLES_COORDINADOR, :label => "Rol", class: "form-control"%>
+          <%= f.input_field :role, collection: User::ROLES_COORDINADOR, :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.enlace? %>
-          <%= f.input_field :role, collection: User::ROLES_ENLACE, :label => "Rol", class: "form-control"%>
+          <%= f.input_field :role, collection: User::ROLES_ENLACE, :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.subenlace? %>
-          <%= f.input_field :role, collection: User::ROLES_SUBENLACE, :label => "Rol", class: "form-control"%>
+          <%= f.input_field :role, collection: User::ROLES_SUBENLACE, :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.grupo? %>
-          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control"%>
+          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control", required: true%>
         <% end %>
       </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
-        <select id="parent-select" name="user[parent]" class="form-control"></select>
+        <select id="parent-select" name="user[parent]" class="form-control" required></select>
       </div>
     </div>
     <div class="col-md-4">

@@ -4,7 +4,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
-  validates_presence_of :role
+
+  validates_presence_of :role, :parent
+  validates :cellphone, :numericality => {:only_integer => true}
+  validates :phone, :numericality => {:only_integer => true}
+  
   ROLES_ADMIN =       %w[jugador enlace subenlace coordinador grupo]
   ROLES_COORDINADOR = %w[jugador enlace subenlace grupo]
   ROLES_ENLACE=       %w[jugador subenlace grupo]
@@ -55,6 +59,7 @@ class User < ActiveRecord::Base
   def grupo?
     self.role == "grupo"
   end
+<<<<<<< HEAD
   def self.import 
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
     spreadsheet = open_spreadsheet(file_path)
