@@ -10,6 +10,11 @@ Pan::Application.routes.draw do
       		get "parents", :action=>"parents"
       	end
       end
+      resources :pollings do 
+      	collection do
+      		get "pollings", :action=>"pollings"
+      	end
+      end
     end
   end
   resources :candidate_votations
