@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
-  validates_presence_of :role
+  validates_presence_of :role, :parent
   ROLES_ADMIN =       %w[jugador enlace subenlace coordinador grupo]
   ROLES_COORDINADOR = %w[jugador enlace subenlace grupo]
   ROLES_ENLACE=       %w[jugador subenlace grupo]
@@ -29,4 +29,7 @@ class User < ActiveRecord::Base
   def grupo?
     self.role == "grupo"
   end
+  
+  validates :cellphone, :numericality => {:only_integer => true}
+  validates :phone, :numericality => {:only_integer => true}
 end

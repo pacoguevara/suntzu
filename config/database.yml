@@ -9,8 +9,8 @@ default: &default
   pool: 5
   timeout: 5000
   host: localhost
-  username: tegik
-  password: kopoyeba
+  username: postgres
+  password: 123
 
 development:
   <<: *default
