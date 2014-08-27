@@ -3,12 +3,22 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+	$('#group').hide()
+	show_groups = ->
+		$('#group').hide()
+		$('#group').show()
+	hide_groups = ->
+		$('#group').hide()
 	$(document).on "change", "#role-select", ->
 	  window.location = "/users?role=" + $("option:selected", this).val()
 	  return
 
 	$(document).on "change", "#role_select_form", ->
-		$.get "/api/users/parents?role="+$("option:selected", this).val(), (data) ->
+		role=$("option:selected", this).val()
+		if role is 'coordinador'
+			show_groups()
+		
+		$.get "/api/users/parents?role="+role, (data) ->
 			data.forEach (entry) ->
 				$("#parent-select").empty()
 				$("#parent-select").append "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"

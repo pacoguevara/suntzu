@@ -91,6 +91,10 @@
           <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control", required: true%>
         <% end %>
       </div>
+      <div class="form-group" id="group">
+        <%= f.label 'Grupos:' %><br>
+        <%= f.input_field :group_id, collection: Group.all, class: "form-control", required: true%>
+      </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
         <select id="parent-select" name="user[parent]" class="form-control" required></select>

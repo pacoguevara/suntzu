@@ -4,16 +4,16 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :user, :foreign_key => parent
-
+  has_one :group
   validates_presence_of :role, :parent
   validates :cellphone, :numericality => {:only_integer => true}
   validates :phone, :numericality => {:only_integer => true}
 
-  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador grupo]
-  ROLES_COORDINADOR = %w[jugador enlace subenlace grupo]
-  ROLES_ENLACE=       %w[jugador subenlace grupo]
-  ROLES_SUBENLACE =   %w[jugador grupo]
-  ROLES_GRUPO =   	  %w[grupo]
+  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador admin ]
+  ROLES_COORDINADOR = %w[jugador enlace subenlace ]
+  ROLES_ENLACE=       %w[jugador subenlace]
+  ROLES_SUBENLACE =   %w[jugador]
+  
   CELLS = {
     'register_date'=>1,
     'role'=>2,
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
     user.name = spreadsheet.cell(i, CELLS['name']) || ""
     user.first_name= spreadsheet.cell(i,CELLS['first_name']) || ""
     user.last_name= spreadsheet.cell(i,CELLS['last_name'])  || ""
-    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i 
+    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i
     user.section= spreadsheet.cell(i,CELLS['section']) || ""
     user.zipcode= spreadsheet.cell(i,CELLS['zipcode']) || ""
     user.role= spreadsheet.cell(i,CELLS['role']) == "MILITANTE" ? "jugador" : spreadsheet.cell(i,CELLS['role']) || ""
@@ -95,6 +95,7 @@ class User < ActiveRecord::Base
     user.ife_key= spreadsheet.cell(i,CELLS['ife_key']) || ""
     user.outside_number= spreadsheet.cell(i,CELLS['outside_number']) || ""
     user.password= '12345678'
+    user.rnm=""
     user.parent = 0
     user.password_confirmation= '12345678'
     user.save
