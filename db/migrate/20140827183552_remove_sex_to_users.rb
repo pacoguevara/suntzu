@@ -1,5 +1,5 @@
 class RemoveSexToUsers < ActiveRecord::Migration
   def change
-    remove_column :users, :sex, :string
+    remove_column :candidates, :sex, :string
   end
 end
