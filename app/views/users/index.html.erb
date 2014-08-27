@@ -88,8 +88,8 @@
       <tr>
       	<td><%= user.rnm %></td>
         <td ><%= user.name %></td>
-        <td ><%= user.last_name %></td>
         <td ><%= user.first_name %></td>
+        <td ><%= user.last_name %></td>
         <td class="cellphone"><%= user.cellphone %></td>
         <td colspan="2"><%= user.email %></td>
         <td><%= user.age %></td>
@@ -125,12 +125,12 @@
       <% 10.times.each do |i|%>
     	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
       <% end %>
-      <li class="page_number" data-num="<%= (@users_t.count) -1 %>"><a >Última</a></li>
+      <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
     <% else %>
       <% @users_t.count.times.each do |i|%>
         <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
       <% end %>
     <% end %>
 	</ul>
-  <p class="page_showing">Mostrando <%= 1 %> de <%= User.per_page%> resultados (<%=@users_t.count %> en total)</p>
+  <p class="page_showing"><!--Mostrando <%= 1 %> de <%= User.per_page%> resultados -->(<%=@users_t.count %> en total)</p>
 </div>	

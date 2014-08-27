@@ -17,14 +17,15 @@ $ ->
 		role=$("option:selected", this).val()
 		if role is 'coordinador'
 			show_groups()
+		else
+			hide_groups()
 		
 		$.get "/api/users/parents?role="+role, (data) ->
+			$("#parent-select").empty()
 			data.forEach (entry) ->
-				$("#parent-select").empty()
-				$("#parent-select").append "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"
-				return
-			return
-		return
+				option = "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"
+				$("#parent-select").append option
+		
 
 	$('.search').keyup (e) ->
 		$inputs = $('.search')
@@ -37,12 +38,14 @@ $ ->
 			$.ajax 
 				url:"/api/users"
 				data:
-					role: if params['role'] isnt undefined then params['role'] else window.role
+					role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
 					email: params['email']
 					cellphone: params['cellphone']
 					gender: params['gender']
 					rnm: params['rnm']
 					name: params['name']
+					first_name: params['first_name']
+					last_name: params['last_name']
 					parent: params['parent']
 				success: (data) ->
 					console.log data
@@ -54,7 +57,7 @@ $ ->
 		$.ajax 
 			url:"/api/users"
 			data:
-				role: if window.role != 'jugador' then window.role else ''
+				role: if getURLParameter('role') != 'jugador' then getURLParameter('role') else ''
 				page: page_number
 			success: (data) ->
 				console.log data

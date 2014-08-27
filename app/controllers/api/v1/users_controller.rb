@@ -33,6 +33,8 @@ module Api
 				users=User.where(:role => parent[params[:role]])
 				u = User.new
 				u.name="Nadie"
+				u.first_name="_"
+				u.last_name="_"
 				u.id=0
 				users.push u
 				respond_with users 
