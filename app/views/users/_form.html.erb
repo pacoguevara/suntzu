@@ -42,7 +42,7 @@
       </div>
       <div class="form-group">
         <%= f.label 'Sexo' %><br>
-        <%= f.collection_radio_buttons :gender, [['m', 'Hombre'] ,['h', 'Mujer']], :first, :last %>
+        <%= f.collection_radio_buttons :gender, [['H', 'Hombre'] ,['M', 'Mujer']], :first, :last %>
       </div>
       <div class="form-group">
         <%= f.label 'Correo Electrónico' %><br>
@@ -90,6 +90,10 @@
         <% if current_user.grupo? %>
           <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control", required: true%>
         <% end %>
+      </div>
+      <div class="form-group" id="group">
+        <%= f.label 'Grupos:' %><br>
+        <%= f.input_field :group_id, collection: Group.all, class: "form-control", required: false%>
       </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>

@@ -20,9 +20,10 @@
   </div>
   <div class="form-group">
     <%= f.label 'Sexo' %><br>
-    <%= f.text_field :gender, class: "form-control" %>
+    <%= f.collection_radio_buttons :gender, [['H', 'Hombre'] ,['M', 'Mujer']], :first, :last %>
   </div>
   <div class="actions">
     <%= f.submit "Crear Candidato", :class=>"btn btn-primary"%>
+    <%= link_to "Regresar", :back, :class=>"btn btn-primary"%>
   </div>
 <% end %>

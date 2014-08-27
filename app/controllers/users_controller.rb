@@ -78,11 +78,17 @@ class UsersController < ApplicationController
   end
 
   def index
+    @titles = {
+      "jugador" => "Jugadores",
+      "enlace" => "Enlaces",
+      "subenlace" => "Subenlaces",
+      "coordinador" => "Coordinadores"
+    }
   	if params[:role] == 'jugador'
-  		@users = User.all.limit(User.per_page).offset(1)
+  		@users = User.all.limit(User.per_page).offset(0)
       @users_t = User.all
   	else
-	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(1)
+	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(0)
       @users_t = User.where(:role => params[:role])
 	end
   	@canedit = true
@@ -95,6 +101,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent)
+    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id)
   end
 end
