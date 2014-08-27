@@ -103,7 +103,7 @@
         <td><%= user.section %></td>
         <td class="center">
           <% if @canedit %>
-            <%= link_to user_path user, :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+            <%= link_to (user_path user)+"?role=#{params[:role]}", :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
           <% end %>
         </td>
         <% if @canedit %>

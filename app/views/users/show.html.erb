@@ -45,7 +45,7 @@
 	</div>
 	<hr />
 	<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
-	<%= link_to 'Editar', edit_user_path(@user), class: "btn btn-default btn-large"%>
+	<%= link_to 'Editar', edit_user_path(@user)+"?role=#{params[:role]}", class: "btn btn-default btn-large"%>
 </div>
 <hr />
 <div class="row">

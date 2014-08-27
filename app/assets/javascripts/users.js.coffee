@@ -3,7 +3,14 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-	$('#group').hide()
+	
+	load_parents = (role)->
+		console.log 'from function'
+		$.get "/api/users/parents?role="+role, (data) ->
+			$("#parent-select").empty()
+			data.forEach (entry) ->
+				option = "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"
+				$("#parent-select").append option
 	show_groups = ->
 		$('#group').hide()
 		$('#group').show()
@@ -12,19 +19,14 @@ $ ->
 	$(document).on "change", "#role-select", ->
 	  window.location = "/users?role=" + $("option:selected", this).val()
 	  return
-
+	$('#group').hide()
 	$(document).on "change", "#role_select_form", ->
 		role=$("option:selected", this).val()
 		if role is 'coordinador'
 			show_groups()
 		else
 			hide_groups()
-		
-		$.get "/api/users/parents?role="+role, (data) ->
-			$("#parent-select").empty()
-			data.forEach (entry) ->
-				option = "<option value=\"" + entry.id + "\">" + entry.name + " " + entry.last_name + "</option>"
-				$("#parent-select").append option
+		load_parents(role)
 		
 
 	$('.search').keyup (e) ->
@@ -83,3 +85,5 @@ $ ->
 			'<span class="glyphicon glyphicon-remove"></span></a></td>'
 			console.log $('<tr>').html(tds)
 			$('<tr>').html(tds).appendTo table_id
+
+	load_parents(getURLParameter('role'))
