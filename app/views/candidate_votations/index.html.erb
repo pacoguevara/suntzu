@@ -1,11 +1,26 @@
-<h1>Listing candidate_votations</h1>
-
+<h2>Candidatos a Votación</h2>
+<div class="row">
+	<div class="col-md-4">
+	    <input type="text" class="form-control" placeholder="Buscar por Nombre">
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Votación--</option><option>Votación 1</option><option>Votación 2</option></select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control"><option>--Seleccione Candidato--</option><option>Vicente Fox</option><option>Josefina Vázquez</option></select>
+	</div>
+	<div class="col-md-2">
+		<%= link_to new_candidate_votation_path, :class=>"btn btn-success btn-block" do%>
+			<span class="glyphicon glyphicon-plus-sign"></span> Nuevo
+		<%end%>
+	</div>
+</div>
+<hr />
 <table class="table table-bordered table-hover table-stripped">
   <thead>
     <tr>
       <th>Votación</th>
       <th>Candidato</th>
-      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -14,16 +29,13 @@
   <tbody>
     <% @candidate_votations.each do |candidate_votation| %>
       <tr>
-      	<td><%= candidate_votation.polling_id %></td>
-      	<td><%= candidate_votation.candidate_id %></td>
-        <td><%= link_to 'Show', candidate_votation %></td>
-        <td><%= link_to 'Edit', edit_candidate_votation_path(candidate_votation) %></td>
-        <td><%= link_to 'Destroy', candidate_votation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      	<td><%= candidate_votation.polling.name %></td>
+      	<td><%= candidate_votation.candidate.name %></td>
+        <td class="center"><%= link_to edit_candidate_votation_path(candidate_votation), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%></td>
+        <td class="center"><%= link_to candidate_votation, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Candidate votation', new_candidate_votation_path %>
