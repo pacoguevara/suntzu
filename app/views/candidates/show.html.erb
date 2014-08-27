@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Nombre:</strong>
   <%= @candidate.name %>
@@ -15,5 +13,5 @@
   <%= @candidate.gender %>
 </p>
 
-<%= link_to 'Edit', edit_candidate_path(@candidate) %> |
-<%= link_to 'Back', candidates_path %>
+<%= link_to 'Editar', edit_candidate_path(@candidate), :class=>"btn btn-primary" %> 
+<%= link_to 'Regresar', candidates_path, :class=>"btn btn-primary" %>
