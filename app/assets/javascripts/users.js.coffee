@@ -44,11 +44,12 @@ $ ->
 		$.ajax 
 			url:"/api/users"
 			data:
-				role: window.role
+				role: if window.role != 'jugador' then window.role else ''
 				page: page_number
 			success: (data) ->
 				console.log data
 				fill_table('#users_table',data)
+
 	fill_table = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->

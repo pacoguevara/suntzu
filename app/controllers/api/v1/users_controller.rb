@@ -30,7 +30,12 @@ module Api
 			end
 			def parents
 				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", "enlace"=>"coordinador", "coordinador"=>"grupo	"}
-				respond_with User.where(:role => parent[params[:role]])
+				users=User.where(:role => parent[params[:role]])
+				u = User.new
+				u.name="Nadie"
+				u.id=0
+				users.push u
+				respond_with users 
 			end
 		end
 		class PollingsController < ApplicationController

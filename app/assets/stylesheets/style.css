@@ -31,3 +31,10 @@ body {
 	table-layout: fixed; 
 	word-wrap: break-word;
 }
+.page_number {
+	cursor: pointer;
+}
+.page_showing {
+	color:#428bca;
+	font-size:12px;
+}

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   validates_presence_of :role, :parent
   validates :cellphone, :numericality => {:only_integer => true}
   validates :phone, :numericality => {:only_integer => true}
-  
+
   ROLES_ADMIN =       %w[jugador enlace subenlace coordinador grupo]
   ROLES_COORDINADOR = %w[jugador enlace subenlace grupo]
   ROLES_ENLACE=       %w[jugador subenlace grupo]
@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   def grupo?
     self.role == "grupo"
   end
-<<<<<<< HEAD
+  private
   def self.import 
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
     spreadsheet = open_spreadsheet(file_path)
@@ -77,16 +77,16 @@ class User < ActiveRecord::Base
     user.name = spreadsheet.cell(i, CELLS['name']) || ""
     user.first_name= spreadsheet.cell(i,CELLS['first_name']) || ""
     user.last_name= spreadsheet.cell(i,CELLS['last_name'])  || ""
-    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i
+    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i 
     user.section= spreadsheet.cell(i,CELLS['section']) || ""
     user.zipcode= spreadsheet.cell(i,CELLS['zipcode']) || ""
-    user.role= spreadsheet.cell(i,CELLS['role']) || ""
+    user.role= spreadsheet.cell(i,CELLS['role']) == "MILITANTE" ? "jugador" : spreadsheet.cell(i,CELLS['role']) || ""
     user.register_date= spreadsheet.cell(i,CELLS['register_date']) || ""
     user.bird= spreadsheet.cell(i,CELLS['bird'])  || ""
-    user.phone= spreadsheet.cell(i,CELLS['phone'])  || ""
-    user.age= spreadsheet.cell(i,CELLS['age'])  || ""
-    user.gender= spreadsheet.cell(i,CELLS['gender'])  || ""
-    user.city= spreadsheet.cell(i,CELLS['city'])  || ""
+    user.phone= spreadsheet.cell(i,CELLS['phone']).to_i
+    user.age= spreadsheet.cell(i,CELLS['age']) || ""
+    user.gender= spreadsheet.cell(i,CELLS['gender']) || ""
+    user.city= spreadsheet.cell(i,CELLS['city']) || ""
     user.street_number= spreadsheet.cell(i,CELLS['street_number']) || ""
     user.neighborhood= spreadsheet.cell(i,CELLS['neighborhood']) || ""
     user.dto_fed= spreadsheet.cell(i,CELLS['dto_fed']) || ""

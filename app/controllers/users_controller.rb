@@ -78,11 +78,17 @@ class UsersController < ApplicationController
   end
 
   def index
+    @titles = {
+      "jugador" => "Jugadores",
+      "enlace" => "Enlaces",
+      "subenlace" => "Subenlaces",
+      "coordinador" => "Coordinadores"
+    }
   	if params[:role] == 'jugador'
-  		@users = User.all.limit(User.per_page).offset(1)
+  		@users = User.all.limit(User.per_page).offset(0)
       @users_t = User.all
   	else
-	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(1)
+	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(0)
       @users_t = User.where(:role => params[:role])
 	end
   	@canedit = true

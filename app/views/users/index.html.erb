@@ -1,4 +1,4 @@
-<h2><%= params[:role].capitalize.pluralize %></h2>
+<h2><%= @titles[params[:role]] %></h2>
 <hr />
 <br />
 <table class="table table-hover table-bordered table-striped" id="users_table">
@@ -11,10 +11,10 @@
         <input type="text" placeholder="Nombre" class="form-control search" name="name"/>
       </th>
       <th colspan="1">
-        <input type="text" placeholder="Nombre" class="form-control search" name="first_name"/>
+        <input type="text" placeholder="Paterno" class="form-control search" name="first_name"/>
       </th>
       <th colspan="1">
-        <input type="text" placeholder="Nombre" class="form-control search" name="last_name"/>
+        <input type="text" placeholder="Materno" class="form-control search" name="last_name"/>
       </th>
       <th>
         <input type="text" placeholder="Cel" class="form-control search" name="cellphone"/>
@@ -119,11 +119,18 @@
 <hr />
 <div class="col-md-12 center">
 	<ul class="pagination">
-	  <!-- <li class="disabled"><a href="#">&laquo;</a></li> -->
-    <% pages = (@users_t.count / User.per_page).round%>
-    <% pages.times.each do |i|%>
-  	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+    <% if @users_t.count >= 10 %>
+      <li class="page_number" data-num="0"><a>Primera</a></li>
+      <% pages = (@users_t.count / User.per_page).round%>
+      <% 10.times.each do |i|%>
+    	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+      <% end %>
+      <li class="page_number" data-num="<%= (@users_t.count) -1 %>"><a >Última</a></li>
+    <% else %>
+      <% @users_t.count.times.each do |i|%>
+        <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+      <% end %>
     <% end %>
-    <!-- <li><a href="#">&raquo;</a></li> -->
 	</ul>
+  <p class="page_showing">Mostrando <%= 1 %> de <%= User.per_page%> resultados (<%=@users_t.count %> en total)</p>
 </div>	
