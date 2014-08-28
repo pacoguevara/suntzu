@@ -41,10 +41,10 @@ body {
 .table-responsive{
     overflow-x: auto;
 }
-#playersTable{
+#users_table{
     width: 1800px;
 }
-#playersTable td th{
+#users_table td th{
     width: 50px;
     overflow: hidden;
 }
