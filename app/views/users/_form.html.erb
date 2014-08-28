@@ -69,6 +69,10 @@
         <%= f.text_field :rnm, class: "form-control" %>
       </div>
       <div class="form-group">
+        <%= f.label 'Clave del IFE' %><br>
+        <%= f.text_field :ife_key, class: "form-control" %>
+      </div>
+      <div class="form-group">
         <%= f.label 'Fecha de Registro' %><br>
         <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
       </div>
@@ -93,7 +97,7 @@
       </div>
       <div class="form-group" id="group">
         <%= f.label 'Grupos:' %><br>
-        <%= f.input_field :group_id, collection: Group.all, class: "form-control", required: false%>
+        <%= f.input_field :group_id, collection: Group.all, class: "form-control",  disabled: true%>
       </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
@@ -101,6 +105,14 @@
       </div>
     </div>
     <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'DtoFed' %><br>
+        <%= f.text_field :dto_fed, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'DtoLoc' %><br>
+        <%= f.text_field :dto_loc, class: "form-control" %>
+      </div>
       <div class="form-group">
         <%= f.label 'Sección' %><br>
         <%= f.text_field :section, class: "form-control" %>
@@ -114,8 +126,16 @@
         <%= f.text_field :cp, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label 'Calle y Número' %><br>
+        <%= f.label 'Calle' %><br>
         <%= f.text_field :street_number, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Número Exterior' %><br>
+        <%= f.text_field :outside_number, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Número Interior' %><br>
+        <%= f.text_field :internal_number, class: "form-control" %>
       </div>
       <div class="form-group">
         <%= f.label 'Colonia' %><br>
