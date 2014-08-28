@@ -4,29 +4,32 @@ module Api
 			skip_authorization_check
 			respond_to :json
 			def index
-				where_statment = "role LIKE ?"
-				# if params.has_key? :email
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				# if params.has_key? :cellphone
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				# if params.has_key? :rnm
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				# if params.has_key? :email
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				# if params.has_key? :email
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				# if params.has_key? :email
-				# 	where_statment=where_statment +"AND email LIKE ?"
-				# end
-				respond_with User.where( 
-					"role LIKE ? AND email LIKE ? AND cellphone LIKE ? AND rnm LIKE ? AND name LIKE ? AND last_name LIKE ? AND first_name LIKE ?  AND parent = ? AND gender LIKE ? ",
-					"%#{params[:role]}%","%#{params[:email]}%","%#{params[:cellphone]}%", "%#{params[:rnm]}%", "%#{params[:name]}%", "%#{params[:last_name]}%", "%#{params[:first_name]}%", "#{params[:parent].to_i}", "%#{params[:gender]}%"
-				 ).limit(User.per_page).offset(params[:page])
+				where_statment = "role LIKE '%#{params[:role]}%' "
+				if params.has_key? :email
+					where_statment=where_statment +"AND email LIKE '%#{params[:email]}%'"
+				end
+				if params.has_key? :cellphone
+					where_statment=where_statment +"AND cellphone LIKE '%#{params[:cellphone]}%'"
+				end
+				if params.has_key? :rnm
+					where_statment=where_statment +"AND rnm LIKE '%#{params[:rnm]}%'"
+				end
+				if params.has_key? :name
+					where_statment=where_statment +"AND name LIKE '%#{params[:name]}%'"
+				end
+				if params.has_key? :first_name
+					where_statment=where_statment +"AND first_name LIKE '%#{params[:first_name]}%'"
+				end
+				if params.has_key? :last_name
+					where_statment=where_statment +"AND last_name LIKE '%#{params[:last_name]}%'"
+				end
+				if params.has_key? :parent
+					where_statment=where_statment +"AND parent LIKE '%#{params[:parent]}%'"
+				end
+				if params.has_key? :gender
+					where_statment=where_statment +"AND gender LIKE '%#{params[:gender]}%'"
+				end
+				respond_with User.where(where_statment).limit(User.per_page).offset(params[:page])
 			end
 			def parents
 				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", "enlace"=>"coordinador", "coordinador"=>"grupo	"}

@@ -1,42 +1,78 @@
 <h2><%= @titles[params[:role]] %></h2>
 <hr />
 <br />
-<table class="table table-hover table-bordered table-striped" id="users_table">
-  <thead>
+<!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
+<table >  
+  <tdead>
     <tr>
       <th>
-        <input type="text" placeholder="RNM" class="form-control search" name="rnm"/>
-      </th>
-      <th colspan="1">
-        <input type="text" placeholder="Nombre" class="form-control search" name="name"/>
-      </th>
-      <th colspan="1">
-        <input type="text" placeholder="Paterno" class="form-control search" name="first_name"/>
-      </th>
-      <th colspan="1">
-        <input type="text" placeholder="Materno" class="form-control search" name="last_name"/>
+        <input type="text" placeholder="register_date" class="form-control search" name="register_date"/>
       </th>
       <th>
-        <input type="text" placeholder="Cel" class="form-control search" name="cellphone"/>
+        <input type="text" place_holder="ife_key" class="form-control search" name="ife_key"/>
+      </th>
+      <th>
+        <input type="text" placeholder="bird" class="form-control search" name="bird"/>
+      </th>
+      <th>
+        <input type="text" placeholder="name" class="form-control search" name="name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="first_name" class="form-control search" name="first_name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="last_name" class="form-control search" name="last_name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="gender" class="form-control search" name="gender"/>
+      </th>
+      <th>
+        <input type="text" placeholder="age" class="form-control search" name="age"/>
+      </th>
+      <th>
+        <input type="text" placeholder="section" class="form-control search" name="section"/>
+      </th>
+      <th>
+        <input type="text" placeholder="dto_fed" class="form-control search" name="dto_fed"/>
+      </th>
+      <th>
+        <input type="text" placeholder="dto_loc" class="form-control search" name="dto_loc"/>
+      </th>
+      <th>
+        <input type="text" placeholder="city" class="form-control search" name="city"/>
+      </th>
+      <th>
+        <input type="text" placeholder="street_number" class="form-control search" name="street_number"/>
+      </th>
+      <th colspan="1">
+        <input type="text" placeholder="outside_number" class="form-control search" name="outside_number"/>
+      </th>
+      <th colspan="1">
+        <input type="text" placeholder="internal_number" class="form-control search" name="internal_number"/>
+      </th>
+      <th colspan="1">
+        <input type="text" placeholder="neighborhood" class="form-control search" name="neighborhood"/>
+      </th>
+      <th>
+        <input type="text" placeholder="zipcode" class="form-control search" name="zipcode"/>
+      </th>
+      <th >
+        <input type="text" placeholder="phone" class="form-control search"
+        name="phone"/>
+      </th>
+      <th>  
+        <input type="text" placeholder="cellphone" class="form-control search"
+        name="cellphone"/>
       </th>
       <th colspan="2">
-        <input type="text" placeholder="Correo" class="form-control search"
-        name="email"/>
+        <input type="text" placeholder="email" class="form-control search" name="email"/>
       </th>
       <th>
-        
+        <input type="text" placeholder="role" class="form-control search" name="role"/>
       </th>
       <th>
-        <input type="text" placeholder="Sexo" class="form-control search" name="gender"/>
-      </th>
-      <th>
-        <input type="text" placeholder="Nivel" class="form-control search" name="role"/>
-      </th>
-      <th>
-        
-      </th>
-      <th>
-        
+        <input type="text" placeholder="parent" class="form-control search"
+        name="parent"/>
       </th>
       <th colspan="2">
         <%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
@@ -46,16 +82,58 @@
     </tr>
     <tr>
       <th>
-        <p class="small">RNM</p>
+        <p class="small">Fecha Inicio</p>
+      </th>
+      <th>
+        <p class="small">IFE</p>
+      </th>
+      <th>
+        <p class="small">Nacimiento</p>
       </th>
       <th >
         <p class="small">Nombre</p>
       </th>
       <th >
-        <p class="small">Apellido Paterno</p>
+        <p class="small">Paterno</p>
       </th>
       <th >
-        <p class="small">Apellido Materno</p>
+        <p class="small">Materno</p>
+      </th>
+      <th>
+        <p class="small">Sexo</p>
+      </th>
+      <th>
+        <p class="small">Edad</p>
+      </th>
+      <th>
+        <p class="small">Sección</p>
+      </th>
+      <th>
+        <p class="small">Dto Fed</p>
+      </th>
+      <th>
+        <p class="small">Dto Loc</p>
+      </th>
+      <th>
+        <p class="small">Municipio</p>
+      </th>
+      <th>
+        <p class="small">Calle</p>
+      </th>
+      <th>
+        <p class="small">#Exterior</p>
+      </th>
+      <th>
+        <p class="small">#Interior</p>
+      </th>
+      <th>
+        <p class="small">Colonia</p>
+      </th>
+      <th>
+        <p class="small">CP</p>
+      </th>
+      <th >
+        <p class="small">Telefono</p>
       </th>
       <th >
         <p class="small">Celular</p>
@@ -64,19 +142,10 @@
         <p class="small">Correo</p>
       </th>
       <th>
-        <p class="small">Edad</p>
-      </th>
-      <th>
-        <p class="small">Sexo</p>
-      </th>
-      <th>
         <p class="small">Nivel</p>
       </th>
       <th>
         <p class="small">Reporta a</p>
-      </th>
-      <th>
-        <p class="small">Sección</p>
       </th>
       <th colspan="2">
       </th>
@@ -86,31 +155,82 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-      	<td><%= user.rnm %></td>
-        <td ><%= user.name %></td>
-        <td ><%= user.first_name %></td>
-        <td ><%= user.last_name %></td>
-        <td class="cellphone"><%= user.cellphone %></td>
-        <td colspan="2"><%= user.email %></td>
-        <td><%= user.age %></td>
-        <td><%= user.gender %></td>
-        <td>
-          <%= user.role %>
+      	<td>
+        <p class="small"><%=user.register_date.strftime "%m/%d/%Y" if !user.register_date.nil? %></p>
         </td>
         <td>
-          <%= user.parent != 0 ? User.find(user.parent).name : 'Nadie' %>
+          <p class="small"><%=user.ife_key %></p>
         </td>
-        <td><%= user.section %></td>
+        <td>
+          <p class="small"><%=user.bird.strftime "%m/%d/%Y" if !user.bird.nil? %></p>
+        </td>
+        <td >
+          <p class="small"><%=user.name%></p>
+        </td>
+        <td >
+          <p class="small"><%= user.first_name%></p>
+        </td>
+        <td >
+          <p class="small"><%= user.last_name %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.gender %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.age %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.section.to_i %></p>
+        </td>
+        <td>
+          <p class="small"><%=user.dto_fed%></p>
+        </td>
+        <td>
+          <p class="small"><%=user.dto_loc %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.city %></p>
+        </td>
+        <td>
+          <p class="small"><%=user.street_number %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.outside_number%></p>
+        </td>
+        <td>
+          <p class="small"><%= user.internal_number %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.neighborhood %></p>
+        </td>
+        <td>
+          <p class="small"><%= user.zipcode %></p>
+        </td>
+        <td >
+          <p class="small"><%= user.phone%></p>
+        </td>
+        <td >
+          <p class="small"><%= user.cellphone %></p>
+        </td>
+        <td colspan="2">
+          <p class="small"><%=user.email %></p>
+        </td>
+        <td>
+          <p class="small"><%=user.role%></p>
+        </td>
+        <td>
+          <p class="small"><%= user.parent %></p>
+        </td>
         <td class="center">
           <% if @canedit %>
             <%= link_to (user_path user)+"?role=#{params[:role]}", :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
           <% end %>
         </td>
-        <% if @canedit %>
-          <td class="center">
-          	<%= link_to "/users/"+user.id.to_s, method: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
-          </td>
-        <% end %>
+      <% if @canedit %>
+        <td class="center">
+        	<%= link_to "/users/"+user.id.to_s, metdod: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+        </td>
+      <% end %>
       </tr>
     <% end %>
   </tbody>
