@@ -85,5 +85,5 @@ $ ->
 			'<span class="glyphicon glyphicon-remove"></span></a></td>'
 			console.log $('<tr>').html(tds)
 			$('<tr>').html(tds).appendTo table_id
-
 	load_parents(getURLParameter('role'))
+	$("#table-responsive").doubleScroll()

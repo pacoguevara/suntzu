@@ -38,3 +38,13 @@ body {
 	color:#428bca;
 	font-size:12px;
 }
+.table-responsive{
+    overflow-x: auto;
+}
+#playersTable{
+    width: 1800px;
+}
+#playersTable td th{
+    width: 50px;
+    overflow: hidden;
+}

@@ -1,8 +1,9 @@
+<%= link_to new_user_path, :class=>"btn btn-success pull-right" do%><span class="glyphicon glyphicon-plus-sign"></span> Nuevo Jugador<%end%>
 <h2><%= @titles[params[:role]] %></h2>
 <hr />
-<br />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
-<table >  
+<div class="table-responsive">
+<table class="table table-bordered table-striped table-hover" id="playersTable">  
   <tdead>
     <tr>
       <th>
@@ -74,11 +75,8 @@
         <input type="text" placeholder="parent" class="form-control search"
         name="parent"/>
       </th>
-      <th colspan="2">
-        <%= link_to new_user_path, :class=>"btn btn-success btn-block" do%>
-        <span class="glyphicon glyphicon-plus-sign"></span> Nuevo
-      <%end%>
-      </th>
+      <th></th>
+      <th></th>
     </tr>
     <tr>
       <th>
@@ -235,6 +233,7 @@
     <% end %>
   </tbody>
 </table>
+</div>
 
 <hr />
 <div class="col-md-12 center">
