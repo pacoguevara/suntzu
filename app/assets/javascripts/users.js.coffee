@@ -12,29 +12,30 @@ $ ->
 				draw_user_in_map data
 			error:(info) ->
 	draw_user_in_map = (data) ->
-		address = data[0].neighborhood + ',' +data[0].zipcode + " Escobedo, NL, Mexico"
-		console.log address
-		initCenter = new google.maps.LatLng(25.673252,-100.30892)
-		geocoder = new google.maps.Geocoder()
-		map = new google.maps.Map(document.getElementById('containerMapas'), 
-    	zoom: 17
-    	center: initCenter
-    	mapTypeId: google.maps.MapTypeId.ROADMAP
-    )
+		if document.getElementById('containerMapas') != null
+			address = data[0].neighborhood + ',' +data[0].zipcode + " Escobedo, NL, Mexico"
+			console.log address
+			initCenter = new google.maps.LatLng(25.673252,-100.30892)
+			geocoder = new google.maps.Geocoder()
+			map = new google.maps.Map(document.getElementById('containerMapas'), 
+	    	zoom: 17
+	    	center: initCenter
+	    	mapTypeId: google.maps.MapTypeId.ROADMAP
+	    )
 
-		geocoder.geocode {address: address}, (results, status) ->
-			if status == google.maps.GeocoderStatus.OK
-				lat = results[0].geometry.location.lat();
-				lng = results[0].geometry.location.lng();
-				console.log lat + ',' + lng
-				myLatlng = new google.maps.LatLng lat, lng
-				
-				marker = new google.maps.Marker
-					position: myLatlng
-					map: map
-					center: myLatlng
-					title: "Casa de "+data[0].name
-				map.setCenter myLatlng
+			geocoder.geocode {address: address}, (results, status) ->
+				if status == google.maps.GeocoderStatus.OK
+					lat = results[0].geometry.location.lat();
+					lng = results[0].geometry.location.lng();
+					console.log lat + ',' + lng
+					myLatlng = new google.maps.LatLng lat, lng
+					
+					marker = new google.maps.Marker
+						position: myLatlng
+						map: map
+						center: myLatlng
+						title: "Casa de "+data[0].name
+					map.setCenter myLatlng
 	load_parents = (role)->
 		$.get "/api/users/parents?role="+role, (data) ->
 			$("#parent-select").empty()
