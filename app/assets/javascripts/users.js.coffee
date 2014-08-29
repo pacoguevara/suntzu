@@ -1,7 +1,6 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
 $ ->	
 	load_user_in_map = (user_id) ->
 		console.log "/api/users/"+user_id+"?cols=zipcode,id"
@@ -11,30 +10,18 @@ $ ->
 				console.log data
 				draw_user_in_map data
 			error:(info) ->
-	draw_user_in_map = (data) ->
-		address = data[0].neighborhood + ',' +data[0].zipcode + " Escobedo, NL, Mexico"
-		console.log address
-		initCenter = new google.maps.LatLng(25.673252,-100.30892)
-		geocoder = new google.maps.Geocoder()
-		map = new google.maps.Map(document.getElementById('containerMapas'), 
-    	zoom: 17
-    	center: initCenter
-    	mapTypeId: google.maps.MapTypeId.ROADMAP
-    )
-
-		geocoder.geocode {address: address}, (results, status) ->
-			if status == google.maps.GeocoderStatus.OK
-				lat = results[0].geometry.location.lat();
-				lng = results[0].geometry.location.lng();
-				console.log lat + ',' + lng
-				myLatlng = new google.maps.LatLng lat, lng
-				
-				marker = new google.maps.Marker
-					position: myLatlng
-					map: map
-					center: myLatlng
-					title: "Casa de "+data[0].name
-				map.setCenter myLatlng
+	draw_user_in_map = (user_data) ->
+		$.get("https://maps.googleapis.com/maps/api/geocode/json?address="+user_data[0].zipcode+"+Mexico").success (data) ->
+			initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng)
+			mapOptions =
+				zoom: 17
+				center: initCenter
+			map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions)
+			marker = new google.maps.Marker
+				position: initCenter
+				map: map
+				center: initCenter
+				title: "Casa de "+user_data[0].name
 	load_parents = (role)->
 		$.get "/api/users/parents?role="+role, (data) ->
 			$("#parent-select").empty()
