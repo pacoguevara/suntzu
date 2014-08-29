@@ -101,7 +101,10 @@ $ ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
-			tds = '<td><p class="small"> ' + data[i].register_date + " </p></td> " +
+			tds = '<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
+			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
+			'<span class="glyphicon glyphicon-remove"></span></a></td>'+
+			'<td><p class="small"> ' + data[i].register_date + " </p></td> " +
 			'<td><p class="small"> ' + data[i].ife_key + " </p></td> " +
 			'<td><p class="small"> ' + data[i].bird + " </p></td> " +
 			'<td><p class="small"> ' + data[i].name + " </p></td> " +
@@ -122,10 +125,7 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].cellphone) + " </p></td> " +
 			'<td colspan="2">' + data[i].email + " </p></td> " +
 			'<td><p class="small"> ' + data[i].role + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
-			'<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
-			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
-			'<span class="glyphicon glyphicon-remove"></span></a></td>'
+			'<td><p class="small"> ' + data[i].parent + " </p></td> " 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id

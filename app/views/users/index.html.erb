@@ -2,14 +2,13 @@
 <h2><%= @titles[params[:role]] %></h2>
 <hr />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
-<<<<<<< HEAD
+
 <div class="table-responsive">
-<table class="table table-bordered table-striped table-hover" id="playersTable">  
-=======
-<table id="users_table">
->>>>>>> bd9ee62cad2fcab7a209b0cc783c097bdc98fa22
+<table class="table table-bordered table-striped table-hover" id="users_table">  
   <tdead>
     <tr>
+      <th></th>
+      <th></th>
       <th>
         <input type="text" placeholder="register_date" class="form-control search" name="register_date"/>
       </th>
@@ -79,10 +78,10 @@
         <input type="text" placeholder="parent" class="form-control search"
         name="parent"/>
       </th>
-      <th></th>
-      <th></th>
     </tr>
     <tr>
+      <th colspan="2">
+      </th>
       <th>
         <p class="small">Fecha Inicio</p>
       </th>
@@ -149,14 +148,22 @@
       <th>
         <p class="small">Reporta a</p>
       </th>
-      <th colspan="2">
-      </th>
     </tr>
   </thead>
 
   <tbody>
     <% @users.each do |user| %>
       <tr>
+        <td class="center">
+          <% if @canedit %>
+            <%= link_to (user_path user)+"?role=#{params[:role]}", :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+          <% end %>
+        </td>
+        <% if @canedit %>
+          <td class="center">
+            <%= link_to "/users/"+user.id.to_s, metdod: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+          </td>
+        <% end %>
       	<td>
         <p class="small"><%=user.register_date.strftime "%m/%d/%Y" if !user.register_date.nil? %></p>
         </td>
@@ -223,16 +230,6 @@
         <td>
           <p class="small"><%= user.parent %></p>
         </td>
-        <td class="center">
-          <% if @canedit %>
-            <%= link_to (user_path user)+"?role=#{params[:role]}", :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
-          <% end %>
-        </td>
-      <% if @canedit %>
-        <td class="center">
-        	<%= link_to "/users/"+user.id.to_s, metdod: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
-        </td>
-      <% end %>
       </tr>
     <% end %>
   </tbody>
