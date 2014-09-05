@@ -42,9 +42,9 @@ body {
     overflow-x: auto;
 }
 #users_table{
-    width: 1800px;
+  /*width: 1800px;*/
 }
 #users_table td th{
-    width: 50px;
-    overflow: hidden;
+    /*width: 50px;
+    overflow: hidden;*/
 }

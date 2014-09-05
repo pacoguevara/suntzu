@@ -8,6 +8,7 @@ Pan::Application.routes.draw do
       resources :users do 
       	collection do
       		get "parents", :action=>"parents"
+          get "groups", :action=>"groups"
       	end
       end
       resources :pollings do 

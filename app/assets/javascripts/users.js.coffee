@@ -3,25 +3,74 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->	
 	load_user_in_map = (user_id) ->
-		console.log "/api/users/"+user_id+"?cols=zipcode,id"
+		console.log "/api/users/"+user_id+"?cols=zipcode,id,lat,lng"
 		$.ajax 
-			url:"/api/users/"+user_id+"?cols=zipcode,id,neighborhood, name"
+			url:"/api/users/"+user_id+"?cols=zipcode,id,neighborhood,name,lat,lng,city"
 			success:(data) ->
 				console.log data
 				draw_user_in_map data
 			error:(info) ->
 	draw_user_in_map = (user_data) ->
-		$.get("https://maps.googleapis.com/maps/api/geocode/json?address="+user_data[0].zipcode+"+Mexico").success (data) ->
-			initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng)
+		console.log user_data[0].lat
+		if user_data[0].lat == undefined || user_data[0].lat == null
+			url = "https://maps.googleapis.com/maps/api/geocode/json?address="+user_data[0].zipcode+", "+user_data[0].neighborhood+", "+user_data[0].city+", NL, Mexico"
+			console.log url
+			$.get(url).success (data) ->
+				initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng)
+				mapOptions =
+					zoom: 17
+					center: initCenter
+				map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions)
+				marker = new google.maps.Marker
+					position: initCenter
+					map: map
+					draggable: true
+					center: initCenter
+					title: "Casa de "+user_data[0].name
+				google.maps.event.addListener(marker, 'dragend', ->
+					if confirm '¿Está seguro que desea cambiar la ubicación del jugador?'
+						$.ajax
+							url:"/api/users/"+user_data[0].id
+							type: "PUT"						
+							data:
+								user: 
+									lat: marker.getPosition().lat()
+									lng: marker.getPosition().lng()
+							dataType: "json"
+							success: (data, textStatus, jqXHR) ->
+								console.log data
+					else
+								
+						)
+		else
+			initCenter = new google.maps.LatLng(user_data[0].lat,user_data[0].lng)
 			mapOptions =
-				zoom: 17
-				center: initCenter
+					zoom: 17
+					center: initCenter
 			map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions)
 			marker = new google.maps.Marker
 				position: initCenter
 				map: map
+				draggable: true
 				center: initCenter
 				title: "Casa de "+user_data[0].name
+				
+			google.maps.event.addListener(marker, 'dragend', ->
+					if confirm '¿Está seguro que desea cambiar la ubicación del jugador?'
+						$.ajax
+							url:"/api/users/"+user_data[0].id
+							type: "PUT"						
+							data:
+								user: 
+									lat: marker.getPosition().lat()
+									lng: marker.getPosition().lng()
+							dataType: "json"
+							success: (data, textStatus, jqXHR) ->
+								console.log data
+					else
+								
+						)
+			
 	load_parents = (role)->
 		$.get "/api/users/parents?role="+role, (data) ->
 			$("#parent-select").empty()
@@ -101,35 +150,23 @@ $ ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
-			tds = '<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
-			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
-			'<span class="glyphicon glyphicon-remove"></span></a></td>'+
-			'<td><p class="small"> ' + data[i].register_date + " </p></td> " +
-			'<td><p class="small"> ' + data[i].ife_key + " </p></td> " +
-			'<td><p class="small"> ' + data[i].bird + " </p></td> " +
-			'<td><p class="small"> ' + data[i].name + " </p></td> " +
+			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].dto_fed) + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].dto_loc) + " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].street_number + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].outside_number) + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].internal_number) + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].zipcode) + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].phone) + " </p></td> " +
-			'<td><p class="small"> ' + parseInt(data[i].cellphone) + " </p></td> " +
-			'<td colspan="2">' + data[i].email + " </p></td> " +
-			'<td><p class="small"> ' + data[i].role + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> " 
+			'<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
+			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
+			'<span class="glyphicon glyphicon-remove"></span></a></td>'
+
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id
 
 	load_parents(getURLParameter('role'))
-	load_user_in_map(window.uid)
-	console.log window.uid
+	if $('#show_user_id').val() != undefined
+		load_user_in_map($('#show_user_id').val())
+	console.log $('#show_user_id').val() != undefined

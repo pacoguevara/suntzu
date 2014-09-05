@@ -126,7 +126,7 @@ $ ->
 	  plotBorderWidth: null
 	  plotShadow: false
 	 title:
-	  text: "Participacion de Candidados (Militantes)"
+	  text: "Jugadores por grupo"
 	 plotOptions:
 	  pie:
 	   allowPointSelect: true
@@ -175,19 +175,36 @@ $ ->
 	$container2=$('#container2')
 	$container3=$('#container3')
 	$container4=$('#container4')
-	if container1?
-		$container1.highcharts typed_cfg
-		return 
-	if $container2?
-		$container2.highcharts line_cfg
-		return
-	if container3?
-		$container3.highcharts bar_cfg
-		return
+	# if container1?
+	# 	$container1.highcharts typed_cfg
+	# if $container2?
+	# 	$container2.highcharts line_cfg
+	# if container3?
+	# 	$container3.highcharts bar_cfg
 	if $container4?
-		$container4.highcharts pie_cfg
+		$.get('/api/users/groups').success (data) ->
+			$container4.highcharts 
+				chart:
+					type: "pie"
+			  plotBackgroundColor:null
+			  plotBorderWidth: null
+			  plotShadow: false
+			 title:
+			  text: "Jugadores por grupo"
+			 plotOptions:
+			  pie:
+			   allowPointSelect: true
+			   cursor: 'pointer'
+			   dataLabels:
+			   	enabled: false
+			   showInLegend: true
+			 series: [
+			  {
+			   name: "Pie"
+			   data: data
+			  }
+			 ]		
 		return
-
 	handler = Gmaps.build('Google')
 	handler.buildMap
   provider: {}
@@ -199,33 +216,21 @@ $ ->
   		{
 	  		lat: 25.723
 	  		lng: -100.312
-	  		picture:
-	    	width: 36
-	    	height: 36
 	  		infowindow: "hello!"
   		}
   		{
 	  		lat: 25.670
 	  		lng: -100.289
-	  		picture:
-	    	width: 36
-	    	height: 36
 	  		infowindow: "hello!"
   		}
   		{
 	  		lat: 25.37
 	  		lng: -100.06
-	  		picture:
-	    	width: 36
-	    	height: 36
 	  		infowindow: "hello!"
   		}
   		{
 	  		lat: 25.582
 	  		lng: -100.423
-	  		picture:
-	    	width: 36
-	    	height: 36
 	  		infowindow: "hello!"
   		}
 			])

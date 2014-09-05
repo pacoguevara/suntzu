@@ -1,6 +1,7 @@
 <div class="well">
 	<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
 	<hr/>
+	<input type="hidden" value="<%=@user.id %>" id="show_user_id"> </input>
 	<div class="row">
 		<!-- <div class="col-md-3">
 			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
@@ -40,7 +41,7 @@
 			<p ><b>DtoLoc:</b><%= @user.dto_loc.to_i %></p>
 			<p ><b>Seccion:</b><%= @user.section.to_i %></p>
 			<p><b>Sector: </b><%= @user.sector %></p>
-			<p><b>Código Postal: </b><%= @user.zipcode %></p>
+			<p><b>Código Postal: </b><%= @user.zipcode.to_i %></p>
 			<p><b>Calle </b><%= @user.street_number %></p>
 			<p><b>Número Exterior </b><%= @user.outside_number %></p>
 			<p><b>Número Interior</b><%= @user.internal_number %></p>
@@ -80,3 +81,6 @@
 	<% end %>
 </div>
  -->
+ <script type="text/javascript">
+ window.uid = "<%= params[:id] %>";
+ </script>

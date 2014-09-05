@@ -18,7 +18,6 @@
     <% @groups.each do |group| %>
       <tr>
         <td><%= group.name %></td>
-        <!-- <td><%= group.candidate.name %></td> -->
         <td class="center">
             <%= link_to edit_group_path(group), :class=> 'table-action' do%><span class="glyphicon glyphicon-pencil"></span><%end%>
         </td>

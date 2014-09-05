@@ -4,7 +4,10 @@ module Api
 			skip_authorization_check
 			respond_to :json
 			def index
-				where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
+				
+				if params.has_key? :role
+					where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
+				end
 				if params.has_key? :email
 					where_statment=where_statment +"AND lower(email) LIKE '%#{params[:email].downcase}%'"
 				end
@@ -42,7 +45,7 @@ module Api
 					where_statment=where_statment +"AND age LIKE '%#{params[:age].downcase}%'"
 				end
 				if params.has_key? :section
-					where_statment=where_statment +"AND lower(gender) LIKE '%#{params[:section].downcase}%'"
+					where_statment=where_statment +"AND lower(section) LIKE '%#{params[:section].downcase}%'"
 				end
 				if params.has_key? :dto_fed
 					where_statment=where_statment +"AND dto_fed = #{params[:dto_fed].downcase}"
@@ -71,13 +74,39 @@ module Api
 				if params.has_key? :phone
 					where_statment=where_statment +"AND phone LIKE '%#{params[:phone].downcase}%'"
 				end		
-				respond_with User.where(where_statment).limit(User.per_page).offset(params[:page])
+				if params.has_key? :role
+					respond_with User.where(where_statment).limit(User.per_page).offset(params[:page])
+				else
+					respond_with User.all.select("#{params[:cols]}")
+				end
+			end
+			def groups
+				groups_by_name = {}
+				User.all.group(:group_id).count.to_a.each do |k,v|
+					if k.nil?
+						group_name = "Sin Grupo"
+					else
+						group_name = Group.find(k).name
+					end
+					groups_by_name[group_name] = v
+				end
+				respond_with groups_by_name.to_a
 			end
 			def show
 				if !params.has_key? :cols
 					respond_with User.find params[:id] 
 				else
 					respond_with User.where(:id=>params[:id]).select("#{params[:cols]}")
+				end
+			end
+			def update
+				@user = User.find(params[:id])
+				respond_with @user do |format|
+					if @user.update_attributes user_params
+						format.json {render json: @user.to_json, status: :ok}
+					else
+						format.json {render json: error_hash.to_json(root: :error), status: :unprocessable_entity }
+					end
 				end
 			end
 			def parents
@@ -90,6 +119,10 @@ module Api
 				u.id=0
 				users.push u
 				respond_with users 
+			end
+			private
+			def user_params
+     		params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, :lng)
 			end
 		end
 		class PollingsController < ApplicationController
