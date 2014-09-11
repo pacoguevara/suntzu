@@ -10,5 +10,7 @@
  *
  *= require_self
  *= require style
+ *= require font-awesome
+ *= bootstrap-social.css
  *= require_tree .
  */

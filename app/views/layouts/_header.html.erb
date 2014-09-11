@@ -6,7 +6,7 @@
     
 	<div class="btn-group pull-right" id="profileMenu">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      <img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="profile_menu-img" /> <%= current_user.last_name %>
+      <%= image_tag current_user.image.url(:thumb) %> <%= current_user.last_name %>
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">

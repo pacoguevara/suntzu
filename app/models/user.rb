@@ -1,10 +1,15 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  has_attached_file :image, :styles => { :medium => "300x300>", :thumb => "24x24>" }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
   has_one :user, :foreign_key => parent
   has_one :group
+  has_many :documents
+  accepts_nested_attributes_for :documents
+
   validates_presence_of :role, :parent
   validates :cellphone, :numericality => {:only_integer => true}
   validates :phone, :numericality => {:only_integer => true}
@@ -59,6 +64,35 @@ class User < ActiveRecord::Base
   def grupo?
     self.role == "grupo"
   end
+  def get_deep
+    return 0 if self.role == "jugador"
+    return 1 if self.role == "subenlace"
+    return 2 if self.role == "enlace"
+    return 3 if self.role == "coordinador"
+  end
+  def get_subenlace
+    return User.find self.parent if self.parent != 0
+  end
+  def get_enlace
+    return nil if self.parent == 0
+    if self.get_deep == 0
+      return  User.find User.find(self.get_subenlace).parent
+    elsif self.get_deep == 1
+      return  User.find self.get_subenlace
+    elsif self.get_deep == 2
+      return  User.find self.get_subenlace
+    end
+  end
+  def get_coordinador
+    return nil if self.parent == 0
+    if self.get_deep == 0
+      return  User.find self.get_enlace.parent
+    elsif self.get_deep == 1
+      return  User.find User.find(self.get_enlace).parent
+    elsif self.get_deep == 2
+      return  User.find self.parent
+    end
+  end
   private
   def self.import 
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
@@ -108,6 +142,7 @@ class User < ActiveRecord::Base
       else raise "Unknown file type: #{file.original_filename}"
     end
   end
+ 
   protected
   def email_required?
     false

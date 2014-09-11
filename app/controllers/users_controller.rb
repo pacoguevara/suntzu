@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    3.times {@user.documents.build }
     if current_user.admin? 
       @roles = User::ROLES_ADMIN
     end 
@@ -37,10 +38,10 @@ class UsersController < ApplicationController
     end
   end
   def update
-    @user = User.find(params[:id])
+    #@user = User.find(params[:id])
     respond_to do |format|
       if @user.update user_params
-        format.html { redirect_to @user, notice: 'user was successfully created.' }
+        format.html { redirect_to @user, notice: 'El usuario se ha actualizado.' }
         format.json { render action: 'show', status: :created, location: @user }
       else
         format.html { render action: 'new' }
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    3.times {@user.documents.build }
     if current_user.admin? 
       @roles = User::ROLES_ADMIN
     end 
@@ -101,6 +103,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, :lng)
+    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, :lng, :fb, :tw,:image, documents_attributes: [:user_id, :doc,:description])
   end
 end

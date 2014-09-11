@@ -2,7 +2,6 @@
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
       <ul>
       <% @user.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -12,6 +11,10 @@
   <% end %>
   <div class="row">
     <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label 'Imagen' %><br>
+        <%= f.file_field :image, class: "form-control" %>
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
@@ -48,6 +51,16 @@
         <%= f.label 'Correo Electrónico' %><br>
         <%= f.text_field :email, class: "form-control" %>
       </div>
+      <% if current_user.admin? || current_user.coordinador? %>
+        <div class="form-group">
+          <%= f.label 'Contraseña' %><br>
+          <%= f.password_field :password, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'Confirmar Contraseña' %><br>
+          <%= f.password_field :password_confirmation, class: "form-control" %>
+        </div>
+      <% end %>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -62,6 +75,28 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <%= f.label 'Ingresa el link de facebook' %><br>
+        <%= f.text_field :fb, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Ingresa el link de twitter' %><br>
+        <%= f.text_field :tw, class: "form-control" %>
+      </div>
+      
+      <%= f.simple_fields_for :documents do |builder| %>
+        <div class="well">
+          <div class="form-group">
+            <%= builder.label 'Nombre' %><br>
+            <%= builder.text_field :description, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= builder.label 'Archivo' %><br>
+            <%= builder.file_field :doc, class: "form-control" %>
+          </div>
+        </div>    
+      <% end %>
+      
     </div>
     <div class="col-md-4">
       <div class="form-group">
@@ -96,8 +131,12 @@
         <% end %>
       </div>
       <div class="form-group" id="group">
-        <%= f.label 'Grupos:' %><br>
-        <%= f.input_field :group_id, collection: Group.all, class: "form-control",  disabled: true%>
+        <%= f.label 'Grupo:' %><br>
+        <% if current_user.admin? || current_user.coordinador?%>
+          <%= f.input_field :group_id, collection: Group.all, class: "form-control" %>
+        <% else %>
+          <%= f.input_field :group_id, collection: Group.all, class: "form-control" %>
+        <% end %>
       </div>
       <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
@@ -146,8 +185,6 @@
         <%= f.text_field :city, class: "form-control" %>
       </div>
     </div>
-    	<%= f.hidden_field :password, :value => "12345678"%>
-    	<%= f.hidden_field :password_confirmation, :value => "12345678"%>
   </div>
   <div class="actions">
     <hr>

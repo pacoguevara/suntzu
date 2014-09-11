@@ -1,5 +1,13 @@
 <div class="well">
-	<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
+	<div class="row">
+		<div class="col-md-10">
+			<h3><%= @user.name %> <%= @user.first_name %> <%= @user.last_name %></h3>
+		</div>
+		<div class="col-md-2">
+			<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
+			<%= link_to 'Editar', edit_user_path(@user)+"?role=#{params[:role]}", class: 	"btn btn-default btn-large"%>
+		</div>
+	</div>
 	<hr/>
 	<input type="hidden" value="<%=@user.id %>" id="show_user_id"> </input>
 	<div class="row">
@@ -7,51 +15,104 @@
 			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
 		</div> -->
 		<div class="col-md-4">
-			<%if not @user.bird.nil?%>
-				<p>
-					<b>Fecha de Nacimiento:</b> <%= @user.bird.strftime "%m/%d/%Y" %>
-				</p>
-			<%end%>
-			<p>
-				<b>Edad:</b> <%= @user.age %>
-			</p>
-			<p>
-				<b>Sexo: </b><%= @user.gender %>
-			</p>
-			<p>
-				<b>Email:</b><a href="mailto:<%= @user.email %>"><%= @user.email %></a></p>
-			<p>
-				<b>Teléfono:</b>  <%= @user.phone %> | 
-				<b>Celular:</b><%= @user.cellphone %>
-			</p>
+			<%= image_tag @user.image.url(:medium) %>
 		</div>
-		<div class="col-md-4">
-			<p><b>RNM:</b> <%= @user.rnm %></p>
-			<p><b>Clave del IFE:</b> <%= @user.ife_key %></p>
-			<%if not @user.register_date.nil?%>
-				<p><b>Fecha de Registro:</b> <%= @user.register_date.strftime "%m/%d/%Y" %></p>
-			<%end%>
-			<p ><b>Nivel Jerárquico:</b><%= @user.role %></p>
+		<div class="col-md-3">
+			<dl>
+				<%if not @user.bird.nil?%>
+					<dt>Fecha de Nacimiento:</dt> 
+					<dd><%= @user.bird.strftime "%m/%d/%Y" %></dd>
+				<%end%>
+				<dt>Edad:</dt> 
+				<dd><%= @user.age.to_i %></dd>
+				<dt>Sexo: </dt>
+				<dd><%= @user.gender %></dd>
+				<dt>Email:</dt>
+				<dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
+				<dt>Teléfono:</dt>
+				<dd><%= @user.phone if @user.phone != "0" %></dd>
+				<dt>Celular:</dt>
+				<dd><%= @user.cellphone if @user.cellphone != "0" %></dd>
+			</dl>
+			<a class="btn btn-social btn-twitter" href="<%= @user.fb %>">
+		    <i class="fa fa-twitter"></i> Twitter
+		  </a>
+		  <a class="btn btn-social btn-facebook" href="<%= @user.tw %>">
+		    <i class="fa fa-facebook"></i> Facebook
+		  </a>
+		</div>
+		<div class="col-md-3">
+			<dl>
+				<dt>RNM:</dt>
+				<dd><%= @user.rnm %></dd>
+				<dt>Clave del IFE:</dt> 
+				<dd><%= @user.ife_key %></dd>
+				<%if not @user.register_date.nil?%>
+					<dt>Fecha de Registro:</dt> 
+					<dd><%= @user.register_date.strftime "%m/%d/%Y" %></dd>
+				<%end%>
+				<dt>Nivel Jerárquico:</dt>
+				<dd><%= @user.role %></dd>
+			</dl>
 			<%if not @user.parent.nil?%>
-				<p><b>Reporta a: </b><%= User.find(@user.parent).name if @user.parent != 0%></p>
+				<dl>
+					<% if @user.get_deep < 1 %>
+					<dt>SubEnlace</dt>
+						<dd>
+							<% if !@user.get_subenlace.nil? %>
+							 <%= link_to @user.get_subenlace.name, @user.get_subenlace, :target => '_blank' %>
+							 <% else %> 
+							 No tiene asignado subenlace
+							 <%end%>
+						</dd>
+					<% end %>
+					<% if @user.get_deep < 2 %>
+  					<dt>Enlace</dt>
+  					<dd>
+  						<%if !@user.get_enlace.nil? %> 
+  						<%= link_to @user.get_enlace.name,@user.get_enlace, :target =>'_blank' %>
+  						<% else %> 
+  							No tiene asignado enlace
+  						<% end %>
+  					</dd>
+  				<% end %>
+  				<% if @user.get_deep < 3 %>
+						<dt>Coordinador</dt>
+						<dd>
+							<%if !@user.get_coordinador.nil? %> 
+								<%= link_to @user.get_coordinador.name, @user.get_coordinador,:target =>'_blank' %>
+							<% else %> 
+								No tiene asignado coordinador 
+							<% end %>
+						</dd>
+					<% end %>
+				</dl>
 			<%end%>
 		</div>
-		<div class="col-md-4">
-			<p ><b>DtoFed:</b><%= @user.dto_fed.to_i %></p>
-			<p ><b>DtoLoc:</b><%= @user.dto_loc.to_i %></p>
-			<p ><b>Seccion:</b><%= @user.section.to_i %></p>
-			<p><b>Sector: </b><%= @user.sector %></p>
-			<p><b>Código Postal: </b><%= @user.zipcode.to_i %></p>
-			<p><b>Calle </b><%= @user.street_number %></p>
-			<p><b>Número Exterior </b><%= @user.outside_number %></p>
-			<p><b>Número Interior</b><%= @user.internal_number %></p>
-			<p><b>Colonia: </b><%= @user.neighborhood %></p>
-			<p><b>Municipio: </b><%= @user.city %></p>
+		<div class="col-md-2">
+			<dl>
+				<dt>DtoFed:</dt><%= @user.dto_fed.to_i %>
+				<dt>DtoLoc:</dt><%= @user.dto_loc.to_i %>
+				<dt>Seccion:</dt><%= @user.section.to_i %>
+				<dt>Sector:</dt><%= @user.sector.to_i if !@user.sector.blank? %>
+				<dt>Código Postal:</dt><%= @user.zipcode.to_i if !@user.zipcode.blank?%>
+				<dt>Calle:</dt><%= @user.street_number %>
+				<dt>Número Exterior:</dt><%= @user.outside_number.to_i if !@user.outside_number.blank? %>
+				<dt>Número Interior:</dt><%= @user.internal_number.to_i if !@user.internal_number.blank? %>
+				<dt>Colonia: </dt><%= @user.neighborhood %>
+				<dt>Municipio:</dt><%= @user.city %>
+			</dl>
 		</div>
 	</div>
-	<hr />
-	<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
-	<%= link_to 'Editar', edit_user_path(@user)+"?role=#{params[:role]}", class: "btn btn-default btn-large"%>
+	</hr>
+	<h3>Documentos Adjuntos</h3>
+	<div class="row">
+		<div class="col-md-6">
+			<% @user.documents.each do |document|%>
+				<strong><%=document.description%></strong>:<%= link_to 'Descargar Archivo', document.doc.url %> </br>
+			<% end %>
+		</div>
+	</div>
 </div>
 <hr />
 <div class="row">
@@ -62,25 +123,6 @@
 	</div>
 </div>
 <hr />
-<!-- 
-<div class="row">
-	<div class="col-md-12">
-		<h3>Registro de Votaciones</h3>
-	</div>
-	<%= simple_form_for Vote.new do |f| %>
-		<div class="col-md-4">
-			<%= f.association :polling, as: :select,:include_blank => false, :class=>"form-control", label: false, input_html: { class: 'form-control' } %>
-		</div>
-		<div class="col-md-5">
-			<%= f.association :candidate, :include_blank => false, :class=>"form-control", label: false, input_html: { class: 'form-control' }%>
-		</div>
-		<div class="col-md-3">
-                        <%= f.hidden_field :user_id, :value => current_user.id %>
-			<%= submit_tag("Registrar Voto", class:"btn btn-primary btn-block") %>
-		</div>
-	<% end %>
-</div>
- -->
  <script type="text/javascript">
  window.uid = "<%= params[:id] %>";
  </script>

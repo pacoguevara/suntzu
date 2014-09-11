@@ -135,6 +135,8 @@ $ ->
 					fill_table('#users_table', data)
 
 	$('.page_number').click (e) ->
+		$('.page_number').removeClass 'active'
+		$(this).addClass 'active'
 		page_number=$(this).data('num')
 		console.log page_number
 		$.ajax 
@@ -145,6 +147,9 @@ $ ->
 			success: (data) ->
 				console.log data
 				fill_table('#users_table',data)
+				$('html, body').animate(
+					scrollTop : 0
+				,800)
 
 	fill_table = (table_id, data) ->
 		$("tr:has(td)").remove();
