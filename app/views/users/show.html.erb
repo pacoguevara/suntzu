@@ -54,7 +54,7 @@
 				<dt>Nivel Jerárquico:</dt>
 				<dd><%= @user.role %></dd>
 			</dl>
-			<%if not @user.parent.nil?%>
+			<%if !@user.parent.nil?%>
 				<dl>
 					<% if @user.get_deep < 1 %>
 					<dt>SubEnlace</dt>
