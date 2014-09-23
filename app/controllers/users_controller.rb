@@ -51,7 +51,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    3.times {@user.documents.build }
+    if @user.documents.count < 1
+      3.times {@user.documents.build }
+    end
     if current_user.admin? 
       @roles = User::ROLES_ADMIN
     end 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140910215725) do
+ActiveRecord::Schema.define(version: 20140923164710) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140910215725) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.integer  "city_key"
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree

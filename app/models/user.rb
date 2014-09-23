@@ -14,14 +14,14 @@ class User < ActiveRecord::Base
   validates :cellphone, :numericality => {:only_integer => true}
   validates :phone, :numericality => {:only_integer => true}
 
-  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador admin ]
+  ROLES_ADMIN =       %w[jugador enlace subenlace coordinador ]
   ROLES_COORDINADOR = %w[jugador enlace subenlace ]
   ROLES_ENLACE=       %w[jugador subenlace]
   ROLES_SUBENLACE =   %w[jugador]
   
   CELLS = {
-    'register_date'=>1,
-    'role'=>2,
+    'rnm'=>1,
+    'register_date'=>2,
     'ife_key'=>3,
     'bird'=>4,
     'name'=>5,
@@ -31,19 +31,16 @@ class User < ActiveRecord::Base
     'section'=>9, 
     'dto_fed'=>10,
     'dto_loc'=>11,
-    'city'=>12,
-    'street_number'=>13,
-    'outside_number'=>14,
-    'internal_number'=>15,
-    'neighborhood'=>16,
-    'zipcode'=>17,
-    'Poblacion'=>18,
-    'Lada'=>19,
-    'phone'=>20,
-    'cellphone'=>21,
-    'email'=>22,
-    'Roll'=>23,
-    'Reporta'=>24
+    'city_key'=>12,
+    'city'=>13,
+    'street_number'=>14,
+    'outside_number'=>15,
+    'internal_number'=>16,
+    'neighborhood'=>17,
+    'zipcode'=>18,
+    'phone'=>19,
+    'cellphone'=>20,
+    'email'=>21,
   }
   self.per_page = 50
   def admin?
@@ -98,7 +95,7 @@ class User < ActiveRecord::Base
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
     spreadsheet = open_spreadsheet(file_path)
     #(2..spreadsheet.last_row).each do |i|
-    (2..spreadsheet.last_row).each do |i|
+    (2..10).each do |i|
       puts spreadsheet.cell(i,CELLS['register_date'])
       save_row(spreadsheet, i)
     end
@@ -106,6 +103,7 @@ class User < ActiveRecord::Base
   
   private
   def self.save_row(spreadsheet, i)
+    User.connection
     user = User.new
     user.email = spreadsheet.cell(i, CELLS['email']) || ""
     user.name = spreadsheet.cell(i, CELLS['name']) || ""
@@ -114,7 +112,7 @@ class User < ActiveRecord::Base
     user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i
     user.section= spreadsheet.cell(i,CELLS['section']) || ""
     user.zipcode= spreadsheet.cell(i,CELLS['zipcode']) || ""
-    user.role= spreadsheet.cell(i,CELLS['role']) == "MILITANTE" ? "jugador" : spreadsheet.cell(i,CELLS['role']) || ""
+    user.role= "jugador"
     user.register_date= spreadsheet.cell(i,CELLS['register_date']) || ""
     user.bird= spreadsheet.cell(i,CELLS['bird'])  || ""
     user.phone= spreadsheet.cell(i,CELLS['phone']).to_i
@@ -128,11 +126,11 @@ class User < ActiveRecord::Base
     user.internal_number= spreadsheet.cell(i,CELLS['internal_number']) || ""
     user.ife_key= spreadsheet.cell(i,CELLS['ife_key']) || ""
     user.outside_number= spreadsheet.cell(i,CELLS['outside_number']) || ""
-    user.password= '12345678'
-    user.rnm=""
+    #user.password= '12345678'
+    user.rnm=spreadsheet.cell(i,CELLS['rnm']) || ""
     user.parent = 0
-    user.password_confirmation= '12345678'
-    user.save
+    #user.password_confirmation= '12345678'
+    user.save(validate: false)
   end
   def self.open_spreadsheet(file_path)
     case File.extname(file_path)
