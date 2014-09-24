@@ -39,6 +39,22 @@ class UsersController < ApplicationController
   end
   def update
     #@user = User.find(params[:id])
+    if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+    if params[:user][:documents_attributes].blank? 
+      params[:user].delete(:documents_attributes)
+    else
+      i=0
+      if params[:user][:documents_attributes]["1"]['description'].blank?
+        params[:user][:documents_attributes].delete "1"
+      end
+      if params[:user][:documents_attributes]["2"]['description'].blank?
+        params[:user][:documents_attributes].delete "2"
+      end
+    end
+    
     respond_to do |format|
       if @user.update user_params
         format.html { redirect_to @user, notice: 'El usuario se ha actualizado.' }
@@ -53,6 +69,9 @@ class UsersController < ApplicationController
   def edit
     if @user.documents.count < 1
       3.times {@user.documents.build }
+      #@user.documents.build
+    else
+      @user.documents.count..2.times {@user.documents.build }
     end
     if current_user.admin? 
       @roles = User::ROLES_ADMIN

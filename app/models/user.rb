@@ -7,8 +7,9 @@ class User < ActiveRecord::Base
 
   has_one :user, :foreign_key => parent
   has_one :group
-  has_many :documents
-  accepts_nested_attributes_for :documents
+  has_many :documents, :dependent => :destroy
+  accepts_nested_attributes_for :documents,  :allow_destroy => true
+
 
   validates_presence_of :role, :parent
   validates :cellphone, :numericality => {:only_integer => true}
@@ -95,7 +96,7 @@ class User < ActiveRecord::Base
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
     spreadsheet = open_spreadsheet(file_path)
     #(2..spreadsheet.last_row).each do |i|
-    (2..10).each do |i|
+    (2..spreadsheet.last_row).each do |i|
       puts spreadsheet.cell(i,CELLS['register_date'])
       save_row(spreadsheet, i)
     end
@@ -119,6 +120,7 @@ class User < ActiveRecord::Base
     user.age= spreadsheet.cell(i,CELLS['age']) || ""
     user.gender= spreadsheet.cell(i,CELLS['gender']) || ""
     user.city= spreadsheet.cell(i,CELLS['city']) || ""
+    user.city_key= spreadsheet.cell(i,CELLS['city_key']) || ""
     user.street_number= spreadsheet.cell(i,CELLS['street_number']) || ""
     user.neighborhood= spreadsheet.cell(i,CELLS['neighborhood']) || ""
     user.dto_fed= spreadsheet.cell(i,CELLS['dto_fed']) || ""
