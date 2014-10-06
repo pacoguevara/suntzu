@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       if @user.update user_params
-        format.html { redirect_to @user, notice: 'El usuario se ha actualizado.' }
+        format.html { redirect_to(@user, notice: 'El usuario se ha actualizado.' )}
         format.json { render action: 'show', status: :created, location: @user }
       else
         format.html { render action: 'new' }
