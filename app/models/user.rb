@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  has_attached_file :image, :styles => { :medium => "300x300>", :thumb => "24x24>" }
+  has_attached_file :image, :styles => { :medium => "300x300>", 
+    :thumb => "24x24>" }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -12,8 +13,8 @@ class User < ActiveRecord::Base
 
 
   validates_presence_of :role, :parent
-  validates :cellphone, :numericality => {:only_integer => true}
-  validates :phone, :numericality => {:only_integer => true}
+  # validates :cellphone, :numericality => {:only_integer => true}
+  # validates :phone, :numericality => {:only_integer => true}
 
   ROLES_ADMIN =       %w[jugador enlace subenlace coordinador ]
   ROLES_COORDINADOR = %w[jugador enlace subenlace ]
@@ -63,6 +64,7 @@ class User < ActiveRecord::Base
     self.role == "grupo"
   end
   def get_deep
+    return -1 if self.role == "admin"
     return 0 if self.role == "jugador"
     return 1 if self.role == "subenlace"
     return 2 if self.role == "enlace"

@@ -43,10 +43,14 @@ class UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
+
     if params[:user][:documents_attributes].blank? 
       params[:user].delete(:documents_attributes)
     else
       i=0
+      if params[:user][:documents_attributes]["0"]['description'].blank?
+        params[:user][:documents_attributes].delete "0"
+      end
       if params[:user][:documents_attributes]["1"]['description'].blank?
         params[:user][:documents_attributes].delete "1"
       end

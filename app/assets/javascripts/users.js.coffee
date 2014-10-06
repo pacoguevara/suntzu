@@ -88,10 +88,10 @@ $ ->
 	
 	$(document).on "change", "#role_select_form", ->
 		role=$("option:selected", this).val()
-		if role is 'coordinador'
-			show_groups()
-		else
-			hide_groups()
+		# if role is 'coordinador'
+		# 	show_groups()
+		# else
+		# 	hide_groups()
 		load_parents(role)
 		
 
@@ -163,7 +163,7 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td ><a href="/users/'+data[i].id+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
+			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
 			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
 			'<span class="glyphicon glyphicon-remove"></span></a></td>'
 
