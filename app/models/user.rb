@@ -76,7 +76,9 @@ class User < ActiveRecord::Base
   def get_enlace
     return nil if self.parent == 0
     if self.get_deep == 0
-      return  User.find User.find(self.get_subenlace).parent
+      enlace_id = User.find(self.get_subenlace).parent
+      return nil if enlace_id == 0
+      return  User.find enlace_id
     elsif self.get_deep == 1
       return  User.find self.get_subenlace
     elsif self.get_deep == 2
@@ -84,11 +86,16 @@ class User < ActiveRecord::Base
     end
   end
   def get_coordinador
-    return nil if self.parent == 0
+    return nil if self.parent == 0 
     if self.get_deep == 0
+      return nil if self.get_enlace.nil?
+      return nil if self.get_enlace.parent == 0
       return  User.find self.get_enlace.parent
     elsif self.get_deep == 1
-      return  User.find User.find(self.get_enlace).parent
+      coordinator_id = User.find(self.get_enlace).parent
+      return nil if self.get_enlace.nil?
+      return nil if coordinator_id == 0
+      return  User.find coordinator_id
     elsif self.get_deep == 2
       return  User.find self.parent
     end

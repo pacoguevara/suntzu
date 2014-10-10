@@ -5,15 +5,13 @@
 		</div>
 		<div class="col-md-2">
 			<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
-			<%= link_to 'Editar', edit_user_path(@user)+"?role=#{@user.role}", class: 	"btn btn-default btn-large"%>
+			<%= link_to 'Editar', edit_user_path(@user)+"?role=#{@user.role}", 
+				class: 	"btn btn-default btn-large"%>
 		</div>
 	</div>
 	<hr/>
-	<input type="hidden" value="<%=@user.id %>" id="show_user_id"> </input>
+	<input type="hidden" value="<%=@user.id %>" id="show_user_id"></input>
 	<div class="row">
-		<!-- <div class="col-md-3">
-			<img src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png" class="img-responsive" />
-		</div> -->
 		<div class="col-md-4">
 			<%= image_tag @user.image.url(:medium) %>
 		</div>
@@ -45,8 +43,10 @@
 			<dl>
 				<dt>RNM:</dt>
 				<dd><%= @user.rnm %></dd>
+
 				<dt>Clave del IFE:</dt> 
 				<dd><%= @user.ife_key %></dd>
+
 				<%if not @user.register_date.nil?%>
 					<dt>Fecha de Registro:</dt> 
 					<dd><%= @user.register_date.strftime "%m/%d/%Y" %></dd>
@@ -57,30 +57,33 @@
 			<%if !@user.parent.nil?%>
 				<dl>
 					<% if @user.get_deep < 1 %>
-					<dt>SubEnlace</dt>
+						<dt> SubEnlace </dt>
 						<dd>
-							<% if !@user.get_subenlace.nil? %>
-							 <%= link_to @user.get_subenlace.name, @user.get_subenlace, :target => '_blank' %>
-							 <% else %> 
-							 No tiene asignado subenlace
-							 <%end%>
+							<% if !@user.get_subenlace.nil?  %>
+						 		<%= link_to @user.get_subenlace.name, @user.get_subenlace, 
+							 		:target => '_blank' %>
+						 	<% else %> 
+							 	No tiene asignado subenlace
+						 	<% end %>
 						</dd>
 					<% end %>
 					<% if @user.get_deep < 2 %>
-  					<dt>Enlace</dt>
+  					<dt> Enlace </dt>
   					<dd>
   						<%if !@user.get_enlace.nil? %> 
-  						<%= link_to @user.get_enlace.name,@user.get_enlace, :target =>'_blank' %>
+	  						<%= link_to @user.get_enlace.name,@user.get_enlace, 
+	  						:target =>'_blank' %>
   						<% else %> 
   							No tiene asignado enlace
   						<% end %>
   					</dd>
   				<% end %>
   				<% if @user.get_deep < 3 %>
-						<dt>Coordinador</dt>
+						<dt> Coordinador </dt>
 						<dd>
 							<%if !@user.get_coordinador.nil? %> 
-								<%= link_to @user.get_coordinador.name, @user.get_coordinador,:target =>'_blank' %>
+								<%= link_to @user.get_coordinador.name, @user.get_coordinador,
+								:target =>'_blank' %>
 							<% else %> 
 								No tiene asignado coordinador 
 							<% end %>
@@ -91,16 +94,35 @@
 		</div>
 		<div class="col-md-2">
 			<dl>
-				<dt>DtoFed:</dt><%= @user.dto_fed.to_i %>
-				<dt>DtoLoc:</dt><%= @user.dto_loc.to_i %>
-				<dt>Seccion:</dt><%= @user.section.to_i %>
-				<dt>Sector:</dt><%= @user.sector.to_i if !@user.sector.blank? %>
-				<dt>Código Postal:</dt><%= @user.zipcode.to_i if !@user.zipcode.blank?%>
-				<dt>Calle:</dt><%= @user.street_number %>
-				<dt>Número Exterior:</dt><%= @user.outside_number.to_i if !@user.outside_number.blank? %>
-				<dt>Número Interior:</dt><%= @user.internal_number.to_i if !@user.internal_number.blank? %>
-				<dt>Colonia: </dt><%= @user.neighborhood %>
-				<dt>Municipio:</dt><%= @user.city %>
+				<dt>DtoFed:</dt>
+				<%= @user.dto_fed.to_i %>
+				
+				<dt>DtoLoc:</dt>
+				<%= @user.dto_loc.to_i %>
+				
+				<dt>Seccion:</dt>
+				<%= @user.section.to_i %>
+				
+				<dt>Sector:</dt>
+				<%= @user.sector.to_i if !@user.sector.blank? %>
+				
+				<dt>Código Postal:</dt>
+				<%= @user.zipcode.to_i if !@user.zipcode.blank?%>
+				
+				<dt>Calle:</dt>
+				<%= @user.street_number %>
+				
+				<dt>Número Exterior:</dt>
+				<%= @user.outside_number.to_i if !@user.outside_number.blank? %>
+				
+				<dt>Número Interior:</dt>
+				<%= @user.internal_number.to_i if !@user.internal_number.blank? %>
+				
+				<dt>Colonia: </dt>
+				<%= @user.neighborhood %>
+				
+				<dt>Municipio:</dt>
+				<%= @user.city %>
 			</dl>
 		</div>
 	</div>
@@ -109,7 +131,8 @@
 	<div class="row">
 		<div class="col-md-6">
 			<% @user.documents.each do |document|%>
-				<strong><%=document.description%></strong>:<%= link_to 'Descargar Archivo', document.doc.url %> </br>
+				<strong><%=document.description%></strong>:
+				<%= link_to 'Descargar Archivo', document.doc.url %> </br>
 			<% end %>
 		</div>
 	</div>
@@ -117,12 +140,11 @@
 <hr />
 <div class="row">
 	<div class="col-md-12">
-		<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14382.847505622154!2d-100.35000321501155!3d25.680844141075344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1407204778020" width="100%" height="180" frameborder="0" style="border:0"></iframe> -->
 		<div id="containerMapas" style="width:100%;height:380px;overflow:hidden;">
 		</div>
 	</div>
 </div>
 <hr />
- <script type="text/javascript">
- window.uid = "<%= params[:id] %>";
- </script>
+<script type="text/javascript">
+	window.uid = "<%= params[:id] %>";
+</script>

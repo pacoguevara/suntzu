@@ -3,8 +3,7 @@ module Api
 		class UsersController < ApplicationController
 			skip_authorization_check
 			respond_to :json
-			def index
-				
+			def index	
 				if params.has_key? :role
 					where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
 				end
@@ -75,7 +74,9 @@ module Api
 					where_statment=where_statment +"AND phone LIKE '%#{params[:phone].downcase}%'"
 				end		
 				if params.has_key? :role
-					respond_with User.where(where_statment).limit(User.per_page).offset(params[:page])
+					respond_with User.where(where_statment).
+					limit(User.per_page).
+					offset(params[:page])
 				else
 					respond_with User.all.select("#{params[:cols]}")
 				end
