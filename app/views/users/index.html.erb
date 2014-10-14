@@ -1,6 +1,12 @@
 <%= link_to new_user_path, :class=>"btn btn-success pull-right" do%>
-  <span class="glyphicon glyphicon-plus-sign"></span> Nuevo Jugador
+  <span class="glyphicon glyphicon-plus-sign"></span> 
+  Nuevo Jugador
 <%end%>
+<%= link_to downloads_path+"?role=#{params[:role]}", 
+  :class=>"btn btn-info pull-right" do %>
+    <span class="glyphicon glyphicon-download-alt"></span> 
+    Descargar
+<% end %>
 <h2><%= @titles[params[:role]] %></h2>
 <hr />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
@@ -10,30 +16,38 @@
   <tdead>
     <tr>
       <th>
-        <input type="text" placeholder="name" class="form-control search" name="name"/>
+        <input type="text" placeholder="name" class="form-control search" 
+          name="name"/>
       </th>
       <th>
-        <input type="text" placeholder="first_name" class="form-control search" name="first_name"/>
+        <input type="text" placeholder="first_name" class="form-control search" 
+          name="first_name"/>
       </th>
       <th>
-        <input type="text" placeholder="last_name" class="form-control search" name="last_name"/>
+        <input type="text" placeholder="last_name" class="form-control search" 
+          name="last_name"/>
       </th>
       <th>
-        <input type="text" placeholder="gender" class="form-control search" name="gender"/>
+        <input type="text" placeholder="gender" class="form-control search" 
+          name="gender"/>
       </th>
       <th>
-        <input type="text" placeholder="age" class="form-control search" name="age"/>
+        <input type="text" placeholder="age" class="form-control search" 
+          name="age"/>
       </th>
       <th>
-        <input type="text" placeholder="section" class="form-control search" name="section"/>
+        <input type="text" placeholder="section" class="form-control search" 
+          name="section"/>
       </th>
       <th>
-        <input type="text" placeholder="city" class="form-control search" name="city"/>
+        <input type="text" placeholder="city" class="form-control search" 
+          name="city"/>
       </th>
       <th colspan="1">
-        <input type="text" placeholder="neighborhood" class="form-control search" name="neighborhood"/>
+        <input type="text" placeholder="neighborhood" 
+          class="form-control search" name="neighborhood"/>
       </th>
-      <th colspan="2"></th>
+      <th colspan="3"></th>
     </tr>
     <tr>
       <th >
@@ -59,6 +73,9 @@
       </th>
       <th>
         <p class="small">Colonia</p>
+      </th>
+      <th>
+        <p class="small">Reporta a</p>
       </th>
       <th colspan="2">
       </th>
@@ -92,14 +109,26 @@
         <td>
           <p class="small"><%= user.neighborhood %></p>
         </td>
+        <td>
+          <p class="small">
+            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+          </p>
+        </td>
         <td class="center">
             <% if @canedit %>
-              <%= link_to (user_path user)+"?role=#{params[:role]}", :class=> 'table-action' do%><span class="glyphicon glyphicon-eye-open"></span><%end%>
+              <%= link_to (user_path user)+"?role=#{params[:role]}", 
+                :class=> 'table-action' do%>
+                  <span class="glyphicon glyphicon-eye-open"></span>
+              <%end%>
             <% end %>
           </td>
           <% if @canedit %>
             <td class="center">
-              <%= link_to "/users/"+user.id.to_s, metdod: :delete, data: { confirm: '¿Está seguro que desea eliminar?' } , :class=> 'table-action' do%><span class="glyphicon glyphicon-remove"></span><% end %>
+              <%= link_to "/users/"+user.id.to_s, metdod: :delete, data: { 
+                  confirm: '¿Está seguro que desea eliminar?' } , 
+                :class=> 'table-action' do%>
+                <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
             </td>
           <% end %>
       </tr>
@@ -123,5 +152,10 @@
       <% end %>
     <% end %>
 	</ul>
-  <p class="page_showing"><!--Mostrando <%= 1 %> de <%= User.per_page%> resultados -->(<%=@users_t.count %> en total)</p>
+  <p class="page_showing">
+    (
+    <strong id="total_result">
+      <%= @users_t.count %> 
+    </strong>
+    en total)</p>
 </div>	

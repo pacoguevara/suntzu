@@ -120,6 +120,12 @@ class UsersController < ApplicationController
 	end
   	@canedit = true
   end
+  def downloads
+    users = User.where( :role => params[:role] )
+    filename = "usuarios_#{params[:role]}.xls"
+    send_data( User.array_to_xls( users), :filename => filename, 
+      :type=> "application/vnd.ms-excel" )
+  end
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user

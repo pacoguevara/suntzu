@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -7,7 +8,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_one :user, :foreign_key => parent
-  has_one :group
+  belongs_to :group
   has_many :documents, :dependent => :destroy
   accepts_nested_attributes_for :documents,  :allow_destroy => true
 
@@ -100,6 +101,9 @@ class User < ActiveRecord::Base
       return  User.find self.parent
     end
   end
+  def full_name
+    return "#{self.name} #{self.first_name} #{self.last_name}"
+  end
   private
   def self.import 
     file_path=Rails.public_path.to_s + '/xls/users.xlsx'
@@ -110,33 +114,32 @@ class User < ActiveRecord::Base
       save_row(spreadsheet, i)
     end
   end
-  
   private
   def self.save_row(spreadsheet, i)
     User.connection
     user = User.new
     user.email = spreadsheet.cell(i, CELLS['email']) || ""
     user.name = spreadsheet.cell(i, CELLS['name']) || ""
-    user.first_name= spreadsheet.cell(i,CELLS['first_name']) || ""
-    user.last_name= spreadsheet.cell(i,CELLS['last_name'])  || ""
-    user.cellphone= spreadsheet.cell(i,CELLS['cellphone']).to_i
-    user.section= spreadsheet.cell(i,CELLS['section']) || ""
-    user.zipcode= spreadsheet.cell(i,CELLS['zipcode']) || ""
-    user.role= "jugador"
-    user.register_date= spreadsheet.cell(i,CELLS['register_date']) || ""
-    user.bird= spreadsheet.cell(i,CELLS['bird'])  || ""
-    user.phone= spreadsheet.cell(i,CELLS['phone']).to_i
-    user.age= spreadsheet.cell(i,CELLS['age']) || ""
-    user.gender= spreadsheet.cell(i,CELLS['gender']) || ""
-    user.city= spreadsheet.cell(i,CELLS['city']) || ""
-    user.city_key= spreadsheet.cell(i,CELLS['city_key']) || ""
-    user.street_number= spreadsheet.cell(i,CELLS['street_number']) || ""
-    user.neighborhood= spreadsheet.cell(i,CELLS['neighborhood']) || ""
-    user.dto_fed= spreadsheet.cell(i,CELLS['dto_fed']) || ""
-    user.dto_loc= spreadsheet.cell(i,CELLS['dto_loc']) || ""
-    user.internal_number= spreadsheet.cell(i,CELLS['internal_number']) || ""
-    user.ife_key= spreadsheet.cell(i,CELLS['ife_key']) || ""
-    user.outside_number= spreadsheet.cell(i,CELLS['outside_number']) || ""
+    user.first_name = spreadsheet.cell(i,CELLS['first_name']) || ""
+    user.last_name = spreadsheet.cell(i,CELLS['last_name'])  || ""
+    user.cellphone = spreadsheet.cell(i,CELLS['cellphone']).to_i
+    user.section = spreadsheet.cell(i,CELLS['section']) || ""
+    user.zipcode = spreadsheet.cell(i,CELLS['zipcode']) || ""
+    user.role = "jugador"
+    user.register_date = spreadsheet.cell(i,CELLS['register_date']) || ""
+    user.bird = spreadsheet.cell(i,CELLS['bird'])  || ""
+    user.phone = spreadsheet.cell(i,CELLS['phone']).to_i
+    user.age = spreadsheet.cell(i,CELLS['age']) || ""
+    user.gender = spreadsheet.cell(i,CELLS['gender']) || ""
+    user.city = spreadsheet.cell(i,CELLS['city']) || ""
+    user.city_key = spreadsheet.cell(i,CELLS['city_key']) || ""
+    user.street_number = spreadsheet.cell(i,CELLS['street_number']) || ""
+    user.neighborhood = spreadsheet.cell(i,CELLS['neighborhood']) || ""
+    user.dto_fed = spreadsheet.cell(i,CELLS['dto_fed']) || ""
+    user.dto_loc = spreadsheet.cell(i,CELLS['dto_loc']) || ""
+    user.internal_number = spreadsheet.cell(i,CELLS['internal_number']) || ""
+    user.ife_key = spreadsheet.cell(i,CELLS['ife_key']) || ""
+    user.outside_number = spreadsheet.cell(i,CELLS['outside_number']) || ""
     #user.password= '12345678'
     user.rnm=spreadsheet.cell(i,CELLS['rnm']) || ""
     user.parent = 0
@@ -151,7 +154,72 @@ class User < ActiveRecord::Base
       else raise "Unknown file type: #{file.original_filename}"
     end
   end
- 
+  def self.array_to_xls( users )
+    io = StringIO.new
+    workbook = WriteExcel.new(io)
+    
+    worksheet  = workbook.add_worksheet
+    
+    worksheet.write(0, 0, 'RNM')
+    worksheet.write(0, 1, 'Fecha Inicio')
+    worksheet.write(0, 2, 'IFE')
+    worksheet.write(0, 3, 'Fecha de Nacimiento')
+    worksheet.write(0, 4, 'Nombre')
+    worksheet.write(0, 5, 'Paterno')
+    worksheet.write(0, 6, 'Materno')
+    worksheet.write(0, 7, 'Sexo')
+    worksheet.write(0, 8, 'Perfil')
+    worksheet.write(0, 9, 'Grupo')
+    worksheet.write(0, 10, 'Reporta a')
+    worksheet.write(0, 11, 'Sección')
+    worksheet.write(0, 12, 'Dto Fed')
+    worksheet.write(0, 13, 'DtoLoc')
+    worksheet.write(0, 14, 'CveMun')
+    worksheet.write(0, 15, 'Municipio')
+    worksheet.write(0, 16, 'Calle')
+    worksheet.write(0, 17, 'NumExt')
+    worksheet.write(0, 18, 'NumInt')
+    worksheet.write(0, 19, 'Colonia')
+    worksheet.write(0, 20, 'CP')
+    worksheet.write(0, 21, 'Tel Particular')
+    worksheet.write(0, 22, 'Celular')
+    worksheet.write(0, 23, 'Email')
+
+    i = 1
+    users.each do |user|
+      parent = user.parent == 0 ? "Sin Asignar" : User.find(user.parent).full_name
+      worksheet.write(i, 0, user.rnm)
+      worksheet.write(i, 1, user.register_date)
+      worksheet.write(i, 2, user.ife_key)
+      worksheet.write(i, 3, user.bird)
+      worksheet.write(i, 4, user.name)
+      worksheet.write(i, 5, user.first_name)
+      worksheet.write(i, 6, user.last_name)
+      worksheet.write(i, 7, user.gender)
+      worksheet.write(i, 8, user.role)
+      worksheet.write(i, 9, user.group_id.nil? ? "Sin Asignar" : user.group.name)
+      worksheet.write(i, 10, parent)
+      worksheet.write(i, 11, user.section)
+      worksheet.write(i, 12, user.dto_fed)
+      worksheet.write(i, 13, user.dto_loc)
+      worksheet.write(i, 14, "")
+      worksheet.write(i, 15, user.city)
+      worksheet.write(i, 16, user.street_number)
+      worksheet.write(i, 17, user.outside_number)
+      worksheet.write(i, 18, user.internal_number)
+      worksheet.write(i, 19, user.neighborhood)
+      worksheet.write(i, 20, user.zipcode)
+      worksheet.write(i, 21, user.phone)
+      worksheet.write(i, 22, user.cellphone)
+      worksheet.write(i, 23, user.email)
+
+
+      i = i+1
+    end
+
+    workbook.close
+    return io.string
+  end 
   protected
   def email_required?
     false

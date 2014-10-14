@@ -152,6 +152,9 @@ $ ->
 				,800)
 
 	fill_table = (table_id, data) ->
+		count = data.total
+		$('#total_result').html(count)
+		data = data.data
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
@@ -163,8 +166,12 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'"><span class="glyphicon glyphicon-eye-open"></span></a></td>'+
-			'<td ><a class="table-action" data-confirm="¿Está seguro que desea eliminar?" data-method="delete" href="/users/'+data[i].id+'" rel="nofollow">'+
+			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
+			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'">'+
+				'<span class="glyphicon glyphicon-eye-open"></span></a></td>'+
+			'<td ><a class="table-action" '+
+				'data-confirm="¿Está seguro que desea eliminar?" data-method="delete"'+
+				' href="/users/'+data[i].id+'" rel="nofollow">'+
 			'<span class="glyphicon glyphicon-remove"></span></a></td>'
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''

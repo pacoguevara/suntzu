@@ -35,4 +35,5 @@ Pan::Application.routes.draw do
   get "/sublinks" => "militants#links"
   get "/coordinators" => "militants#coordinators"
   get 'download/:id' => 'documents#download', :as => 'download' 
+  get 'downloads' => 'users#downloads', :as => 'downloads'
 end
