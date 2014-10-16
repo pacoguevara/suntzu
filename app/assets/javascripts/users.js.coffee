@@ -155,6 +155,7 @@ $ ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
+		console.log data
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows

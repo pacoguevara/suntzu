@@ -216,6 +216,7 @@ module Api
 					users_ar = []
 					users.each do |user|
 						user_hash = {}
+						user_hash[:id] = user.id
 						user_hash[:name] = user.name
 						user_hash[:first_name] = user.first_name
 						user_hash[:last_name] = user.last_name
@@ -223,6 +224,7 @@ module Api
 						user_hash[:age] = user.age
 						user_hash[:section] = user.section
 						user_hash[:city] = user.city
+						user_hash[:role] = user.role
 						user_hash[:neighborhood] = user.neighborhood
 						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : User.find(user.parent).full_name
 						users_ar.push user_hash
