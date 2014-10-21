@@ -13,4 +13,5 @@
  *= require font-awesome
  *= bootstrap-social.css
  *= require_tree .
+ *= require bootstrap-datepicker3
  */

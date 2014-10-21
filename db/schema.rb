@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923164710) do
+ActiveRecord::Schema.define(version: 20141021180126) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20140923164710) do
   create_table "cities", force: true do |t|
     t.string  "name"
     t.integer "state_id"
+    t.string  "key"
   end
 
   add_index "cities", ["state_id"], name: "index_cities_on_state_id", using: :btree
@@ -92,6 +93,15 @@ ActiveRecord::Schema.define(version: 20140923164710) do
   end
 
   add_index "militants", ["group_id"], name: "index_militants_on_group_id", using: :btree
+
+  create_table "municipalities", id: false, force: true do |t|
+    t.string   "id",         null: false
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "municipalities", ["id"], name: "index_municipalities_on_id", unique: true, using: :btree
 
   create_table "pollings", force: true do |t|
     t.string   "name"
@@ -152,9 +162,13 @@ ActiveRecord::Schema.define(version: 20140923164710) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "city_key"
+    t.string   "municipality_id"
+    t.boolean  "temp_chek"
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
+  add_index "users", ["ife_key"], name: "index_users_on_ife_key", unique: true, using: :btree
+  add_index "users", ["municipality_id"], name: "index_users_on_municipality_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "votes", force: true do |t|

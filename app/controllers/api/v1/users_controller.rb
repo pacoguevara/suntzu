@@ -10,6 +10,53 @@ module Api
 						where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
 					end
 				end
+				if params.has_key? :municipality_id
+					if !where_statment.blank?
+						where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
+					else
+						where_statment = where_statment +" municipality_id = '#{params[:municipality_id]}'"
+					end
+				end
+				if params.has_key? :register_start
+					ftime = Time.parse( params[:register_start] )
+        	start = ftime.to_formatted_s( :db )
+        	puts params[:register_start]
+					if !where_statment.blank?
+						where_statment = where_statment +" AND register_date >= '#{start}'"
+					else
+						where_statment = where_statment +" register_date >= '#{start}'"
+					end
+				end
+				if params.has_key? :register_end
+					ftime = Time.parse( params[:register_end] )
+        	date_end = ftime.to_formatted_s( :db )
+
+					if !where_statment.blank?
+						where_statment = where_statment +" AND register_date <= '#{date_end}'"
+					else
+						where_statment = where_statment +" register_date <= '#{date_end}'"
+					end
+				end
+				if params.has_key? :bird_start
+					ftime = Time.parse( params[:bird_start] )
+        	start = ftime.to_formatted_s( :db )
+
+					if !where_statment.blank?
+						where_statment = where_statment +" AND bird >= '#{start}'"
+					else
+						where_statment = where_statment +" bird >= '#{start}'"
+					end
+				end
+				if params.has_key? :bird_end
+					ftime = Time.parse( params[:bird_end] )
+        	date_end = ftime.to_formatted_s( :db )
+
+					if !where_statment.blank?
+						where_statment = where_statment +" AND bird <= '#{date_end}'"
+					else
+						where_statment = where_statment +" bird <= '#{date_end}'"
+					end
+				end
 				if params.has_key? :email
 					if !where_statment.blank?
 						where_statment = where_statment + " AND lower(email) LIKE "+
@@ -225,8 +272,11 @@ module Api
 						user_hash[:section] = user.section
 						user_hash[:city] = user.city
 						user_hash[:role] = user.role
+						user_hash[:temp_chek] = user.temp_chek
+						user_hash[:municipality_id] = user.municipality_id
 						user_hash[:neighborhood] = user.neighborhood
-						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : User.find(user.parent).full_name
+						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : 
+						User.find(user.parent).full_name
 						users_ar.push user_hash
 					end
 					format  = {
@@ -257,18 +307,22 @@ module Api
 					respond_with User.where(:id=>params[:id]).select("#{params[:cols]}")
 				end
 			end
+
 			def update
 				@user = User.find(params[:id])
 				respond_with @user do |format|
 					if @user.update_attributes user_params
 						format.json {render json: @user.to_json, status: :ok}
 					else
-						format.json {render json: error_hash.to_json(root: :error), status: :unprocessable_entity }
+						format.json {render json: error_hash.to_json(root: :error), 
+							status: :unprocessable_entity }
 					end
 				end
 			end
+
 			def parents
-				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", "enlace"=>"coordinador", "coordinador"=>"grupo	"}
+				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", 
+					"enlace"=>"coordinador", "coordinador"=>"grupo	"}
 				users=User.where(:role => parent[params[:role]])
 				u = User.new
 				u.name="Nadie"
@@ -280,7 +334,41 @@ module Api
 			end
 			private
 			def user_params
-     		params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, :lng)
+     		params.require( :user ).permit(
+     			:register_date, 
+     			:first_name, 
+     			:last_name, 
+     			:name, 
+     			:bird, 
+     			:rnm, 
+     			:linking, 
+     			:sub_linking, 
+     			:group_id, 
+     			:suburb, 
+     			:section, 
+     			:sector, 
+     			:cp, 
+     			:phone, 
+     			:cellphone, 
+     			:email, 
+     			:password, 
+     			:password_confirmation, 
+     			:role, 
+     			:age, 
+     			:gender, 
+     			:city, 
+     			:street_number, 
+     			:neighborhood, 
+     			:parent, 
+     			:group_id, 
+     			:dto_fed, 
+     			:dto_loc, 
+     			:ife_key, 
+     			:internal_number, 
+     			:outside_number, 
+     			:lat, 
+     			:lng, 
+     			:temp_chek)
 			end
 		end
 		class PollingsController < ApplicationController

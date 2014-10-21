@@ -94,13 +94,21 @@ $ ->
 		# 	hide_groups()
 		load_parents(role)
 		
+	$('.search2').keyup (e) ->
+		filters = get_filters()
+		$.ajax 
+				url:"/api/users"
+				data:
+					filters.data
+				success: (data) ->
+					console.log data
+					fill_table_nominal_list('#users_table', data)
 
 	$('.search').keyup (e) ->
 		$inputs = $('.search')
 		params = {}
 		$inputs.each ->
 			unless $(this).val() is ''
-			
 				params[this.name] = $(this).val()
 		if params
 			$.ajax 
@@ -110,6 +118,7 @@ $ ->
 					register_date: params['register_date']
 					ife_key: params['ife_key']
 					bird: params['bird']
+					municipality_id: params['municipality_id']
 					age: params['age']
 					section: params['section']
 					dto_fed: params['dto_fed']
@@ -133,17 +142,57 @@ $ ->
 				success: (data) ->
 					console.log data
 					fill_table('#users_table', data)
+	
+	get_filters = ->
+		$inputs = $('.search2')
+		params = {}
+		data = {}
+		$inputs.each ->
+			unless $(this).val() is ''
+				params[this.name] = $(this).val()
+		if params
+			data:
+				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
+				register_date: params['register_date']
+				municipality_id: params['municipality_id']
+				ife_key: params['ife_key']
+				bird: params['bird']
+				age: params['age']
+				section: params['section']
+				dto_fed: params['dto_fed']
+				dto_loc: params['dto_loc']
+				city: params['city']
+				street_number: params['street_number']
+				outside_number: params['outside_number']
+				internal_number: params['internal_number']
+				neighborhood: params['neighborhood']
+				zipcode: params['zipcode']
+				phone: params['phone']
+				parent: params['parent']
+				email: params['email']
+				cellphone: params['cellphone']
+				gender: params['gender']
+				rnm: params['rnm']
+				name: params['name']
+				first_name: params['first_name']
+				last_name: params['last_name']
+				parent: params['parent']
+				register_start: params['register_start_date']
+				register_end: params['register_end_date']
+				bird_start: params['bird_start_date']
+				bird_end: params['bird_end_date']
 
 	$('.page_number').click (e) ->
+		filters = get_filters()
+		console.log filters
+		filters.data.page = 
 		$('.page_number').removeClass 'active'
 		$(this).addClass 'active'
 		page_number=$(this).data('num')
 		console.log page_number
 		$.ajax 
 			url:"/api/users"
-			data:
-				role: if getURLParameter('role') != 'jugador' then getURLParameter('role') else ''
-				page: page_number
+			data: filters.data
 			success: (data) ->
 				console.log data
 				fill_table('#users_table',data)
@@ -179,7 +228,75 @@ $ ->
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id
 
+	fill_table_nominal_list = (table_id, data) ->
+		count = data.total
+		$('#total_result').html(count)
+		data = data.data
+		console.log data
+		$("tr:has(td)").remove();
+		$.each data, (i, item) ->
+			#remove rows
+			if data[i].temp_chek
+				checkitem = '<input type="checkbox" name="temp_chek" class="check" '+
+				'data-id="'+data[i].id+'" checked> Ya votó'
+			else
+				checkitem = '<input type="checkbox" name="temp_chek" class="check" '+
+				'data-id="'+data[i].id+'" > Ya votó'
+
+			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].age + " </p></td> " +
+			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
+			'<td><p class="small"> ' + data[i].city + " </p></td> " +
+			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
+			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
+			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
+			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
+			'<td><p class="small"> ' + checkitem + " </p></td> "
+
+			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
+			#console.log cleared_tds
+			$('<tr>').html(cleared_tds).appendTo table_id
+
 	load_parents(getURLParameter('role'))
 	if $('#show_user_id').val() != undefined
 		load_user_in_map($('#show_user_id').val())
-	console.log $('#show_user_id').val() != undefined
+
+	$('.datepicker').datepicker(
+			format: 'dd/mm/yyyy'
+		).on 'changeDate', ->
+		filters = get_filters()
+		$.ajax 
+			url:"/api/users"
+			data: filters.data
+			success: (data) ->
+				console.log data
+				fill_table_nominal_list('#users_table',data)
+				$('html, body').animate(
+					scrollTop : 0
+				,800)
+	$('#select_municipality').change ->
+		filters = get_filters()
+		console.log filters
+		$.ajax 
+			url:"/api/users"
+			data: filters.data
+			success: (data) ->
+				console.log data
+				fill_table_nominal_list('#users_table',data)
+				$('html, body').animate(
+					scrollTop : 0
+				,800)
+	$(document).on "change", ".check", ->
+		user_id = $(this).data('id')
+		mje = (if @checked then " ha votado" else " ha cancelado su voto")
+		$.ajax 
+			type: "PUT"
+			url:"/api/users/"+user_id
+			data: 
+				user:
+					temp_chek: @checked
+			success: (data) ->
+				alert 'El jugador ' + data.name + mje
+	return 

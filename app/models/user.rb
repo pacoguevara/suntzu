@@ -8,12 +8,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_one :user, :foreign_key => parent
+  belongs_to :municipality
   belongs_to :group
   has_many :documents, :dependent => :destroy
   accepts_nested_attributes_for :documents,  :allow_destroy => true
 
 
   validates_presence_of :role, :parent
+  validates_uniqueness_of :ife_key
   # validates :cellphone, :numericality => {:only_integer => true}
   # validates :phone, :numericality => {:only_integer => true}
 
@@ -46,6 +48,13 @@ class User < ActiveRecord::Base
     'email'=>21,
   }
   self.per_page = 50
+
+  def age
+    now = Time.now.utc.to_date
+    if !bird.nil?
+      new_age = now.year - bird.year - ((now.month > bird.month || (now.month == bird.month && now.day >= bird.day)) ? 0 : 1)
+    end
+  end
   def admin?
   	self.role == "admin"
   end
@@ -114,6 +123,7 @@ class User < ActiveRecord::Base
       save_row(spreadsheet, i)
     end
   end
+
   private
   def self.save_row(spreadsheet, i)
     User.connection
@@ -220,6 +230,18 @@ class User < ActiveRecord::Base
     workbook.close
     return io.string
   end 
+
+  def self.dedupe
+    # find all models and group them on keys which should be common
+    grouped = all.group_by{ |model| model.ife_key }
+    grouped.values.each do |duplicates|
+      # the first one we want to keep right?
+      first_one = duplicates.shift # or pop for last one
+      # if there are any more left, they are duplicates
+      # so delete all of them
+      duplicates.each{|double| double.destroy} # duplicates can now be destroyed
+    end
+  end
   protected
   def email_required?
     false

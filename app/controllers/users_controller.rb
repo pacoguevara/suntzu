@@ -21,7 +21,14 @@ class UsersController < ApplicationController
       @roles = User::ROLES_SUBENLACE
     end 
   end
-  
+  def lista_nominal
+    @users = User.all.limit( User.per_page ).offset( 0 )
+    @users_t = User.all
+    @coordinators = User.where( :role => "coordinador")
+    @links = User.where( :role => "enlace")
+    @municipalities = Municipality.all.order( :name )
+    @sub_links = User.where( :role => "subenlace")
+  end
   # POST /users
   # POST /users.json
   def create

@@ -1,5 +1,7 @@
 require 'api_constraints'
 Pan::Application.routes.draw do
+  resources :municipalities
+
   resources :documents
 
   resources :users
@@ -36,4 +38,5 @@ Pan::Application.routes.draw do
   get "/coordinators" => "militants#coordinators"
   get 'download/:id' => 'documents#download', :as => 'download' 
   get 'downloads' => 'users#downloads', :as => 'downloads'
+  get 'lista_nominal' => 'users#lista_nominal', :as => 'lista_nominal'
 end

@@ -65,3 +65,4 @@ gem 'paperclip', '~> 3.0'
 gem 'aws-sdk', '~> 1.20.0'
 
 gem 'writeexcel'
+gem 'bootstrap-datepicker-rails'

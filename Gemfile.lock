@@ -31,6 +31,8 @@ GEM
       nokogiri (>= 1.4.4, < 1.6.0)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.1.2)
+    bootstrap-datepicker-rails (1.3.0.2)
+      railties (>= 3.0)
     bootstrap-sass (3.0.2.1)
       sass (~> 3.2)
     builder (3.1.4)
@@ -167,6 +169,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk (~> 1.20.0)
+  bootstrap-datepicker-rails
   bootstrap-sass
   cancancan (~> 1.7)
   coffee-rails (~> 4.0.0)
