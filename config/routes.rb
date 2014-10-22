@@ -38,5 +38,5 @@ Pan::Application.routes.draw do
   get "/coordinators" => "militants#coordinators"
   get 'download/:id' => 'documents#download', :as => 'download' 
   get 'downloads' => 'users#downloads', :as => 'downloads'
-  get 'lista_nominal' => 'users#lista_nominal', :as => 'lista_nominal'
+  get 'lista_nominal' => 'users#lista_nominal', :as => 'nominal_list'
 end
