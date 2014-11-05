@@ -206,10 +206,11 @@ $ ->
 	$('.page_number').click (e) ->
 		filters = get_filters()
 		#console.log filters
-		filters.data.page = 
 		$('.page_number').removeClass 'active'
 		$(this).addClass 'active'
+
 		page_number=$(this).data('num')
+		filters.data.page = page_number
 		console.log page_number
 		$.ajax 
 			url:"/api/users"
@@ -226,43 +227,59 @@ $ ->
 		$('#total_result').html(count)
 		data = data.data
 		#console.log data
-		stringsubenlace = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
-		stringenlace = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
-		stringcoordinador = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
+		stringsubenlace = '<select class="default select_class" style="width:100%">'+
+			'<option value="vacio" ></option>'
+		stringenlace = '<select class="default select_class" style="width:100%">'+
+			'<option value="vacio" ></option>'
+		stringcoordinador = '<select class="default select_class" '+
+			'style="width:100%"><option value="vacio" ></option>'
 		i = 0
+
 		while i < data[0].subenlace.length
-		  stringsubenlace = stringsubenlace + '<option value = "'+data[0].subenlace[i].id+'">'+data[0].subenlace[i].name+' '+data[0].subenlace[i].first_name+'</option>'
+				full_name=data[0].subenlace[i].name+" "+data[0].subenlace[i].first_name+
+				' '+data[0].subenlace[i].last_name
+	  	stringsubenlace = stringsubenlace + 
+		  '<option value = "'+data[0].subenlace[i].id+'">'+full_name
+		  '</option>'
 		  i++
 
 		i = 0
 		while i < data[0].enlace.length
-		  stringenlace = stringenlace + '<option value = "'+data[0].enlace[i].id+'">'+data[0].enlace[i].name+' '+data[0].enlace[i].first_name+'</option>'
+				full_name=data[0].enlace[i].name+" "+data[0].enlace[i].first_name+
+				' '+data[0].enlace[i].last_name
+		  stringenlace = stringenlace + '<option value = "'+data[0].enlace[i].id+
+		  '">'+full_name+'</option>'
 		  i++
 
 		i = 0
 		while i < data[0].coordinador.length
-		  stringcoordinador = stringcoordinador + '<option value = "'+data[0].coordinador[i].id+'">'+data[0].coordinador[i].name+' '+data[0].coordinador[i].first_name+'</option>'
+				full_name=data[0].coordinador[i].name+" "+data[0].coordinador[i].first_name+
+				' '+data[0].coordinador[i].last_name
+		  stringcoordinador = stringcoordinador + '<option value = "'+
+		  data[0].coordinador[i].id+'">'+full_name+'</option>'
 		  i++
 
 		stringenlace = stringenlace + '</select>'
 		stringcoordinador = stringcoordinador + '</select>'
 		stringsubenlace = stringsubenlace + "</select>"
+		
 		html = $.parseHTML(stringsubenlace)
 		html2 = $.parseHTML(stringenlace)
 		html3 = $.parseHTML(stringcoordinador)
-		$("tr:has(td)").remove();
-		$.each data, (i, item) ->
-			#remove rows
-			
 
+		$("tr:has(td)").remove();
+
+		$.each data, (i, item) ->
+			#change selected parents if user has one
 			if data[i].subenlace_id?
-				$($(html).find("option[value='" + data[i].subenlace_id + "']")[0]).attr "selected", "selected"
-			
+				option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0] 
+				$(option).attr "selected", "selected"
 			if data[i].enlace_id?
-				$($(html2).find("option[value='" + data[i].enlace_id + "']")[0]).attr "selected", "selected"
-				
+				option = $(html2).find("option[value='" + data[i].enlace_id + "']")[0]
+				$(option).attr "selected", "selected"
 			if data[i].coordinador_id?
-				$($(html3).find("option[value='" + data[i].coordinador_id + "']")[0]).attr "selected", "selected"
+				option = $(html3).find("option[value='" + data[i].coordinador_id + "']")[0]
+				$(option).attr "selected", "selected"
 				
 			$($(html).find("option")).attr "data-user_id", data[i].id
 			$($(html).find("option")).attr "data-tipo", "1"
@@ -281,7 +298,6 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
 			'<td><p class="small"> ' + stringsubenlace + "</p></td> " +
 			'<td><p class="small"> ' + stringenlace + "</p></td> " +
 			'<td><p class="small"> ' + stringcoordinador + "</p></td> " +

@@ -261,18 +261,20 @@ module Api
 						users = User.where(where_statment).limit(User.per_page).
 						offset(params[:page])
 					else
-						users = User.where(where_statment)
+						users = User.where(where_statment).limit(User.per_page).
+						offset(0)
 					end					
 					users_ar = []
-					 @subenlace = User.where(:role => "subenlace")
-				    @enlace = User.where(:role => "enlace")
-				    @coordinador = User.where(:role => "coordinador")
+				 	@subenlace = User.where(:role => "subenlace")
+			    @enlace = User.where(:role => "enlace")
+			    @coordinador = User.where(:role => "coordinador")
 					users.each do |user|
 						user_hash = {}
 						user_hash[:id] = user.id
 						user_hash[:name] = user.name
 						user_hash[:first_name] = user.first_name
 						user_hash[:last_name] = user.last_name
+						user_hash[:full_name] = user.full_name
 						user_hash[:gender] = user.gender
 						user_hash[:age] = user.age
 						user_hash[:section] = user.section
