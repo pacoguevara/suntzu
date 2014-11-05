@@ -31,13 +31,13 @@
   <span class="glyphicon glyphicon-plus-sign"></span> 
   Nuevo Jugador
 <%end%>
-
+<!--
 <%= link_to downloads_path+"?role=#{params[:role]}", 
   :class=>"btn btn-info pull-right" do %>
     <span class="glyphicon glyphicon-download-alt"></span> 
     Descargar
 <% end %>
-
+-->
 <h2><%= @titles[params[:role]] %></h2>
 <hr />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
@@ -78,7 +78,7 @@
         <input type="text" placeholder="neighborhood" 
           class="form-control search" name="neighborhood"/>
       </th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
     <tr>
       <th >
@@ -104,9 +104,6 @@
       </th>
       <th>
         <p class="small">Colonia</p>
-      </th>
-      <th>
-        <p class="small">Reporta a</p>
       </th>
       <th>
         <p class="small">Subenlace</p>
@@ -148,11 +145,6 @@
         </td>
         <td>
           <p class="small"><%= user.neighborhood %></p>
-        </td>
-        <td>
-          <p class="small">
-            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-          </p>
         </td>
         <td>
           <p class="small">
