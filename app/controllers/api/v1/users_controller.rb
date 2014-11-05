@@ -257,10 +257,16 @@ module Api
 				end		
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
-					users = User.where(where_statment).limit(User.per_page).
+					if params.has_key? :page
+						users = User.where(where_statment).limit(User.per_page).
 						offset(params[:page])
-					
+					else
+						users = User.where(where_statment)
+					end					
 					users_ar = []
+					 @subenlace = User.where(:role => "subenlace")
+				    @enlace = User.where(:role => "enlace")
+				    @coordinador = User.where(:role => "coordinador")
 					users.each do |user|
 						user_hash = {}
 						user_hash[:id] = user.id
@@ -275,6 +281,12 @@ module Api
 						user_hash[:temp_chek] = user.temp_chek
 						user_hash[:municipality_id] = user.municipality_id
 						user_hash[:neighborhood] = user.neighborhood
+						user_hash[:subenlace_id] = user.subenlace_id
+						user_hash[:enlace_id] = user.enlace_id
+						user_hash[:coordinador_id] = user.coordinador_id
+						user_hash[:subenlace] = @subenlace
+						user_hash[:enlace] = @enlace
+						user_hash[:coordinador] = @coordinador
 						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : 
 						User.find(user.parent).full_name
 						users_ar.push user_hash
@@ -287,6 +299,23 @@ module Api
 				else
 					respond_with User.all.select("#{params[:cols]}")
 				end
+			end
+			def enlace
+				user = User.find(params[:id2])
+				puts " de perdido entro"
+				if params[:tipo] == "1"
+					puts "es UNO"
+					user.subenlace_id = params[:id1]
+				elsif params[:tipo] == "2"
+					puts "es DOS"
+					user.enlace_id = params[:id1]
+				elsif params[:tipo] == "3"
+					puts "es TRES"
+					user.coordinador_id = params[:id1]
+				end
+				user.save
+				puts user.id
+				respond_with true
 			end
 			def groups
 				groups_by_name = {}

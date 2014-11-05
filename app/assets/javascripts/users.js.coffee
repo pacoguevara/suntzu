@@ -182,9 +182,30 @@ $ ->
 				bird_start: params['bird_start_date']
 				bird_end: params['bird_end_date']
 
+	selectchange = (id, user_id, tipo) ->
+	  $.ajax
+	    url: "/api/users/enlace"
+	    dataType: "json"
+	    data:
+	      id1: id
+	      id2: user_id
+	      tipo: tipo
+
+	    success: (json) ->
+
+	    error: (xhr, ajaxOptions, thrownError) ->
+	      alert xhr.status + " " + url_root
+	      alert thrownError
+	      return
+
+	  return
+	$(document).on "change", ".select_class", ->
+		console.log "en el change"
+		console.log $(this).find(":selected").data("tipo")
+		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
 		filters = get_filters()
-		console.log filters
+		#console.log filters
 		filters.data.page = 
 		$('.page_number').removeClass 'active'
 		$(this).addClass 'active'
@@ -204,10 +225,54 @@ $ ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
-		console.log data
+		#console.log data
+		stringsubenlace = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
+		stringenlace = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
+		stringcoordinador = '<select class="default select_class" style="width:100%"><option value="vacio" ></option>'
+		i = 0
+		while i < data[0].subenlace.length
+		  stringsubenlace = stringsubenlace + '<option value = "'+data[0].subenlace[i].id+'">'+data[0].subenlace[i].name+' '+data[0].subenlace[i].first_name+'</option>'
+		  i++
+
+		i = 0
+		while i < data[0].enlace.length
+		  stringenlace = stringenlace + '<option value = "'+data[0].enlace[i].id+'">'+data[0].enlace[i].name+' '+data[0].enlace[i].first_name+'</option>'
+		  i++
+
+		i = 0
+		while i < data[0].coordinador.length
+		  stringcoordinador = stringcoordinador + '<option value = "'+data[0].coordinador[i].id+'">'+data[0].coordinador[i].name+' '+data[0].coordinador[i].first_name+'</option>'
+		  i++
+
+		stringenlace = stringenlace + '</select>'
+		stringcoordinador = stringcoordinador + '</select>'
+		stringsubenlace = stringsubenlace + "</select>"
+		html = $.parseHTML(stringsubenlace)
+		html2 = $.parseHTML(stringenlace)
+		html3 = $.parseHTML(stringcoordinador)
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
+			
+
+			if data[i].subenlace_id?
+				$($(html).find("option[value='" + data[i].subenlace_id + "']")[0]).attr "selected", "selected"
+			
+			if data[i].enlace_id?
+				$($(html2).find("option[value='" + data[i].enlace_id + "']")[0]).attr "selected", "selected"
+				
+			if data[i].coordinador_id?
+				$($(html3).find("option[value='" + data[i].coordinador_id + "']")[0]).attr "selected", "selected"
+				
+			$($(html).find("option")).attr "data-user_id", data[i].id
+			$($(html).find("option")).attr "data-tipo", "1"
+			$($(html2).find("option")).attr "data-user_id", data[i].id
+			$($(html2).find("option")).attr "data-tipo", "2"
+			$($(html3).find("option")).attr "data-user_id", data[i].id
+			$($(html3).find("option")).attr "data-tipo", "3"
+			stringsubenlace = $(html).prop "outerHTML"
+			stringenlace = $(html2).prop "outerHTML"
+			stringcoordinador = $(html3).prop "outerHTML"
 			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
@@ -217,6 +282,9 @@ $ ->
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
 			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
+			'<td><p class="small"> ' + stringsubenlace + "</p></td> " +
+			'<td><p class="small"> ' + stringenlace + "</p></td> " +
+			'<td><p class="small"> ' + stringcoordinador + "</p></td> " +
 			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'">'+
 				'<span class="glyphicon glyphicon-eye-open"></span></a></td>'+
 			'<td ><a class="table-action" '+
@@ -227,6 +295,20 @@ $ ->
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id
+			if data[i].subenlace_id?
+				$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).removeAttr "selected"
+			$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).val(data[i].subenlace_id) 
+			stringsubenlace = $(html).prop "outerHTML"
+
+			if data[i].enlace_id?
+				$($(html2).find("option[value='" + data[i].enlace_id + "']")[0]).removeAttr "selected"
+			$($(html2).find("option[value='" + data[i].enlace_id + "-"+data[i].id+"']")[0]).val(data[i].enlace_id) 
+			stringenlace = $(html2).prop "outerHTML"
+
+			if data[i].coordinador_id?
+				$($(html3).find("option[value='" + data[i].coordinador_id + "']")[0]).removeAttr "selected"
+			$($(html3).find("option[value='" + data[i].coordinador_id + "-"+data[i].id+"']")[0]).val(data[i].coordinador_id) 
+			stringcoordinador = $(html3).prop "outerHTML"
 
 	fill_table_nominal_list = (table_id, data) ->
 		count = data.total

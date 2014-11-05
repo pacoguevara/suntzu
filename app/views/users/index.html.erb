@@ -1,3 +1,32 @@
+<script type="text/javascript">
+  function selectchange(id){
+    ids = id.split("-")
+    $.ajax({
+        url : "/api/users/enlace",
+        dataType : "json",    
+        data: {
+            id1: ids[0],
+            id2: ids[1],
+            tipo: ids[2]
+      },
+        success : function(json) {
+        },    
+
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status+" "+url_root);
+            alert(thrownError);
+        }
+      });
+  };
+    $(document).ready(function(){ 
+      $( ".default" ).change(function() {
+        selectchange($(this).val());
+      });
+
+      
+    });
+</script>
+
 <%= link_to new_user_path, :class=>"btn btn-success pull-right" do%>
   <span class="glyphicon glyphicon-plus-sign"></span> 
   Nuevo Jugador
@@ -79,6 +108,15 @@
       <th>
         <p class="small">Reporta a</p>
       </th>
+      <th>
+        <p class="small">Subenlace</p>
+      </th>
+      <th>
+        <p class="small">Enlace</p>
+      </th>
+      <th>
+        <p class="small">Coordinador</p>
+      </th>
       <th colspan="2">
       </th>
     </tr>
@@ -114,6 +152,36 @@
         <td>
           <p class="small">
             <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+          </p>
+        </td>
+        <td>
+          <p class="small">
+            <select class="select_class"  style="width:100%" data-catid="1">
+              <option value="vacio"></option>
+              <%@subenlace.each do |a|%>
+                <option value="<%=a.id%>" <%if user.subenlace_id == a.id%>selected<%end%> data-user_id = "<%=user.id%>" data-tipo = "1"><%=a.name%> <%=a.first_name%></option>
+              <%end%>
+            </select>
+          </p>
+        </td>
+        <td>
+          <p class="small">
+            <select class="select_class"  style="width:100%" data-catid="1">
+              <option value="vacio"></option>
+              <%@enlace.each do |a|%>
+                <option value="<%=a.id%>" <%if user.enlace_id == a.id%>selected<%end%> data-user_id = "<%=user.id%>" data-tipo = "2"><%=a.name%> <%=a.first_name%></option>
+              <%end%>
+            </select>
+          </p>
+        </td>
+        <td>
+          <p class="small">
+            <select class="select_class"  style="width:100%" data-catid="1">
+              <option value="vacio"></option>
+              <%@coordinador.each do |a|%>
+                <option value="<%=a.id%>" <%if user.coordinador_id == a.id%>selected<%end%> data-user_id = "<%=user.id%>" data-tipo = "3"><%=a.name%> <%=a.first_name%></option>
+              <%end%>
+            </select>
           </p>
         </td>
         <td class="center">

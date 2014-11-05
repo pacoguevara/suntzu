@@ -13,6 +13,7 @@ Pan::Application.routes.draw do
       	collection do
       		get "parents", :action=>"parents"
           get "groups", :action=>"groups"
+          get "enlace", :action => "enlace"
       	end
       end
       resources :pollings do 

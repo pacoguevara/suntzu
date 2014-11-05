@@ -119,12 +119,15 @@ class UsersController < ApplicationController
       "coordinador" => "Coordinadores"
     }
   	if params[:role] == 'jugador'
-  		@users = User.all.limit(User.per_page).offset(0)
+  		@users = User.all.limit(User.per_page).offset(0).order(:created_at)
       @users_t = User.all
   	else
 	    @users = User.where(:role => params[:role]).limit(User.per_page).offset(0)
       @users_t = User.where(:role => params[:role])
-	end
+	  end
+    @subenlace = User.where(:role => "subenlace")
+    @enlace = User.where(:role => "enlace")
+    @coordinador = User.where(:role => "coordinador")
   	@canedit = true
   end
   def downloads

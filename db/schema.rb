@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141021180126) do
+ActiveRecord::Schema.define(version: 20141103233139) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -115,6 +115,16 @@ ActiveRecord::Schema.define(version: 20141021180126) do
     t.string "name"
   end
 
+  create_table "user_messages", force: true do |t|
+    t.boolean "is_sms"
+    t.boolean "is_mail"
+    t.integer "user_id"
+    t.integer "message_id"
+  end
+
+  add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id", using: :btree
+  add_index "user_messages", ["user_id"], name: "index_user_messages_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: ""
     t.string   "encrypted_password",     default: "", null: false
@@ -164,6 +174,9 @@ ActiveRecord::Schema.define(version: 20141021180126) do
     t.integer  "city_key"
     t.string   "municipality_id"
     t.boolean  "temp_chek"
+    t.integer  "subenlace_id"
+    t.integer  "enlace_id"
+    t.integer  "coordinador_id"
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
