@@ -94,55 +94,57 @@ $ ->
 		# 	hide_groups()
 		load_parents(role)
 		
-	$('.search2').keyup (e) ->
-		
-		filters = get_filters()
-		$.ajax 
-				url:"/api/users"
-				data:
-					filters.data
-				success: (data) ->
-					console.log data
-					fill_table_nominal_list('#users_table', data)
-
-	$('.search').keyup (e) ->
-		$inputs = $('.search')
-		params = {}
-		$inputs.each ->
-			unless $(this).val() is ''
-				params[this.name] = $(this).val()
-		if params
+	$('.search2').keypress (e) ->
+		if key is 13
+			filters = get_filters()
 			$.ajax 
-				url:"/api/users"
-				data:
-					role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
-					register_date: params['register_date']
-					ife_key: params['ife_key']
-					bird: params['bird']
-					municipality_id: params['municipality_id']
-					age: params['age']
-					section: params['section']
-					dto_fed: params['dto_fed']
-					dto_loc: params['dto_loc']
-					city: params['city']
-					street_number: params['street_number']
-					outside_number: params['outside_number']
-					internal_number: params['internal_number']
-					neighborhood: params['neighborhood']
-					zipcode: params['zipcode']
-					phone: params['phone']
-					parent: params['parent']
-					email: params['email']
-					cellphone: params['cellphone']
-					gender: params['gender']
-					rnm: params['rnm']
-					name: params['name']
-					first_name: params['first_name']
-					last_name: params['last_name']
-					parent: params['parent']
-				success: (data) ->
-					console.log data
-					fill_table('#users_table', data)
+					url:"/api/users"
+					data:
+						filters.data
+					success: (data) ->
+						console.log data
+						fill_table_nominal_list('#users_table', data)
+
+	$('.search').keypress (e) ->
+		key = e.which
+		if key is 13
+			$inputs = $('.search')
+			params = {}
+			$inputs.each ->
+				unless $(this).val() is ''
+					params[this.name] = $(this).val()
+			if params
+				$.ajax 
+					url:"/api/users"
+					data:
+						role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
+						register_date: params['register_date']
+						ife_key: params['ife_key']
+						bird: params['bird']
+						municipality_id: params['municipality_id']
+						age: params['age']
+						section: params['section']
+						dto_fed: params['dto_fed']
+						dto_loc: params['dto_loc']
+						city: params['city']
+						street_number: params['street_number']
+						outside_number: params['outside_number']
+						internal_number: params['internal_number']
+						neighborhood: params['neighborhood']
+						zipcode: params['zipcode']
+						phone: params['phone']
+						parent: params['parent']
+						email: params['email']
+						cellphone: params['cellphone']
+						gender: params['gender']
+						rnm: params['rnm']
+						name: params['name']
+						first_name: params['first_name']
+						last_name: params['last_name']
+						parent: params['parent']
+					success: (data) ->
+						console.log data
+						fill_table('#users_table', data)
 	
 	get_filters = ->
 		$inputs = $('.search2')
@@ -225,8 +227,11 @@ $ ->
 
 	fill_table = (table_id, data) ->
 		count = data.total
+		subenlaces = data.subenlaces
+		enlaces = data.enlaces
+		coordinadores = data.coordinadores
 		$('#total_result').html(count)
-		data = data.data
+		
 		#console.log data
 		stringsubenlace = '<select class="default select_class" style="width:100%">'+
 			'<option value="vacio" ></option>'
@@ -236,28 +241,28 @@ $ ->
 			'style="width:100%"><option value="vacio" ></option>'
 		i = 0
 
-		while i < data[0].subenlace.length
-				full_name=data[0].subenlace[i].name+" "+data[0].subenlace[i].first_name+
-				' '+data[0].subenlace[i].last_name
+		while i < subenlaces.length
+				full_name=subenlaces[i].name+" "+subenlaces[i].first_name+
+				' '+subenlaces[i].last_name
 	  	stringsubenlace = stringsubenlace + 
-		  '<option value = "'+data[0].subenlace[i].id+'">'+full_name
+		  '<option value = "'+subenlaces[i].id+'">'+full_name
 		  '</option>'
 		  i++
 
 		i = 0
-		while i < data[0].enlace.length
-				full_name=data[0].enlace[i].name+" "+data[0].enlace[i].first_name+
-				' '+data[0].enlace[i].last_name
-		  stringenlace = stringenlace + '<option value = "'+data[0].enlace[i].id+
+		while i < enlaces.length
+				full_name=enlaces[i].name+" "+enlaces[i].first_name+
+				' '+enlaces[i].last_name
+		  stringenlace = stringenlace + '<option value = "'+enlaces[i].id+
 		  '">'+full_name+'</option>'
 		  i++
 
 		i = 0
-		while i < data[0].coordinador.length
-				full_name=data[0].coordinador[i].name+" "+data[0].coordinador[i].first_name+
-				' '+data[0].coordinador[i].last_name
+		while i < coordinadores.length
+				full_name=coordinadores[i].name+" "+coordinadores[i].first_name+
+				' '+coordinadores[i].last_name
 		  stringcoordinador = stringcoordinador + '<option value = "'+
-		  data[0].coordinador[i].id+'">'+full_name+'</option>'
+		  coordinadores[i].id+'">'+full_name+'</option>'
 		  i++
 
 		stringenlace = stringenlace + '</select>'
@@ -269,7 +274,7 @@ $ ->
 		html3 = $.parseHTML(stringcoordinador)
 
 		$("tr:has(td)").remove();
-
+		data = data.data
 		$.each data, (i, item) ->
 			#change selected parents if user has one
 			if data[i].subenlace_id?

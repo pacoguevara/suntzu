@@ -286,15 +286,15 @@ module Api
 						user_hash[:subenlace_id] = user.subenlace_id
 						user_hash[:enlace_id] = user.enlace_id
 						user_hash[:coordinador_id] = user.coordinador_id
-						user_hash[:subenlace] = @subenlace
-						user_hash[:enlace] = @enlace
-						user_hash[:coordinador] = @coordinador
 						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : 
 						User.find(user.parent).full_name
 						users_ar.push user_hash
 					end
 					format  = {
 						"data" => users_ar,
+						"subenlaces" => @subenlace,
+						"enlaces" =>  @enlace,
+						"coordinadores" => @coordinador,
 						"total" => users_count
 					}
 					respond_with format
