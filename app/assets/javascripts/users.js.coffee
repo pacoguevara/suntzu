@@ -95,6 +95,7 @@ $ ->
 		load_parents(role)
 		
 	$('.search2').keypress (e) ->
+		key = e.which
 		if key is 13
 			filters = get_filters()
 			$.ajax 
@@ -157,7 +158,7 @@ $ ->
 			data:
 				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
 				register_date: params['register_date']
-				municipality_id: params['municipality_id']
+				municipality_id: if params['municipality_id'] isnt '-1' then params['municipality_id']
 				ife_key: params['ife_key']
 				bird: params['bird']
 				age: params['age']
@@ -234,11 +235,11 @@ $ ->
 		
 		#console.log data
 		stringsubenlace = '<select class="default select_class" style="width:100%">'+
-			'<option value="vacio" ></option>'
+			'<option value="0" ></option>'
 		stringenlace = '<select class="default select_class" style="width:100%">'+
-			'<option value="vacio" ></option>'
+			'<option value="0" ></option>'
 		stringcoordinador = '<select class="default select_class" '+
-			'style="width:100%"><option value="vacio" ></option>'
+			'style="width:100%"><option value="0" ></option>'
 		i = 0
 
 		while i < subenlaces.length
@@ -392,6 +393,68 @@ $ ->
 				$('html, body').animate(
 					scrollTop : 0
 				,800)
+	$(".select_search").change ->
+	  $inputs = undefined
+	  data = undefined
+	  params = undefined
+	  $inputs = undefined
+	  data = undefined
+	  params = undefined
+	  $inputs = $(".search")
+	  params = {}
+	  data = {}
+	  $inputs.each ->
+	    params[@name] = $(this).val()  if $(this).val() isnt ""
+	    return
+
+	  if params
+	    data =
+	      role: getURLParameter('role')
+	      register_date: params['register_date']
+	      municipality_id: params["municipality_id"]
+	      ife_key: params["ife_key"]
+	      bird: params["bird"]
+	      age: params["age"]
+	      section: params["section"]
+	      dto_fed: params["dto_fed"]
+	      dto_loc: params["dto_loc"]
+	      city: params["city"]
+	      street_number: params["street_number"]
+	      outside_number: params["outside_number"]
+	      internal_number: params["internal_number"]
+	      neighborhood: params["neighborhood"]
+	      zipcode: params["zipcode"]
+	      phone: params["phone"]
+	      parent: params["parent"]
+	      email: params["email"]
+	      cellphone: params["cellphone"]
+	      gender: params["gender"]
+	      rnm: params["rnm"]
+	      name: params["name"]
+	      first_name: params["first_name"]
+	      last_name: params["last_name"]
+	      parent: params["parent"]
+	      register_start: params["register_start_date"]
+	      register_end: params["register_end_date"]
+	      bird_start: params["bird_start_date"]
+	      bird_end: params["bird_end_date"]
+	    		coordinador_id: params['coordinador_id']
+	    		subenlace_id: params['sub_enlace_id']
+	    		enlace_id: params['enlace_id']
+	    console.log data
+	    $.ajax
+	      url: "/api/users"
+	      data: data
+	      success: (data) ->
+	        console.log data
+	        fill_table "#users_table", data
+	        $("html, body").animate
+	          scrollTop: 0
+	        , 800
+	        return
+
+	  return
+
 	$(document).on "change", ".check", ->
 		user_id = $(this).data('id')
 		mje = (if @checked then " ha votado" else " ha cancelado su voto")
@@ -402,5 +465,7 @@ $ ->
 				user:
 					temp_chek: @checked
 			success: (data) ->
-				alert 'El jugador ' + data.name + mje
-	return 
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert 'no se ha podido registrar el voto'
+
+return

@@ -256,6 +256,39 @@ module Api
 							"'%#{params[:phone].downcase}%'"
 					end
 				end		
+				if params.has_key? :subenlace_id
+					if params[:subenlace_id] != '0'
+						if !where_statment.blank?
+							where_statment=where_statment +" AND subenlace_id = "+
+							"#{params[:subenlace_id]}"
+						else
+							where_statment=where_statment +" subenlace_id = "+
+							"#{params[:subenlace_id]}"
+						end
+					end
+				end		
+				if params.has_key? :enlace_id
+					if params[:enlace_id] != '0'
+						if !where_statment.blank?
+							where_statment=where_statment +" AND enlace_id = "+
+							"#{params[:enlace_id]}"
+						else
+							where_statment=where_statment +" enlace_id = "+
+							"#{params[:enlace_id]}"
+						end
+					end
+				end
+				if params.has_key? :coordinador_id
+					if params[:coordinador_id] != '0'
+						if !where_statment.blank?
+							where_statment=where_statment +" AND coordinador_id = "+
+							"#{params[:coordinador_id]}"
+						else
+							where_statment=where_statment +" coordinador_id = "+
+							"#{params[:coordinador_id]}"
+						end
+					end
+				end
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page

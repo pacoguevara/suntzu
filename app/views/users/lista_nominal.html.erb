@@ -5,6 +5,7 @@
       <hr>
       <select class="form-control search2" id="select_municipality" 
         name="municipality_id">
+        <option value="-1"> </option>
         <option value="0"> Otros </option>
         <% @municipalities.each do |mun| %>
           <option value="<%= mun.id %>"> <%= mun.name %></option>

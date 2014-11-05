@@ -48,3 +48,9 @@ body {
     /*width: 50px;
     overflow: hidden;*/
 }
+.select_search {
+	width:100px; 
+  overflow: hidden; 
+  white-space: pre; 
+  text-overflow: ellipsis;
+}
