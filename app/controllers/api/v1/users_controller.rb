@@ -131,7 +131,7 @@ module Api
 				end
 				if params.has_key? :ife_key
 					if !where_statment.blank?
-						where_statment=where_statment +" AND lower(ife_key) LIKE "+
+						where_stafull_nametment=where_statment +" AND lower(ife_key) LIKE "+
 							"'%#{params[:ife_key].downcase}%'"
 					else
 						where_statment=where_statment +" lower(ife_key) LIKE "+
@@ -236,6 +236,7 @@ module Api
 						where_statment=where_statment +" lower(neighborhood) LIKE "+
 							"'%#{params[:neighborhood].downcase}%'"						
 					end
+					
 				end
 				if params.has_key? :zipcode
 					if !where_statment.blank?
