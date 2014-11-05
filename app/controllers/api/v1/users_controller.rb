@@ -236,7 +236,7 @@ module Api
 						where_statment=where_statment +" lower(neighborhood) LIKE "+
 							"'%#{params[:neighborhood].downcase}%'"						
 					end
-					
+
 				end
 				if params.has_key? :zipcode
 					if !where_statment.blank?
@@ -262,8 +262,7 @@ module Api
 						users = User.where(where_statment).limit(User.per_page).
 						offset(params[:page])
 					else
-						users = User.where(where_statment).limit(User.per_page).
-						offset(0)
+						users = User.where(where_statment).limit(User.per_page).offset(0)
 					end					
 					users_ar = []
 				 	@subenlace = User.where(:role => "subenlace")

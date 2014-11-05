@@ -95,6 +95,7 @@ $ ->
 		load_parents(role)
 		
 	$('.search2').keyup (e) ->
+		
 		filters = get_filters()
 		$.ajax 
 				url:"/api/users"
