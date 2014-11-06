@@ -73,6 +73,17 @@ class User < ActiveRecord::Base
   def grupo?
     self.role == "grupo"
   end
+  def set_enlazado
+    if !get_subenlace.nil?
+      self.update_attribute(:subenlace_id, get_subenlace.id)
+    end
+    if !get_enlace.nil?
+      self.update_attribute(:enlace_id, get_enlace.id)
+    end
+    if !get_coordinador.nil?
+      self.update_attribute(:coordinador_id, get_coordinador.id)
+    end
+  end
   def get_deep
     return -1 if self.role == "admin"
     return 0 if self.role == "jugador"
