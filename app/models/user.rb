@@ -92,17 +92,21 @@ class User < ActiveRecord::Base
     return 3 if self.role == "coordinador"
   end
   def get_subenlace
+    return nil if User.where(:id => self.parent).count < 1
     return User.find self.parent if self.parent != 0
   end
   def get_enlace
     return nil if self.parent == 0
     if self.get_deep == 0
+      return nil if self.get_subenlace.nil?
       enlace_id = User.find(self.get_subenlace).parent
       return nil if enlace_id == 0
       return  User.find enlace_id
     elsif self.get_deep == 1
+      return nil if self.get_subenlace.nil?
       return  User.find self.get_subenlace
     elsif self.get_deep == 2
+      return nil if self.get_subenlace.nil?
       return  User.find self.get_subenlace
     end
   end
