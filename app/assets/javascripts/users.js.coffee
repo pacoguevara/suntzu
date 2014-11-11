@@ -94,6 +94,18 @@ $ ->
 		# 	hide_groups()
 		load_parents(role)
 		
+	$('.search3').keypress (e) ->
+		key = e.which
+		if key is 13
+			filters = get_filters2()
+			$.ajax 
+				url:"/api/users/get_list_votation"
+				data:
+					filters.data
+				success: (data) ->
+					console.log data
+					console.log "pudo entrar"
+					fill_table2("#detalle_table", data)
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -103,6 +115,7 @@ $ ->
 					data:
 						filters.data
 					success: (data) ->
+						console.log "blablabalbal"
 						console.log data
 						fill_table_nominal_list('#users_table', data)
 
@@ -146,7 +159,20 @@ $ ->
 					success: (data) ->
 						console.log data
 						fill_table('#users_table', data)
-	
+	get_filters2 = ->
+		$inputs = $('.search3')
+		params = {}
+		data = {}
+		$inputs.each ->
+			unless $(this).val() is ''
+				params[this.name] = $(this).val()
+		if params
+			data:
+				number: params['number']
+				name: params['name']
+				polling_id: $('.hidd')[0].value
+				
+
 	get_filters = ->
 		$inputs = $('.search2')
 		params = {}
@@ -225,6 +251,22 @@ $ ->
 				$('html, body').animate(
 					scrollTop : 0
 				,800)
+	fill_table2 = (table_id, data) ->
+		console.log data
+		console.log table_id
+		$("tr:has(td)").remove();
+		$.each data, (i, item) ->
+			if data[i].check == true
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'" checked>Ya votó'
+			else
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
+			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
+			'<td><p class="small"> ' + data[i].name + " </p></td> " +
+			'<td><p class="small"> ' + checkaux + " </p></td> " +
+			console.log "ejey"
+			console.log tds
+			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
+			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
 
 	fill_table = (table_id, data) ->
 		count = data.total
@@ -333,6 +375,9 @@ $ ->
 			$($(html3).find("option[value='" + data[i].coordinador_id + "-"+data[i].id+"']")[0]).val(data[i].coordinador_id) 
 			stringcoordinador = $(html3).prop "outerHTML"
 
+	fill_table_nominal_list2 = (table_id, data) ->
+		alert "ey"
+	
 	fill_table_nominal_list = (table_id, data) ->
 		count = data.total
 		$('#total_result').html(count)
@@ -467,5 +512,55 @@ $ ->
 			success: (data) ->
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert 'no se ha podido registrar el voto'
+
+	$(document).on "change", ".check2", ->
+		user_id = $(this).data('id')
+		mje = (if @checked then " ha votado" else " ha cancelado su voto")
+		$.ajax 
+			type: "GET"
+			url:"/api/users/list_check"
+			data: 
+				user:
+					temp_chek: @checked
+					votation_list_id: user_id
+			success: (data) ->
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert 'no se ha podido registrar el votoSDD '+thrownError
+
+	$(document).on "click", ".btn-enviar", ->
+		municipio = $('#select_municipality').find(":selected").val()
+		polling = $('#select_polling').find(":selected").val()
+		register_start_date = $('#register_start_date').val()
+		register_end_date = $('#register_end_date').val()
+		bird_start_date = $('#bird_start_date').val()
+		bird_end_date = $('#bird_end_date').val()
+		if municipio == "-1"
+			alert "Selecciona un municipio."
+		else if polling == "-1"
+			alert "Selecciona un polling."
+		else if register_start_date == ""
+			alert "Selecciona una fecha de registro inicial."
+		else if register_end_date == ""
+			alert "Selecciona una fecha de registro final."
+		else if bird_start_date == ""
+			alert "Selecciona una fecha de nacimiento inicial."
+		else if bird_end_date == ""
+			alert "Selecciona una fecha de nacimiento final."
+		else
+			$.ajax 
+				type: "GET"
+				url:"/api/users/list_votation"
+				data: 
+					prueba:
+						municipio: municipio
+						polling: polling
+						register_start_date: register_start_date
+						register_end_date: register_end_date
+						bird_start_date: bird_start_date
+						bird_end_date: bird_end_date
+				success: (data) ->
+					alert "Se guardó la lista nominal con éxito"
+				error: (xhr, ajaxOptions, thrownError) ->
+					alert 'no se ha podido registrar el votoSDD '+thrownError
 
 return

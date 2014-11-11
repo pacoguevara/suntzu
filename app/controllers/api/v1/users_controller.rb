@@ -349,8 +349,35 @@ module Api
 					user.coordinador_id = params[:id1]
 				end
 				user.save
+
 				puts user.id
 				respond_with true
+			end
+			def get_list_votation
+				puts "son los params y asi "+params.to_s
+				swhere = ""
+				if params[:number]
+					swhere = "number = "+params[:number]
+				end
+				@lvh = ListVotationHeader.find(params[:polling_id])
+				if swhere == ""
+    				@listvotation = ListVotation.where(:list_votation_header_id => @lvh.id).order(:number)
+    			else
+    				@listvotation = ListVotation.where(:list_votation_header_id => @lvh.id).where(swhere).order(:number)
+				end
+				
+    			user_hash = Hash.new
+    			user_ar = Array.new
+    			@listvotation.each do |l|
+    				user_hash = {}
+    				user_hash[:number] = l.number
+    				user_hash[:name] = l.user.full_name
+    				user_hash[:check] = l.check
+    				user_hash[:id] = l.id
+    				user_ar.push user_hash
+    			end
+				
+				respond_with user_ar
 			end
 			def groups
 				groups_by_name = {}
@@ -384,6 +411,8 @@ module Api
 				end
 			end
 
+
+
 			def parents
 				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", 
 					"enlace"=>"coordinador", "coordinador"=>"grupo	"}
@@ -395,6 +424,44 @@ module Api
 				u.id=0
 				users.push u
 				respond_with users 
+			end
+			def list_votation
+				puts "se hace "+params[:prueba][:municipio]+" "+ params[:prueba][:register_start_date]+" "+ params[:prueba][:register_end_date]+" "+params[:prueba][:bird_start_date]+" "+params[:prueba][:bird_end_date]
+				lvh = ListVotationHeader.new
+				lvh.polling_id = params[:prueba][:polling]
+				
+				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
+				@lvArray = Array.new
+				if !@us.empty?
+					lvh.save
+					cont = 1
+					@us.each do |u|
+						newlv = ListVotation.new
+						newlv.list_votation_header_id = lvh.id
+						newlv.user_id = u.id
+						newlv.number = cont
+						cont+=1
+						if u.temp_chek.nil?
+							newlv.check = false
+						else
+							newlv.check = true
+						end
+						newlv.save!
+						@lvArray.push(newlv)
+					end
+				end
+				respond_with @lvArray
+			end
+			def list_check
+				puts "EYYYYYY "+params.to_s
+				vl = ListVotation.find(params[:user][:votation_list_id])
+				if params[:user][:temp_chek] == "true"
+					vl.check = true
+				else
+					vl.check = false
+				end
+				vl.save
+				respond_with true
 			end
 			private
 			def user_params

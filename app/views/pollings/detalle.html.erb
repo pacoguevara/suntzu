@@ -1,0 +1,57 @@
+
+
+<table class="table table-bordered table-striped table-hover" id="detalle_table">  
+      <thead>
+      	<tr>
+  			<th>
+            	<input type="text" placeholder="numero" data-tipo = "1" class="form-control search3" 
+              name="number"/>
+              
+          	</th>
+          	<th>
+	            <input type="text" placeholder="nombre" data-tipo = "1" class="form-control search3" 
+	              name="name"/>
+          	</th>
+          	<th>
+            	<input type="hidden" value="<%=params[:polling_id]%>" class="form-control hidd" 
+	              name="polling_id"/>
+          	</th>
+      	</tr>
+        <tr>
+    	  <th >
+            <p class="small">Numero</p>
+          </th>
+          <th >
+            <p class="small">Nombre</p>
+          </th>
+          <th >
+            <p class="small">Nombre</p>
+          </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% @listvotation.each do |a| %>
+          <tr>
+            <td >
+              <p class="small"><%=a.number%></p>
+            </td>
+            <td>
+            	<p class="small"><%=a.user.full_name%></p>	
+            </td>
+            <td >
+              <p class="small">
+              <% if a.check %>
+                  <input type="checkbox" name="temp_chek" class="check2" 
+                    data-id="<%= a.id %>" checked>
+                    Ya votó 
+                <% else %>
+                  <input type="checkbox" name="temp_chek" class="check2" 
+                    data-id="<%= a.id %>" >
+                    Ya votó 
+                <% end %>
+              </p>
+          </td>
+        <%end%>
+      </tbody>
+    </table>

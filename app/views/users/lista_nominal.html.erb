@@ -1,4 +1,15 @@
-<div class="row">
+
+<hr />
+<!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#pane1" data-toggle="tab">Jugadores</a></li>
+    <!--<li <%if session[:page]== 2%>class="active"<%end%>><a href="#pane3" data-toggle="tab"></a></li>-->
+    <li><a href="#pane2" data-toggle="tab">Lista nominal creadas</a></li>
+</ul>
+<div class="tab-content">
+  <div id="pane1" class="tab-pane active">
+    <div class="table-responsive">
+    <div class="row">
   <div class="col-md-4">
     <div class="well well-sm">
       Municipio
@@ -10,7 +21,8 @@
         <% @municipalities.each do |mun| %>
           <option value="<%= mun.id %>"> <%= mun.name %></option>
         <% end %>
-      </select>      
+      </select> 
+      
     </div>
   </div>
   <div class="col-md-4">
@@ -19,11 +31,11 @@
       <hr>
       <div class="row">
         <div class="col-md-6">
-          <input type="text" placeholder="Fecha Inicio" 
+          <input type="text" placeholder="Fecha Inicio" id = "register_start_date" 
           class="form-control search2 datepicker" name="register_start_date" />
         </div>
         <div class="col-md-6">
-          <input type="text" placeholder="Fecha Fin" 
+          <input type="text" placeholder="Fecha Fin" id = "register_end_date"
           class="form-control search2 datepicker" name="register_end_date"/>
         </div>
       </div>
@@ -35,193 +47,229 @@
       <hr>
       <div class="row">
         <div class="col-md-6">
-          <input type="text" placeholder="Fecha Inicio" 
+          <input type="text" placeholder="Fecha Inicio"  id = "bird_start_date"
           class="form-control search2 datepicker" name="bird_start_date"/>
         </div>
         <div class="col-md-6">
-          <input type="text" placeholder="Fecha Fin" 
+          <input type="text" placeholder="Fecha Fin"  id = "bird_end_date"
           class="form-control search2 datepicker" name="bird_end_date"/>
         </div>
       </div>
+      
     </div>
+
+  </div>
+
+</div>
+  Polling
+      <hr>
+      <select class="form-control search2" id="select_polling" 
+        name="polling_id">
+        <option value="-1"> </option>
+        <% @polling.each do |p| %>
+          <option value="<%= p.id %>"> <%= p.name %></option>
+        <% end %>
+      </select>  
+      <input type="submit" value="Enviar" class="btn-enviar">   
+
+      <br><br>
+    <table class="table table-bordered table-striped table-hover" id="users_table">  
+      <thead>
+        <tr>
+          <th>
+            <input type="text" placeholder="name" class="form-control search2" 
+              name="name"/>
+          </th>
+          <th>
+            <input type="text" placeholder="first_name" class="form-control search2" 
+              name="first_name"/>
+          </th>
+          <th>
+            <input type="text" placeholder="last_name" class="form-control search2" 
+              name="last_name"/>
+          </th>
+          <th>
+            <!-- <input type="text" placeholder="age" class="form-control search2" 
+              name="age"/> -->
+          </th>
+          <th>
+            <input type="text" placeholder="section" class="form-control search2" 
+              name="section"/>
+          </th>
+          <th>
+            <!-- <input type="text" placeholder="city" class="form-control search2" 
+              name="city"/> -->
+          </th>
+          <th >
+
+          </th>
+          <th >
+            <!-- <select class="form-control">
+              <option value="0"> Sin Asignar</option>
+              <% @sub_links.each do |user| %>
+                <option value="<%= user.id %>"> <%= user.full_name %></option>
+              <% end %>
+            </select> -->
+          </th>
+          <th >
+            <!-- <select class="form-control">
+              <option value="0"> Sin Asignar</option>
+              <% @links.each do |user| %>
+                <option value="<%= user.id %>"> <%= user.full_name %></option>
+              <% end %>
+            </select> -->
+          </th>
+          <th >
+            <!-- <select class="form-control">
+              <option value="0"> Sin Asignar</option>
+              <% @coordinators.each do |user| %>
+                <option value="<%= user.id %>"> <%= user.full_name %></option>
+              <% end %>
+            </select> -->
+          </th>
+          <th></th>
+        </tr>
+        <tr>
+          <th >
+            <p class="small">Nombre</p>
+          </th>
+          <th >
+            <p class="small">Paterno</p>
+          </th>
+          <th >
+            <p class="small">Materno</p>
+          </th>
+          <th>
+            <p class="small">Edad</p>
+          </th>
+          <th>
+            <p class="small">Sección</p>
+          </th>
+          <th>
+            <p class="small">Municipio</p>
+          </th>
+          <th>
+            <p class="small">Reporta a</p>
+          </th>
+          <th>
+            <p class="small">Sub Enlace</p>
+          </th>
+          <th>
+            <p class="small">Enlace</p>
+          </th>
+          <th>
+            <p class="small">Coordinador</p>
+          </th>
+          <th>
+            <p class="small">Elección Juvenil</p>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td >
+              <p class="small"><%=user.name%></p>
+            </td>
+            <td >
+              <p class="small"><%= user.first_name%></p>
+            </td>
+            <td >
+              <p class="small"><%= user.last_name %></p>
+            </td>
+            <td>
+              <p class="small"><%= user.age %></p>
+            </td>
+            <td>
+              <p class="small"><%= user.section.to_i %></p>
+            </td>
+            <td>
+              <p class="small"><%= user.city %></p>
+            </td>
+            <td>
+              <p class="small">
+                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+              </p>
+            </td>
+            <td>
+              <p class="small">
+                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+              </p>
+            </td>
+            <td>
+              <p class="small">
+                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+              </p>
+            </td>
+            <td>
+              <p class="small">
+                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+              </p>
+            </td>
+            <td>
+              <p class="small">
+                <% if user.temp_chek %>
+                  <input type="checkbox" name="temp_chek" class="check" 
+                    data-id="<%= user.id %>" checked>
+                    Ya votó 
+                <% else %>
+                  <input type="checkbox" name="temp_chek" class="check" 
+                    data-id="<%= user.id %>" >
+                    Ya votó 
+                <% end %>
+              </p>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+    <hr />
+    <div class="col-md-12 center">
+    	<ul class="pagination">
+        <% if @users_t.count >= 10 %>
+          <li class="page_number active" data-num="0"><a>Primera</a></li>
+          <% pages = (@users_t.count / User.per_page).round%>
+          <% 10.times.each do |i|%>
+        	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+          <% end %>
+          <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
+        <% else %>
+          <% @users_t.count.times.each do |i|%>
+            <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+          <% end %>
+        <% end %>
+    	</ul>
+      <p class="page_showing">
+        (
+        <strong id="total_result">
+          <%= @users_t.count %> 
+        </strong>
+        en total)</p>
+    </div>	
+  </div>
+  <div id="pane2" class="tab-pane">
+    <table class="table table-bordered table-striped table-hover" id="users_table">  
+      <thead>
+        <tr>
+          <th >
+            <p class="small">Nombre</p>
+          </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% @algo.each do |a| %>
+          <tr>
+            <td >
+              <p class="small"><%=link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
+            </td>
+            
+            <td >
+          </td>
+        <%end%>
+      </tbody>
+    </table>
   </div>
 </div>
-<hr />
-<!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
-
-<div class="table-responsive">
-<table class="table table-bordered table-striped table-hover" id="users_table">  
-  <tdead>
-    <tr>
-      <th>
-        <input type="text" placeholder="name" class="form-control search2" 
-          name="name"/>
-      </th>
-      <th>
-        <input type="text" placeholder="first_name" class="form-control search2" 
-          name="first_name"/>
-      </th>
-      <th>
-        <input type="text" placeholder="last_name" class="form-control search2" 
-          name="last_name"/>
-      </th>
-      <th>
-        <!-- <input type="text" placeholder="age" class="form-control search2" 
-          name="age"/> -->
-      </th>
-      <th>
-        <input type="text" placeholder="section" class="form-control search2" 
-          name="section"/>
-      </th>
-      <th>
-        <!-- <input type="text" placeholder="city" class="form-control search2" 
-          name="city"/> -->
-      </th>
-      <th >
-
-      </th>
-      <th >
-        <!-- <select class="form-control">
-          <option value="0"> Sin Asignar</option>
-          <% @sub_links.each do |user| %>
-            <option value="<%= user.id %>"> <%= user.full_name %></option>
-          <% end %>
-        </select> -->
-      </th>
-      <th >
-        <!-- <select class="form-control">
-          <option value="0"> Sin Asignar</option>
-          <% @links.each do |user| %>
-            <option value="<%= user.id %>"> <%= user.full_name %></option>
-          <% end %>
-        </select> -->
-      </th>
-      <th >
-        <!-- <select class="form-control">
-          <option value="0"> Sin Asignar</option>
-          <% @coordinators.each do |user| %>
-            <option value="<%= user.id %>"> <%= user.full_name %></option>
-          <% end %>
-        </select> -->
-      </th>
-      <th></th>
-    </tr>
-    <tr>
-      <th >
-        <p class="small">Nombre</p>
-      </th>
-      <th >
-        <p class="small">Paterno</p>
-      </th>
-      <th >
-        <p class="small">Materno</p>
-      </th>
-      <th>
-        <p class="small">Edad</p>
-      </th>
-      <th>
-        <p class="small">Sección</p>
-      </th>
-      <th>
-        <p class="small">Municipio</p>
-      </th>
-      <th>
-        <p class="small">Reporta a</p>
-      </th>
-      <th>
-        <p class="small">Sub Enlace</p>
-      </th>
-      <th>
-        <p class="small">Enlace</p>
-      </th>
-      <th>
-        <p class="small">Coordinador</p>
-      </th>
-      <th>
-        <p class="small">Elección Juvenil</p>
-      </th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td >
-          <p class="small"><%=user.name%></p>
-        </td>
-        <td >
-          <p class="small"><%= user.first_name%></p>
-        </td>
-        <td >
-          <p class="small"><%= user.last_name %></p>
-        </td>
-        <td>
-          <p class="small"><%= user.age %></p>
-        </td>
-        <td>
-          <p class="small"><%= user.section.to_i %></p>
-        </td>
-        <td>
-          <p class="small"><%= user.city %></p>
-        </td>
-        <td>
-          <p class="small">
-            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-          </p>
-        </td>
-        <td>
-          <p class="small">
-            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-          </p>
-        </td>
-        <td>
-          <p class="small">
-            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-          </p>
-        </td>
-        <td>
-          <p class="small">
-            <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-          </p>
-        </td>
-        <td>
-          <p class="small">
-            <% if user.temp_chek %>
-              <input type="checkbox" name="temp_chek" class="check" 
-                data-id="<%= user.id %>" checked>
-                Ya votó 
-            <% else %>
-              <input type="checkbox" name="temp_chek" class="check" 
-                data-id="<%= user.id %>" >
-                Ya votó 
-            <% end %>
-          </p>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
-<hr />
-<div class="col-md-12 center">
-	<ul class="pagination">
-    <% if @users_t.count >= 10 %>
-      <li class="page_number active" data-num="0"><a>Primera</a></li>
-      <% pages = (@users_t.count / User.per_page).round%>
-      <% 10.times.each do |i|%>
-    	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-      <% end %>
-      <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
-    <% else %>
-      <% @users_t.count.times.each do |i|%>
-        <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-      <% end %>
-    <% end %>
-	</ul>
-  <p class="page_showing">
-    (
-    <strong id="total_result">
-      <%= @users_t.count %> 
-    </strong>
-    en total)</p>
-</div>	

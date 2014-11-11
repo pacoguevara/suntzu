@@ -28,6 +28,37 @@ class UsersController < ApplicationController
     @links = User.where( :role => "enlace")
     @municipalities = Municipality.all.order( :name )
     @sub_links = User.where( :role => "subenlace")
+    @polling = Polling.all
+    puts "*************************************************"
+    @algo = ListVotationHeader.all
+    if params && !params[:prueba].nil?
+      puts "pos si hay params "+params[:prueba][:polling_id].to_s
+      lvh = ListVotationHeader.new
+      lvh.polling_id = params[:prueba][:polling_id]
+      lvh.save
+
+      @us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipality_id], params[:prueba][:fecha_inicial_registro].to_date, params[:prueba][:fecha_final_registro].to_date, params[:prueba][:fecha_inicial_nacimiento].to_date, params[:prueba][:fecha_final_nacimiento].to_date)
+      cont = 1
+      @lvArray = Array.new
+      @us.each do |u|
+        newlv = ListVotation.new
+        newlv.list_votation_header_id = lvh.id
+        newlv.user_id = u.id
+        newlv.number = cont
+        cont+=1
+        if u.temp_chek.nil?
+          newlv.check = false
+        else
+          newlv.check = true
+        end
+        newlv.save(:validate=> false)
+        @lvArray.push(newlv)
+      end
+      puts "es el user "+@us.to_s
+
+    else
+      puts "pos no hay params " +params.nil?.to_s
+    end
   end
   # POST /users
   # POST /users.json
