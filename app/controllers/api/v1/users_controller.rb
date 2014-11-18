@@ -16,6 +16,9 @@ module Api
 					else
 						where_statment = where_statment +" municipality_id = '#{params[:municipality_id]}'"
 					end
+					puts "YEI SI TENIAAA"
+				else
+					puts "NOOOO NO TENIA :("+params.to_json
 				end
 				if params.has_key? :register_start
 					ftime = Time.parse( params[:register_start] )
@@ -335,23 +338,56 @@ module Api
 					respond_with User.all.select("#{params[:cols]}")
 				end
 			end
+			def municipality
+				respond_with  User.group(:municipality_id).count(:municipality_id)
+			end
 			def enlace
 				user = User.find(params[:id2])
-				puts " de perdido entro"
 				if params[:tipo] == "1"
 					puts "es UNO"
 					user.subenlace_id = params[:id1]
+					user2 = User.find(params[:id1])
+					if user2.parent
+						user.enlace_id = user2.parent
+						user3 = User.find(user2.parent)
+						if user3.parent
+							user.coordinador_id = user3.parent							
+						end
+					end
 				elsif params[:tipo] == "2"
 					puts "es DOS"
 					user.enlace_id = params[:id1]
+					user2 = User.find(params[:id1])
+					if user2.parent
+						user.coordinador_id = user2.parent
+					end
 				elsif params[:tipo] == "3"
 					puts "es TRES"
 					user.coordinador_id = params[:id1]
 				end
-				user.save
 
-				puts user.id
+				user.save
 				respond_with true
+			end
+			def get_parent
+				user = User.find(params[:id1])
+				if user.parent != 0
+					parent = User.find(user.parent)
+					h = Hash.new
+					h[:user_id] = parent.id
+					h[:name] = parent.full_name
+					if parent.parent != 0
+						user = User.find(parent.parent)
+						h[:user_id2] = user.id
+						h[:name2] = user.full_name
+					else
+						h[:user_id2] = 0
+						h[:name2] = ""
+					end
+				else
+					h = false
+				end
+				respond_with h
 			end
 			def get_list_votation
 				puts "son los params y asi "+params.to_s

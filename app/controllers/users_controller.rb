@@ -149,6 +149,7 @@ class UsersController < ApplicationController
       "subenlace" => "Subenlaces",
       "coordinador" => "Coordinadores"
     }
+    @municipalities = Municipality.all.order( :name )
   	if params[:role] == 'jugador'
   		@users = User.all.limit(User.per_page).offset(0).order(:created_at)
       @users_t = User.all

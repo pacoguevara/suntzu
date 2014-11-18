@@ -106,6 +106,16 @@ $ ->
 					console.log data
 					console.log "pudo entrar"
 					fill_table2("#detalle_table", data)
+	$(document).on "change", ".municipality", ->	
+		filters = get_filters()
+		console.log filters
+		$.ajax 
+				url:"/api/users"
+				data:
+					filters.data
+				success: (data) ->
+					console.log "pos si"
+					fill_table_nominal_list('#users_table', data)				
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -115,9 +125,11 @@ $ ->
 					data:
 						filters.data
 					success: (data) ->
-						console.log "blablabalbal"
-						console.log data
 						fill_table_nominal_list('#users_table', data)
+					error: (xhr, ajaxOptions, thrownError) ->
+				      alert xhr.status + " " + url_root
+				      alert thrownError
+				      return
 
 	$('.search').keypress (e) ->
 		key = e.which
@@ -229,10 +241,45 @@ $ ->
 	      return
 
 	  return
+	changeselected = (esto,id, user_id, tipo) ->
+		$.ajax
+			url: "/api/users/get_parent"
+			data:
+				id1: id
+				id2: user_id
+				tipo: tipo
+			success: (json) ->
+				if json isnt false
+					console.log json
+					if tipo == 1
+						row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove()
+						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
+						$(esto).parent().parent().parent().find('#td-enlace').append select
+						if json["user_id2"] isnt "0"
+							row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
+							select = '<p class="small"><select class="select_class coordinador"  style="width:100%" data-catid="3"><option value="vacio"></option><option value="'+json["user_id2"]+'" selected>'+json["name2"]+'</option></select></p>'
+							$(esto).parent().parent().parent().find('#td-coordinador').append select
+							
+					if tipo == 2
+						row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
+						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
+						$(esto).parent().parent().parent().find('#td-coordinador').append select
+					
+						
+
+					option = $(esto).find("option[value='" + json["user_id"] + "']")[0] 
+					$(option).attr "selected", "selected"
+					
+					console.log "si se pudo?"
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert xhr.status + " " + url_root
+				alert thrownError
+		  return
+
+			
 	$(document).on "change", ".select_class", ->
-		console.log "en el change"
-		console.log $(this).find(":selected").data("tipo")
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
+		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
 		filters = get_filters()
 		#console.log filters
@@ -559,7 +606,7 @@ $ ->
 						bird_start_date: bird_start_date
 						bird_end_date: bird_end_date
 				success: (data) ->
-					alert "Se guardó la lista nominal con éxito"
+					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'no se ha podido registrar el votoSDD '+thrownError
 

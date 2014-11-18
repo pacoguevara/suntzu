@@ -17,6 +17,8 @@ Pan::Application.routes.draw do
           get "list_check", :action => "list_check"
           get "get_list_votation", :action => "get_list_votation"
           get "list_votation", :action => "list_votation"
+          get "get_parent",:action => "get_parent"
+          get "municipality",:action => "municipality"
       	end
       end
       resources :pollings do 
