@@ -115,7 +115,7 @@ $ ->
 					filters.data
 				success: (data) ->
 					console.log "pos si"
-					fill_table_nominal_list('#users_table', data)				
+					fill_table('#users_table', data)				
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -386,9 +386,9 @@ $ ->
 			stringsubenlace = $(html).prop "outerHTML"
 			stringenlace = $(html2).prop "outerHTML"
 			stringcoordinador = $(html3).prop "outerHTML"
-			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
 			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
@@ -396,13 +396,7 @@ $ ->
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
 			'<td><p class="small"> ' + stringsubenlace + "</p></td> " +
 			'<td><p class="small"> ' + stringenlace + "</p></td> " +
-			'<td><p class="small"> ' + stringcoordinador + "</p></td> " +
-			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'">'+
-				'<span class="glyphicon glyphicon-eye-open"></span></a></td>'+
-			'<td ><a class="table-action" '+
-				'data-confirm="¿Está seguro que desea eliminar?" data-method="delete"'+
-				' href="/users/'+data[i].id+'" rel="nofollow">'+
-			'<span class="glyphicon glyphicon-remove"></span></a></td>'
+			'<td><p class="small"> ' + stringcoordinador + "</p></td> " 
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
@@ -443,6 +437,7 @@ $ ->
 			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
