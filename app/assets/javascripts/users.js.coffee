@@ -437,7 +437,6 @@ $ ->
 			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
@@ -570,7 +569,7 @@ $ ->
 				alert 'no se ha podido registrar el votoSDD '+thrownError
 
 	$(document).on "click", ".btn-enviar", ->
-		municipio = $('#select_municipality').find(":selected").val()
+		municipio = $('#select_municipality2').find(":selected").val()
 		polling = $('#select_polling').find(":selected").val()
 		register_start_date = $('#register_start_date').val()
 		register_end_date = $('#register_end_date').val()
