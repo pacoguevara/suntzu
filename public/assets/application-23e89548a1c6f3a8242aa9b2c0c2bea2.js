@@ -19129,6 +19129,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             console.log(json);
             if (tipo === 1) {
               row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove();
+              console.log("es row");
+              console.log($(esto).parent().parent().parent());
               select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="' + json["user_id"] + '" selected>' + json["name"] + '</option></select></p>';
               $(esto).parent().parent().parent().find('#td-enlace').append(select);
               if (json["user_id2"] !== "0") {
@@ -19201,9 +19203,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       enlaces = data.enlaces;
       coordinadores = data.coordinadores;
       $('#total_result').html(count);
-      stringsubenlace = '<select class="default select_class" style="width:100%">' + '<option value="0" ></option>';
-      stringenlace = '<select class="default select_class" style="width:100%">' + '<option value="0" ></option>';
-      stringcoordinador = '<select class="default select_class" ' + 'style="width:100%"><option value="0" ></option>';
+      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="0" ></option>';
+      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="0" ></option>';
+      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="0" ></option>';
       i = 0;
       while (i < subenlaces.length) {
         full_name = subenlaces[i].name + " " + subenlaces[i].first_name + ' ' + subenlaces[i].last_name;
@@ -19254,13 +19256,15 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         stringsubenlace = $(html).prop("outerHTML");
         stringenlace = $(html2).prop("outerHTML");
         stringcoordinador = $(html3).prop("outerHTML");
-        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td><p class="small"> ' + stringsubenlace + "</p></td> " + '<td><p class="small"> ' + stringenlace + "</p></td> " + '<td><p class="small"> ' + stringcoordinador + "</p></td> ";
+        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         $('<tr>').html(cleared_tds).appendTo(table_id);
         if (data[i].subenlace_id != null) {
-          $($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']")[0]).removeAttr("selected");
+          $($(html).find("option[value='" + data[i].subenlace_id + "']")[0]).removeAttr("selected");
+          console.log($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']"));
         }
         $($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']")[0]).val(data[i].subenlace_id);
+        console.log(html);
         stringsubenlace = $(html).prop("outerHTML");
         if (data[i].enlace_id != null) {
           $($(html2).find("option[value='" + data[i].enlace_id + "']")[0]).removeAttr("selected");
@@ -19291,7 +19295,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         } else {
           checkitem = '<input type="checkbox" name="temp_chek" class="check" ' + 'data-id="' + data[i].id + '" > Ya votó';
         }
-        tds = '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + data[i].first_name + " </p></td> " + '<td><p class="small"> ' + data[i].last_name + " </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + checkitem + " </p></td> ";
+        tds = '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + data[i].first_name + " </p></td> " + '<td><p class="small"> ' + data[i].last_name + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + checkitem + " </p></td> ";
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         return $('<tr>').html(cleared_tds).appendTo(table_id);
       });
@@ -19437,7 +19441,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     });
     return $(document).on("click", ".btn-enviar", function() {
       var bird_end_date, bird_start_date, municipio, polling, register_end_date, register_start_date;
-      municipio = $('#select_municipality').find(":selected").val();
+      municipio = $('#select_municipality2').find(":selected").val();
       polling = $('#select_polling').find(":selected").val();
       register_start_date = $('#register_start_date').val();
       register_end_date = $('#register_end_date').val();

@@ -253,6 +253,8 @@ $ ->
 					console.log json
 					if tipo == 1
 						row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove()
+						console.log "es row"
+						console.log $(esto).parent().parent().parent()
 						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
 						$(esto).parent().parent().parent().find('#td-enlace').append select
 						if json["user_id2"] isnt "0"
@@ -323,11 +325,11 @@ $ ->
 		$('#total_result').html(count)
 		
 		#console.log data
-		stringsubenlace = '<select class="default select_class" style="width:100%">'+
+		stringsubenlace = '<select class="default select_class subenlace" style="width:100%">'+
 			'<option value="0" ></option>'
-		stringenlace = '<select class="default select_class" style="width:100%">'+
+		stringenlace = '<select class="default select_class enlace" style="width:100%">'+
 			'<option value="0" ></option>'
-		stringcoordinador = '<select class="default select_class" '+
+		stringcoordinador = '<select class="default select_class coordinador" '+
 			'style="width:100%"><option value="0" ></option>'
 		i = 0
 
@@ -394,16 +396,18 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td><p class="small"> ' + stringsubenlace + "</p></td> " +
-			'<td><p class="small"> ' + stringenlace + "</p></td> " +
-			'<td><p class="small"> ' + stringcoordinador + "</p></td> " 
+			'<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " +
+			'<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " +
+			'<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> " 
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id
 			if data[i].subenlace_id?
-				$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).removeAttr "selected"
+				$($(html).find("option[value='"+data[i].subenlace_id+"']")[0]).removeAttr "selected"
+				console.log $(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")
 			$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).val(data[i].subenlace_id) 
+			console.log  html
 			stringsubenlace = $(html).prop "outerHTML"
 
 			if data[i].enlace_id?
