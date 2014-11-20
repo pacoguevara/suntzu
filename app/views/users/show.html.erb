@@ -13,7 +13,13 @@
 	<input type="hidden" value="<%=@user.id %>" id="show_user_id"></input>
 	<div class="row">
 		<div class="col-md-4">
-			<%= image_tag @user.image.url(:medium) %>
+			<% if !@user.image.exists?%>
+				<%= image_tag "default.jpg" %>
+			<%else%>
+				<%= image_tag @user.image.url(:medium) %>
+			<% end %>
+			
+			
 		</div>
 		<div class="col-md-3">
 			<dl>
@@ -57,7 +63,7 @@
 				<dl>
 						<dt> SubEnlace </dt>
 						<dd>
-							<% if !@user.subenlace_id.nil?  %>
+							<% if !@user.subenlace_id.nil? && @user.subenlace_id != 0 %>
 						 		<%= link_to User.find(@user.subenlace_id).name, @user.get_subenlace, 
 							 		:target => '_blank' %>
 						 	<% else %> 
@@ -66,7 +72,7 @@
 						</dd>
   					<dt> Enlace </dt>
   					<dd>
-  						<%if !@user.enlace_id.nil? %> 
+  						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
 	  						<%= link_to User.find(@user.enlace_id).name,@user.get_enlace, 
 	  						:target =>'_blank' %>
   						<% else %> 
@@ -75,7 +81,7 @@
   					</dd>
 						<dt> Coordinador </dt>
 						<dd>
-							<%if !@user.coordinador_id.nil? %> 
+							<%if !@user.coordinador_id.nil? && @user.coordinador_id != 0 %> 
 								<%= link_to User.find(@user.coordinador_id).name, @user.get_coordinador,
 								:target =>'_blank' %>
 							<% else %> 
