@@ -143,6 +143,73 @@
 	</div>
 </div>
 <hr />
+<div>
+	<div class="row">
+		<%if @subordinados && !@subordinados.empty?%>
+		<table class="table table-bordered table-striped table-hover" id="users_table">  
+	      <thead>
+	        <tr>
+		      <th >
+		        <p class="small">Nombre</p>
+		      </th>
+		      <th >
+		        <p class="small">Paterno</p>
+		      </th>
+		      <th >
+		        <p class="small">Materno</p>
+		      </th>
+		      <th>
+		        <p class="small">Sexo</p>
+		      </th>
+		      <th>
+		        <p class="small">Edad</p>
+		      </th>
+		      <th>
+		        <p class="small">Sección</p>
+		      </th>
+		      <th>
+		        <p class="small">Municipio</p>
+		      </th>
+		      <th>
+		        <p class="small">Colonia</p>
+		      </th>		      
+		    </tr>
+	        </thead>
+	        <%@subordinados.each do |s|%>
+		        <tr>
+		            <td >
+		              <p class="small"><%=s.name%></p>
+		            </td>
+		            <td >
+		              <p class="small"><%= s.first_name%></p>
+		            </td>
+		            <td >
+		              <p class="small"><%= s.last_name %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.age %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.section.to_i %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.city %></p>
+		            </td>
+		            <td>
+		            	<p class="small"><%= s.city %></p>
+		            </td>
+		            <td>
+		            	<p class="small"><%= s.city %></p>
+		            </td>
+	            </tr>
+	        <%end%>
+    	</table>
+    	<%= link_to 'Descargar', downloads_subordinados_path(:id => @user.id, :role => @user.role), class: "btn btn-primary btn-large"%>
+    	<%end%>
+
+	</div>
+</div>
+<hr />
 <script type="text/javascript">
 	window.uid = "<%= params[:id] %>";
 </script>

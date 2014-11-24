@@ -259,15 +259,17 @@ module Api
 							"'%#{params[:phone].downcase}%'"
 					end
 				end		
-				if params.has_key? :subenlace_id
-					if params[:subenlace_id] != '0'
+				if params.has_key? :sub_enlace_id
+					if params[:sub_enlace_id] != '0'
 						if !where_statment.blank?
 							where_statment=where_statment +" AND subenlace_id = "+
-							"#{params[:subenlace_id]}"
+							"#{params[:sub_enlace_id]}"
 						else
 							where_statment=where_statment +" subenlace_id = "+
-							"#{params[:subenlace_id]}"
+							"#{params[:sub_enlace_id]}"
 						end
+						puts "a ver que "+where_statment.to_s
+					else
 					end
 				end		
 				if params.has_key? :enlace_id
@@ -343,14 +345,15 @@ module Api
 			end
 			def enlace
 				user = User.find(params[:id2])
+				puts "entro a enlace"
 				if params[:tipo] == "1"
 					puts "es UNO"
 					user.subenlace_id = params[:id1]
 					user2 = User.find(params[:id1])
-					if user2.parent
+					if user2.parent && user2.parent != 0
 						user.enlace_id = user2.parent
 						user3 = User.find(user2.parent)
-						if user3.parent
+						if user3.parent && user3.parent != 0
 							user.coordinador_id = user3.parent							
 						end
 					end
@@ -358,7 +361,7 @@ module Api
 					puts "es DOS"
 					user.enlace_id = params[:id1]
 					user2 = User.find(params[:id1])
-					if user2.parent
+					if user2.parent && user2.parent != 0
 						user.coordinador_id = user2.parent
 					end
 				elsif params[:tipo] == "3"

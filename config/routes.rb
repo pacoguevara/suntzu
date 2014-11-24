@@ -46,4 +46,5 @@ Pan::Application.routes.draw do
   get 'downloads' => 'users#downloads', :as => 'downloads'
   get 'lista_nominal' => 'users#lista_nominal', :as => 'nominal_list'
   get 'detalle' => 'pollings#detalle'
+  get 'downloads_subordinados' => 'users#downloads_subordinados'
 end

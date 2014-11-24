@@ -183,7 +183,7 @@ $ ->
 	    success: (json) ->
 	    	
 	    	console.log json
-	    	tabla = "<table class='table table-bordered table-striped table-hover'><tr><th>Nombre</th><th>Numero de usuarios</th></tr>"
+	    	tabla = "<table class='table table-bordered table-striped table-hover'><tr><th>Nombre</th><th>Numero de jugadores</th></tr>"
 	    	$.each json, (i, item) ->
 	    		tabla = tabla + "<tr><td>" + i+"</td><td>"+item+"</td>"
 

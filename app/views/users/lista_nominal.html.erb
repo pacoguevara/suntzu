@@ -14,14 +14,13 @@
     <div class="well well-sm">
       Municipio
       <hr>
-      <select class="form-control search2" id="select_municipality" 
-        name="municipality_id">
-        <option value="-1"> </option>
-        <option value="0"> Otros </option>
-        <% @municipalities.each do |mun| %>
-          <option value="<%= mun.id %>"> <%= mun.name %></option>
-        <% end %>
-      </select> 
+      <select class="form-control search2 municipality2" name="municipality_id">
+              <option value="-1"> </option>
+              <option value="0"> Otros </option>
+              <% @municipalities.each do |mun| %>
+                <option value="<%= mun.id %>"> <%= mun.name %></option>
+              <% end %>
+            </select>  
       
     </div>
   </div>
@@ -61,7 +60,7 @@
   </div>
 
 </div>
-  Polling
+  Votación
       <hr>
       <select class="form-control search2" id="select_polling" 
         name="polling_id">
@@ -99,14 +98,7 @@
           <th>
             <!-- <input type="text" placeholder="city" class="form-control search2" 
               name="city"/> -->
-              <select class="form-control search2 municipality"  
-        name="municipality_id">
-        <option value="-1"> </option>
-        <option value="0"> Otros </option>
-        <% @municipalities.each do |mun| %>
-          <option value="<%= mun.id %>"> <%= mun.name %></option>
-        <% end %>
-      </select> 
+            
           </th>
           <th >
 
@@ -135,7 +127,6 @@
               <% end %>
             </select> -->
           </th>
-          <th></th>
         </tr>
         <tr>
           <th >
@@ -168,9 +159,7 @@
           <th>
             <p class="small">Coordinador</p>
           </th>
-          <th>
-            <p class="small">Elección Juvenil</p>
-          </th>
+
         </tr>
       </thead>
 
@@ -213,19 +202,6 @@
             <td>
               <p class="small">
                 <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-              </p>
-            </td>
-            <td>
-              <p class="small">
-                <% if user.temp_chek %>
-                  <input type="checkbox" name="temp_chek" class="check" 
-                    data-id="<%= user.id %>" checked>
-                    Ya votó 
-                <% else %>
-                  <input type="checkbox" name="temp_chek" class="check" 
-                    data-id="<%= user.id %>" >
-                    Ya votó 
-                <% end %>
               </p>
             </td>
           </tr>

@@ -104,18 +104,19 @@ $ ->
 					filters.data
 				success: (data) ->
 					console.log data
-					console.log "pudo entrar"
 					fill_table2("#detalle_table", data)
-	$(document).on "change", ".municipality", ->	
+	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
+		console.log "pudo entrar"
 		console.log filters
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
-					console.log "pos si"
-					fill_table('#users_table', data)				
+					fill_table('#users_table', data)
+
+	
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -187,11 +188,15 @@ $ ->
 
 	get_filters = ->
 		$inputs = $('.search2')
+		console.log "search2"
+		console.log $inputs
 		params = {}
 		data = {}
 		$inputs.each ->
 			unless $(this).val() is ''
 				params[this.name] = $(this).val()
+		console.log "params"
+		console.log params
 		if params
 			data:
 				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
@@ -223,6 +228,9 @@ $ ->
 				register_end: params['register_end_date']
 				bird_start: params['bird_start_date']
 				bird_end: params['bird_end_date']
+				sub_enlace_id: params['sub_enlace_id']
+				enlace_id: params['enlace_id']
+				coordinador_id: params['coordinador_id']
 
 	selectchange = (id, user_id, tipo) ->
 	  $.ajax
@@ -236,7 +244,7 @@ $ ->
 	    success: (json) ->
 
 	    error: (xhr, ajaxOptions, thrownError) ->
-	      alert xhr.status + " " + url_root
+	      alert xhr.status + "yasu"
 	      alert thrownError
 	      return
 
@@ -272,7 +280,6 @@ $ ->
 					option = $(esto).find("option[value='" + json["user_id"] + "']")[0] 
 					$(option).attr "selected", "selected"
 					
-					console.log "si se pudo?"
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status + " " + url_root
 				alert thrownError
@@ -281,6 +288,7 @@ $ ->
 			
 	$(document).on "change", ".select_class", ->
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
+		console.log "se metio"
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
 		filters = get_filters()
@@ -419,14 +427,12 @@ $ ->
 				$($(html3).find("option[value='" + data[i].coordinador_id + "']")[0]).removeAttr "selected"
 			$($(html3).find("option[value='" + data[i].coordinador_id + "-"+data[i].id+"']")[0]).val(data[i].coordinador_id) 
 			stringcoordinador = $(html3).prop "outerHTML"
-
-	fill_table_nominal_list2 = (table_id, data) ->
-		alert "ey"
 	
 	fill_table_nominal_list = (table_id, data) ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
+		console.log "en el fill table nominal"
 		console.log data
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
@@ -438,9 +444,9 @@ $ ->
 				checkitem = '<input type="checkbox" name="temp_chek" class="check" '+
 				'data-id="'+data[i].id+'" > Ya votó'
 
-			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			tds = '<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
@@ -473,11 +479,14 @@ $ ->
 				,800)
 	$('#select_municipality').change ->
 		filters = get_filters()
+
+		console.log "filtros"
 		console.log filters
 		$.ajax 
 			url:"/api/users"
 			data: filters.data
 			success: (data) ->
+				console.log "en success"
 				console.log data
 				fill_table_nominal_list('#users_table',data)
 				$('html, body').animate(
@@ -570,7 +579,7 @@ $ ->
 					votation_list_id: user_id
 			success: (data) ->
 			error: (xhr, ajaxOptions, thrownError) ->
-				alert 'no se ha podido registrar el votoSDD '+thrownError
+				alert 'no se ha podido registrar el votoSDD '
 
 	$(document).on "click", ".btn-enviar", ->
 		municipio = $('#select_municipality2').find(":selected").val()

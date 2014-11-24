@@ -3,6 +3,15 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, :except => [:show, :index]  
   def show
+    user = User.find(params[:id])
+    if user.role == "subenlace"
+      @subordinados = User.where(:subenlace_id => params[:id])
+    elsif user.role == "enlace"
+      @subordinados = User.where(:enlace_id => params[:id])
+    elsif user.role == "coordinador"
+      @subordinados = User.where(:coordinador_id => params[:id])
+    end
+    
   end
   # GET /users/new
   def new
@@ -29,7 +38,6 @@ class UsersController < ApplicationController
     @municipalities = Municipality.all.order( :name )
     @sub_links = User.where( :role => "subenlace")
     @polling = Polling.all
-    puts "*************************************************"
     @algo = ListVotationHeader.all
     if params && !params[:prueba].nil?
       puts "pos si hay params "+params[:prueba][:polling_id].to_s
@@ -165,6 +173,18 @@ class UsersController < ApplicationController
   def downloads
     users = User.where( :role => params[:role] )
     filename = "usuarios_#{params[:role]}.xls"
+    send_data( User.array_to_xls( users), :filename => filename, 
+      :type=> "application/vnd.ms-excel" )
+  end
+  def downloads_subordinados
+    if params[:role] == "subenlace"
+      users = User.where(:subenlace_id => params[:id])
+    elsif params[:role] == "enlace"
+      users = User.where(:enlace_id => params[:id])
+    elsif params[:role] == "coordinador"
+      users = User.where(:coordinador_id => params[:id])
+    end
+    filename = "subordinados_#{params[:role]}.xls"
     send_data( User.array_to_xls( users), :filename => filename, 
       :type=> "application/vnd.ms-excel" )
   end
