@@ -453,8 +453,7 @@ $ ->
 			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
 			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
 			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + checkitem + " </p></td> "
+			'<td><p class="small"> ' + data[i].parent + " </p></td> "
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
@@ -479,7 +478,7 @@ $ ->
 				,800)
 	$('#select_municipality').change ->
 		filters = get_filters()
-
+		alert "pos si"
 		console.log "filtros"
 		console.log filters
 		$.ajax 
