@@ -482,6 +482,7 @@ module Api
 				puts "*************************** params"+params.to_s
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
+				puts "esta vacio? "+@us.count.to_s
 				if !@us.empty?
 					lvh.save
 					cont = 1
