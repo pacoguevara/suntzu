@@ -3,6 +3,15 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, :except => [:show, :index]  
   def show
+    user = User.find(params[:id])
+    if user.role == "subenlace"
+      @subordinados = User.where(:subenlace_id => params[:id])
+    elsif user.role == "enlace"
+      @subordinados = User.where(:enlace_id => params[:id])
+    elsif user.role == "coordinador"
+      @subordinados = User.where(:coordinador_id => params[:id])
+    end
+    
   end
   # GET /users/new
   def new
@@ -28,6 +37,36 @@ class UsersController < ApplicationController
     @links = User.where( :role => "enlace")
     @municipalities = Municipality.all.order( :name )
     @sub_links = User.where( :role => "subenlace")
+    @polling = Polling.all
+    @algo = ListVotationHeader.all
+    if params && !params[:prueba].nil?
+      puts "pos si hay params "+params[:prueba][:polling_id].to_s
+      lvh = ListVotationHeader.new
+      lvh.polling_id = params[:prueba][:polling_id]
+      lvh.save
+
+      @us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipality_id], params[:prueba][:fecha_inicial_registro].to_date, params[:prueba][:fecha_final_registro].to_date, params[:prueba][:fecha_inicial_nacimiento].to_date, params[:prueba][:fecha_final_nacimiento].to_date)
+      cont = 1
+      @lvArray = Array.new
+      @us.each do |u|
+        newlv = ListVotation.new
+        newlv.list_votation_header_id = lvh.id
+        newlv.user_id = u.id
+        newlv.number = cont
+        cont+=1
+        if u.temp_chek.nil?
+          newlv.check = false
+        else
+          newlv.check = true
+        end
+        newlv.save(:validate=> false)
+        @lvArray.push(newlv)
+      end
+      puts "es el user "+@us.to_s
+
+    else
+      puts "pos no hay params " +params.nil?.to_s
+    end
   end
   # POST /users
   # POST /users.json
@@ -118,6 +157,7 @@ class UsersController < ApplicationController
       "subenlace" => "Subenlaces",
       "coordinador" => "Coordinadores"
     }
+    @municipalities = Municipality.all.order( :name )
   	if params[:role] == 'jugador'
   		@users = User.all.limit(User.per_page).offset(0).order(:created_at)
       @users_t = User.all
@@ -133,6 +173,18 @@ class UsersController < ApplicationController
   def downloads
     users = User.where( :role => params[:role] )
     filename = "usuarios_#{params[:role]}.xls"
+    send_data( User.array_to_xls( users), :filename => filename, 
+      :type=> "application/vnd.ms-excel" )
+  end
+  def downloads_subordinados
+    if params[:role] == "subenlace"
+      users = User.where(:subenlace_id => params[:id])
+    elsif params[:role] == "enlace"
+      users = User.where(:enlace_id => params[:id])
+    elsif params[:role] == "coordinador"
+      users = User.where(:coordinador_id => params[:id])
+    end
+    filename = "subordinados_#{params[:role]}.xls"
     send_data( User.array_to_xls( users), :filename => filename, 
       :type=> "application/vnd.ms-excel" )
   end

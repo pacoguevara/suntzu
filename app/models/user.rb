@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   belongs_to :municipality
   belongs_to :group
   has_many :documents, :dependent => :destroy
+  has_many :list_votations
   accepts_nested_attributes_for :documents,  :allow_destroy => true
 
 

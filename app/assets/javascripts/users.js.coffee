@@ -94,6 +94,29 @@ $ ->
 		# 	hide_groups()
 		load_parents(role)
 		
+	$('.search3').keypress (e) ->
+		key = e.which
+		if key is 13
+			filters = get_filters2()
+			$.ajax 
+				url:"/api/users/get_list_votation"
+				data:
+					filters.data
+				success: (data) ->
+					console.log data
+					fill_table2("#detalle_table", data)
+	$(document).on "change", ".filtro_dropdown", ->	
+		filters = get_filters()
+		console.log "pudo entrar"
+		console.log filters
+		$.ajax 
+				url:"/api/users"
+				data:
+					filters.data
+				success: (data) ->
+					fill_table_nominal_list('#users_table', data)
+
+	
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -103,8 +126,11 @@ $ ->
 					data:
 						filters.data
 					success: (data) ->
-						console.log data
 						fill_table_nominal_list('#users_table', data)
+					error: (xhr, ajaxOptions, thrownError) ->
+				      alert xhr.status + " " + url_root
+				      alert thrownError
+				      return
 
 	$('.search').keypress (e) ->
 		key = e.which
@@ -146,14 +172,31 @@ $ ->
 					success: (data) ->
 						console.log data
 						fill_table('#users_table', data)
-	
-	get_filters = ->
-		$inputs = $('.search2')
+	get_filters2 = ->
+		$inputs = $('.search3')
 		params = {}
 		data = {}
 		$inputs.each ->
 			unless $(this).val() is ''
 				params[this.name] = $(this).val()
+		if params
+			data:
+				number: params['number']
+				name: params['name']
+				polling_id: $('.hidd')[0].value
+				
+
+	get_filters = ->
+		$inputs = $('.search2')
+		console.log "search2"
+		console.log $inputs
+		params = {}
+		data = {}
+		$inputs.each ->
+			unless $(this).val() is ''
+				params[this.name] = $(this).val()
+		console.log "params"
+		console.log params
 		if params
 			data:
 				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
@@ -185,6 +228,9 @@ $ ->
 				register_end: params['register_end_date']
 				bird_start: params['bird_start_date']
 				bird_end: params['bird_end_date']
+				sub_enlace_id: params['sub_enlace_id']
+				enlace_id: params['enlace_id']
+				coordinador_id: params['coordinador_id']
 
 	selectchange = (id, user_id, tipo) ->
 	  $.ajax
@@ -198,15 +244,52 @@ $ ->
 	    success: (json) ->
 
 	    error: (xhr, ajaxOptions, thrownError) ->
-	      alert xhr.status + " " + url_root
+	      alert xhr.status + "yasu"
 	      alert thrownError
 	      return
 
 	  return
+	changeselected = (esto,id, user_id, tipo) ->
+		$.ajax
+			url: "/api/users/get_parent"
+			data:
+				id1: id
+				id2: user_id
+				tipo: tipo
+			success: (json) ->
+				if json isnt false
+					console.log json
+					if tipo == 1
+						row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove()
+						console.log "es row"
+						console.log $(esto).parent().parent().parent()
+						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
+						$(esto).parent().parent().parent().find('#td-enlace').append select
+						if json["user_id2"] isnt "0"
+							row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
+							select = '<p class="small"><select class="select_class coordinador"  style="width:100%" data-catid="3"><option value="vacio"></option><option value="'+json["user_id2"]+'" selected>'+json["name2"]+'</option></select></p>'
+							$(esto).parent().parent().parent().find('#td-coordinador').append select
+							
+					if tipo == 2
+						row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
+						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
+						$(esto).parent().parent().parent().find('#td-coordinador').append select
+					
+						
+
+					option = $(esto).find("option[value='" + json["user_id"] + "']")[0] 
+					$(option).attr "selected", "selected"
+					
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert xhr.status + " " + url_root
+				alert thrownError
+		  return
+
+			
 	$(document).on "change", ".select_class", ->
-		console.log "en el change"
-		console.log $(this).find(":selected").data("tipo")
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
+		console.log "se metio"
+		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
 		filters = get_filters()
 		#console.log filters
@@ -225,6 +308,22 @@ $ ->
 				$('html, body').animate(
 					scrollTop : 0
 				,800)
+	fill_table2 = (table_id, data) ->
+		console.log data
+		console.log table_id
+		$("tr:has(td)").remove();
+		$.each data, (i, item) ->
+			if data[i].check == true
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'" checked>Ya votó'
+			else
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
+			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
+			'<td><p class="small"> ' + data[i].name + " </p></td> " +
+			'<td><p class="small"> ' + checkaux + " </p></td> " +
+			console.log "ejey"
+			console.log tds
+			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
+			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
 
 	fill_table = (table_id, data) ->
 		count = data.total
@@ -234,11 +333,11 @@ $ ->
 		$('#total_result').html(count)
 		
 		#console.log data
-		stringsubenlace = '<select class="default select_class" style="width:100%">'+
+		stringsubenlace = '<select class="default select_class subenlace" style="width:100%">'+
 			'<option value="0" ></option>'
-		stringenlace = '<select class="default select_class" style="width:100%">'+
+		stringenlace = '<select class="default select_class enlace" style="width:100%">'+
 			'<option value="0" ></option>'
-		stringcoordinador = '<select class="default select_class" '+
+		stringcoordinador = '<select class="default select_class coordinador" '+
 			'style="width:100%"><option value="0" ></option>'
 		i = 0
 
@@ -297,30 +396,26 @@ $ ->
 			stringsubenlace = $(html).prop "outerHTML"
 			stringenlace = $(html2).prop "outerHTML"
 			stringcoordinador = $(html3).prop "outerHTML"
-			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
 			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td><p class="small"> ' + stringsubenlace + "</p></td> " +
-			'<td><p class="small"> ' + stringenlace + "</p></td> " +
-			'<td><p class="small"> ' + stringcoordinador + "</p></td> " +
-			'<td ><a href="/users/'+data[i].id+'?role='+data[i].role+'">'+
-				'<span class="glyphicon glyphicon-eye-open"></span></a></td>'+
-			'<td ><a class="table-action" '+
-				'data-confirm="¿Está seguro que desea eliminar?" data-method="delete"'+
-				' href="/users/'+data[i].id+'" rel="nofollow">'+
-			'<span class="glyphicon glyphicon-remove"></span></a></td>'
+			'<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " +
+			'<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " +
+			'<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> " 
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
 			$('<tr>').html(cleared_tds).appendTo table_id
 			if data[i].subenlace_id?
-				$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).removeAttr "selected"
+				$($(html).find("option[value='"+data[i].subenlace_id+"']")[0]).removeAttr "selected"
+				console.log $(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")
 			$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).val(data[i].subenlace_id) 
+			console.log  html
 			stringsubenlace = $(html).prop "outerHTML"
 
 			if data[i].enlace_id?
@@ -332,11 +427,12 @@ $ ->
 				$($(html3).find("option[value='" + data[i].coordinador_id + "']")[0]).removeAttr "selected"
 			$($(html3).find("option[value='" + data[i].coordinador_id + "-"+data[i].id+"']")[0]).val(data[i].coordinador_id) 
 			stringcoordinador = $(html3).prop "outerHTML"
-
+	
 	fill_table_nominal_list = (table_id, data) ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
+		console.log "en el fill table nominal"
 		console.log data
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
@@ -348,17 +444,16 @@ $ ->
 				checkitem = '<input type="checkbox" name="temp_chek" class="check" '+
 				'data-id="'+data[i].id+'" > Ya votó'
 
-			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			tds = '<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
+			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
 			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
 			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + checkitem + " </p></td> "
+			'<td><p class="small"> ' + data[i].parent + " </p></td> "
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
@@ -383,11 +478,14 @@ $ ->
 				,800)
 	$('#select_municipality').change ->
 		filters = get_filters()
+		alert "pos si"
+		console.log "filtros"
 		console.log filters
 		$.ajax 
 			url:"/api/users"
 			data: filters.data
 			success: (data) ->
+				console.log "en success"
 				console.log data
 				fill_table_nominal_list('#users_table',data)
 				$('html, body').animate(
@@ -467,5 +565,55 @@ $ ->
 			success: (data) ->
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert 'no se ha podido registrar el voto'
+
+	$(document).on "change", ".check2", ->
+		user_id = $(this).data('id')
+		mje = (if @checked then " ha votado" else " ha cancelado su voto")
+		$.ajax 
+			type: "GET"
+			url:"/api/users/list_check"
+			data: 
+				user:
+					temp_chek: @checked
+					votation_list_id: user_id
+			success: (data) ->
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert 'no se ha podido registrar el votoSDD '
+
+	$(document).on "click", ".btn-enviar", ->
+		municipio = $('#select_municipality2').find(":selected").val()
+		polling = $('#select_polling').find(":selected").val()
+		register_start_date = $('#register_start_date').val()
+		register_end_date = $('#register_end_date').val()
+		bird_start_date = $('#bird_start_date').val()
+		bird_end_date = $('#bird_end_date').val()
+		if municipio == "-1"
+			alert "Selecciona un municipio."
+		else if polling == "-1"
+			alert "Selecciona un polling."
+		else if register_start_date == ""
+			alert "Selecciona una fecha de registro inicial."
+		else if register_end_date == ""
+			alert "Selecciona una fecha de registro final."
+		else if bird_start_date == ""
+			alert "Selecciona una fecha de nacimiento inicial."
+		else if bird_end_date == ""
+			alert "Selecciona una fecha de nacimiento final."
+		else
+			$.ajax 
+				type: "GET"
+				url:"/api/users/list_votation"
+				data: 
+					prueba:
+						municipio: municipio
+						polling: polling
+						register_start_date: register_start_date
+						register_end_date: register_end_date
+						bird_start_date: bird_start_date
+						bird_end_date: bird_end_date
+				success: (data) ->
+					location.reload()
+				error: (xhr, ajaxOptions, thrownError) ->
+					alert 'no se ha podido registrar el votoSDD '+thrownError
 
 return

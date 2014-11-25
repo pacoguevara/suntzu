@@ -18823,7 +18823,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var draw_user_in_map, fill_table, fill_table_nominal_list, get_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, fill_table_nominal_list2, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
     load_user_in_map = function(user_id) {
       console.log("/api/users/" + user_id + "?cols=zipcode,id,lat,lng");
       return $.ajax({
@@ -18937,6 +18937,35 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       role = $("option:selected", this).val();
       return load_parents(role);
     });
+    $('.search3').keypress(function(e) {
+      var filters, key;
+      key = e.which;
+      if (key === 13) {
+        filters = get_filters2();
+        return $.ajax({
+          url: "/api/users/get_list_votation",
+          data: filters.data,
+          success: function(data) {
+            console.log(data);
+            console.log("pudo entrar");
+            return fill_table2("#detalle_table", data);
+          }
+        });
+      }
+    });
+    $(document).on("change", ".municipality", function() {
+      var filters;
+      filters = get_filters();
+      console.log(filters);
+      return $.ajax({
+        url: "/api/users",
+        data: filters.data,
+        success: function(data) {
+          console.log("pos si");
+          return fill_table('#users_table', data);
+        }
+      });
+    });
     $('.search2').keypress(function(e) {
       var filters, key;
       key = e.which;
@@ -18946,8 +18975,11 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           url: "/api/users",
           data: filters.data,
           success: function(data) {
-            console.log(data);
             return fill_table_nominal_list('#users_table', data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + " " + url_root);
+            alert(thrownError);
           }
         });
       }
@@ -19001,6 +19033,26 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         }
       }
     });
+    get_filters2 = function() {
+      var $inputs, data, params;
+      $inputs = $('.search3');
+      params = {};
+      data = {};
+      $inputs.each(function() {
+        if ($(this).val() !== '') {
+          return params[this.name] = $(this).val();
+        }
+      });
+      if (params) {
+        return {
+          data: {
+            number: params['number'],
+            name: params['name'],
+            polling_id: $('.hidd')[0].value
+          }
+        };
+      }
+    };
     get_filters = function() {
       var $inputs, data, params;
       $inputs = $('.search2');
@@ -19063,10 +19115,49 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         }
       });
     };
+    changeselected = function(esto, id, user_id, tipo) {
+      return $.ajax({
+        url: "/api/users/get_parent",
+        data: {
+          id1: id,
+          id2: user_id,
+          tipo: tipo
+        },
+        success: function(json) {
+          var option, row, select;
+          if (json !== false) {
+            console.log(json);
+            if (tipo === 1) {
+              row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove();
+              console.log("es row");
+              console.log($(esto).parent().parent().parent());
+              select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="' + json["user_id"] + '" selected>' + json["name"] + '</option></select></p>';
+              $(esto).parent().parent().parent().find('#td-enlace').append(select);
+              if (json["user_id2"] !== "0") {
+                row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove();
+                select = '<p class="small"><select class="select_class coordinador"  style="width:100%" data-catid="3"><option value="vacio"></option><option value="' + json["user_id2"] + '" selected>' + json["name2"] + '</option></select></p>';
+                $(esto).parent().parent().parent().find('#td-coordinador').append(select);
+              }
+            }
+            if (tipo === 2) {
+              row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove();
+              select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="' + json["user_id"] + '" selected>' + json["name"] + '</option></select></p>';
+              $(esto).parent().parent().parent().find('#td-coordinador').append(select);
+            }
+            option = $(esto).find("option[value='" + json["user_id"] + "']")[0];
+            $(option).attr("selected", "selected");
+            return console.log("si se pudo?");
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(xhr.status + " " + url_root);
+          alert(thrownError);
+        }
+      });
+    };
     $(document).on("change", ".select_class", function() {
-      console.log("en el change");
-      console.log($(this).find(":selected").data("tipo"));
-      return selectchange($(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
+      selectchange($(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
+      return changeselected($(this), $(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
     });
     $('.page_number').click(function(e) {
       var filters, page_number;
@@ -19088,6 +19179,23 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         }
       });
     });
+    fill_table2 = function(table_id, data) {
+      console.log(data);
+      console.log(table_id);
+      $("tr:has(td)").remove();
+      return $.each(data, function(i, item) {
+        var checkaux, cleared_tds, tds;
+        if (data[i].check === true) {
+          checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="' + data[i].id + '" checked>Ya votó';
+        } else {
+          checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="' + data[i].id + '">Ya votó';
+        }
+        tds = '<td><p class="small"> ' + data[i].number + " </p></td> " + '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + checkaux + " </p></td> " + console.log("ejey");
+        console.log(tds);
+        cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
+        return $('<tr>').html(cleared_tds).appendTo('#detalle_table');
+      });
+    };
     fill_table = function(table_id, data) {
       var coordinadores, count, enlaces, full_name, html, html2, html3, i, stringcoordinador, stringenlace, stringsubenlace, subenlaces;
       count = data.total;
@@ -19095,9 +19203,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       enlaces = data.enlaces;
       coordinadores = data.coordinadores;
       $('#total_result').html(count);
-      stringsubenlace = '<select class="default select_class" style="width:100%">' + '<option value="0" ></option>';
-      stringenlace = '<select class="default select_class" style="width:100%">' + '<option value="0" ></option>';
-      stringcoordinador = '<select class="default select_class" ' + 'style="width:100%"><option value="0" ></option>';
+      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="0" ></option>';
+      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="0" ></option>';
+      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="0" ></option>';
       i = 0;
       while (i < subenlaces.length) {
         full_name = subenlaces[i].name + " " + subenlaces[i].first_name + ' ' + subenlaces[i].last_name;
@@ -19148,13 +19256,15 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         stringsubenlace = $(html).prop("outerHTML");
         stringenlace = $(html2).prop("outerHTML");
         stringcoordinador = $(html3).prop("outerHTML");
-        tds = '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + data[i].first_name + " </p></td> " + '<td><p class="small"> ' + data[i].last_name + " </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td><p class="small"> ' + stringsubenlace + "</p></td> " + '<td><p class="small"> ' + stringenlace + "</p></td> " + '<td><p class="small"> ' + stringcoordinador + "</p></td> " + '<td ><a href="/users/' + data[i].id + '?role=' + data[i].role + '">' + '<span class="glyphicon glyphicon-eye-open"></span></a></td>' + '<td ><a class="table-action" ' + 'data-confirm="¿Está seguro que desea eliminar?" data-method="delete"' + ' href="/users/' + data[i].id + '" rel="nofollow">' + '<span class="glyphicon glyphicon-remove"></span></a></td>';
+        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         $('<tr>').html(cleared_tds).appendTo(table_id);
         if (data[i].subenlace_id != null) {
-          $($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']")[0]).removeAttr("selected");
+          $($(html).find("option[value='" + data[i].subenlace_id + "']")[0]).removeAttr("selected");
+          console.log($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']"));
         }
         $($(html).find("option[value='" + data[i].subenlace_id + "-" + data[i].id + "']")[0]).val(data[i].subenlace_id);
+        console.log(html);
         stringsubenlace = $(html).prop("outerHTML");
         if (data[i].enlace_id != null) {
           $($(html2).find("option[value='" + data[i].enlace_id + "']")[0]).removeAttr("selected");
@@ -19167,6 +19277,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         $($(html3).find("option[value='" + data[i].coordinador_id + "-" + data[i].id + "']")[0]).val(data[i].coordinador_id);
         return stringcoordinador = $(html3).prop("outerHTML");
       });
+    };
+    fill_table_nominal_list2 = function(table_id, data) {
+      return alert("ey");
     };
     fill_table_nominal_list = function(table_id, data) {
       var count;
@@ -19289,7 +19402,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         });
       }
     });
-    return $(document).on("change", ".check", function() {
+    $(document).on("change", ".check", function() {
       var mje, user_id;
       user_id = $(this).data('id');
       mje = (this.checked ? " ha votado" : " ha cancelado su voto");
@@ -19306,6 +19419,68 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           return alert('no se ha podido registrar el voto');
         }
       });
+    });
+    $(document).on("change", ".check2", function() {
+      var mje, user_id;
+      user_id = $(this).data('id');
+      mje = (this.checked ? " ha votado" : " ha cancelado su voto");
+      return $.ajax({
+        type: "GET",
+        url: "/api/users/list_check",
+        data: {
+          user: {
+            temp_chek: this.checked,
+            votation_list_id: user_id
+          }
+        },
+        success: function(data) {},
+        error: function(xhr, ajaxOptions, thrownError) {
+          return alert('no se ha podido registrar el votoSDD ' + thrownError);
+        }
+      });
+    });
+    return $(document).on("click", ".btn-enviar", function() {
+      var bird_end_date, bird_start_date, municipio, polling, register_end_date, register_start_date;
+      municipio = $('#select_municipality2').find(":selected").val();
+      polling = $('#select_polling').find(":selected").val();
+      register_start_date = $('#register_start_date').val();
+      register_end_date = $('#register_end_date').val();
+      bird_start_date = $('#bird_start_date').val();
+      bird_end_date = $('#bird_end_date').val();
+      if (municipio === "-1") {
+        return alert("Selecciona un municipio.");
+      } else if (polling === "-1") {
+        return alert("Selecciona un polling.");
+      } else if (register_start_date === "") {
+        return alert("Selecciona una fecha de registro inicial.");
+      } else if (register_end_date === "") {
+        return alert("Selecciona una fecha de registro final.");
+      } else if (bird_start_date === "") {
+        return alert("Selecciona una fecha de nacimiento inicial.");
+      } else if (bird_end_date === "") {
+        return alert("Selecciona una fecha de nacimiento final.");
+      } else {
+        return $.ajax({
+          type: "GET",
+          url: "/api/users/list_votation",
+          data: {
+            prueba: {
+              municipio: municipio,
+              polling: polling,
+              register_start_date: register_start_date,
+              register_end_date: register_end_date,
+              bird_start_date: bird_start_date,
+              bird_end_date: bird_end_date
+            }
+          },
+          success: function(data) {
+            return location.reload();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            return alert('no se ha podido registrar el votoSDD ' + thrownError);
+          }
+        });
+      }
     });
   });
 

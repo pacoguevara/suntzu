@@ -13,7 +13,13 @@
 	<input type="hidden" value="<%=@user.id %>" id="show_user_id"></input>
 	<div class="row">
 		<div class="col-md-4">
-			<%= image_tag @user.image.url(:medium) %>
+			<% if !@user.image.exists?%>
+				<%= image_tag "default.jpg" %>
+			<%else%>
+				<%= image_tag @user.image.url(:medium) %>
+			<% end %>
+			
+			
 		</div>
 		<div class="col-md-3">
 			<dl>
@@ -57,7 +63,7 @@
 				<dl>
 						<dt> SubEnlace </dt>
 						<dd>
-							<% if !@user.subenlace_id.nil?  %>
+							<% if !@user.subenlace_id.nil? && @user.subenlace_id != 0 %>
 						 		<%= link_to User.find(@user.subenlace_id).name, @user.get_subenlace, 
 							 		:target => '_blank' %>
 						 	<% else %> 
@@ -66,7 +72,7 @@
 						</dd>
   					<dt> Enlace </dt>
   					<dd>
-  						<%if !@user.enlace_id.nil? %> 
+  						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
 	  						<%= link_to User.find(@user.enlace_id).name,@user.get_enlace, 
 	  						:target =>'_blank' %>
   						<% else %> 
@@ -75,7 +81,7 @@
   					</dd>
 						<dt> Coordinador </dt>
 						<dd>
-							<%if !@user.coordinador_id.nil? %> 
+							<%if !@user.coordinador_id.nil? && @user.coordinador_id != 0 %> 
 								<%= link_to User.find(@user.coordinador_id).name, @user.get_coordinador,
 								:target =>'_blank' %>
 							<% else %> 
@@ -134,6 +140,73 @@
 	<div class="col-md-12">
 		<div id="containerMapas" style="width:100%;height:380px;overflow:hidden;">
 		</div>
+	</div>
+</div>
+<hr />
+<div>
+	<div class="row">
+		<%if @subordinados && !@subordinados.empty?%>
+		<table class="table table-bordered table-striped table-hover" id="users_table">  
+	      <thead>
+	        <tr>
+		      <th >
+		        <p class="small">Nombre</p>
+		      </th>
+		      <th >
+		        <p class="small">Paterno</p>
+		      </th>
+		      <th >
+		        <p class="small">Materno</p>
+		      </th>
+		      <th>
+		        <p class="small">Sexo</p>
+		      </th>
+		      <th>
+		        <p class="small">Edad</p>
+		      </th>
+		      <th>
+		        <p class="small">Sección</p>
+		      </th>
+		      <th>
+		        <p class="small">Municipio</p>
+		      </th>
+		      <th>
+		        <p class="small">Colonia</p>
+		      </th>		      
+		    </tr>
+	        </thead>
+	        <%@subordinados.each do |s|%>
+		        <tr>
+		            <td >
+		              <p class="small"><%=s.name%></p>
+		            </td>
+		            <td >
+		              <p class="small"><%= s.first_name%></p>
+		            </td>
+		            <td >
+		              <p class="small"><%= s.last_name %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.age %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.section.to_i %></p>
+		            </td>
+		            <td>
+		              <p class="small"><%= s.city %></p>
+		            </td>
+		            <td>
+		            	<p class="small"><%= s.city %></p>
+		            </td>
+		            <td>
+		            	<p class="small"><%= s.city %></p>
+		            </td>
+	            </tr>
+	        <%end%>
+    	</table>
+    	<%= link_to 'Descargar', downloads_subordinados_path(:id => @user.id, :role => @user.role), class: "btn btn-primary btn-large"%>
+    	<%end%>
+
 	</div>
 </div>
 <hr />

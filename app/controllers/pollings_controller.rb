@@ -21,6 +21,11 @@ class PollingsController < ApplicationController
   # GET /pollings/1/edit
   def edit
   end
+  def detalle
+    puts "paarams ********************************************************"+params.to_s
+    @lvh = ListVotationHeader.find(params[:polling_id])
+    @listvotation = ListVotation.where(:list_votation_header_id => @lvh.id).order(:number)
+  end
 
   # POST /pollings
   # POST /pollings.json

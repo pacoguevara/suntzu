@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103233139) do
+ActiveRecord::Schema.define(version: 20141106164031) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -60,6 +60,22 @@ ActiveRecord::Schema.define(version: 20141103233139) do
   end
 
   add_index "groups", ["candidate_id"], name: "index_groups_on_candidate_id", using: :btree
+
+  create_table "list_votation_headers", force: true do |t|
+    t.integer "polling_id"
+  end
+
+  add_index "list_votation_headers", ["polling_id"], name: "index_list_votation_headers_on_polling_id", using: :btree
+
+  create_table "list_votations", force: true do |t|
+    t.integer "list_votation_header_id"
+    t.integer "user_id"
+    t.integer "number"
+    t.boolean "check"
+  end
+
+  add_index "list_votations", ["list_votation_header_id"], name: "index_list_votations_on_list_votation_header_id", using: :btree
+  add_index "list_votations", ["user_id"], name: "index_list_votations_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
     t.integer  "user_id"
@@ -114,6 +130,16 @@ ActiveRecord::Schema.define(version: 20141103233139) do
   create_table "states", force: true do |t|
     t.string "name"
   end
+
+  create_table "user_messages", force: true do |t|
+    t.boolean "is_sms"
+    t.boolean "is_mail"
+    t.integer "user_id"
+    t.integer "message_id"
+  end
+
+  add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id", using: :btree
+  add_index "user_messages", ["user_id"], name: "index_user_messages_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: ""

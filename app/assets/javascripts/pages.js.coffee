@@ -175,6 +175,24 @@ $ ->
 	$container2=$('#container2')
 	$container3=$('#container3')
 	$container4=$('#container4')
+	$container5=$('#container5')
+	if $container5?
+		$.ajax
+	    url: "/api/users/municipality"
+	    dataType: "json"
+	    success: (json) ->
+	    	
+	    	console.log json
+	    	tabla = "<table class='table table-bordered table-striped table-hover'><tr><th>Nombre</th><th>Numero de jugadores</th></tr>"
+	    	$.each json, (i, item) ->
+	    		tabla = tabla + "<tr><td>" + i+"</td><td>"+item+"</td>"
+
+	    	tabla = tabla + "</table>"
+	    	$container5.append tabla
+	    error: (xhr, ajaxOptions, thrownError) ->
+	      alert xhr.status + " " + url_root
+	      alert thrownError
+	      return
 	# if container1?
 	# 	$container1.highcharts typed_cfg
 	# if $container2?

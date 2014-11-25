@@ -14,6 +14,11 @@ Pan::Application.routes.draw do
       		get "parents", :action=>"parents"
           get "groups", :action=>"groups"
           get "enlace", :action => "enlace"
+          get "list_check", :action => "list_check"
+          get "get_list_votation", :action => "get_list_votation"
+          get "list_votation", :action => "list_votation"
+          get "get_parent",:action => "get_parent"
+          get "municipality",:action => "municipality"
       	end
       end
       resources :pollings do 
@@ -40,4 +45,6 @@ Pan::Application.routes.draw do
   get 'download/:id' => 'documents#download', :as => 'download' 
   get 'downloads' => 'users#downloads', :as => 'downloads'
   get 'lista_nominal' => 'users#lista_nominal', :as => 'nominal_list'
+  get 'detalle' => 'pollings#detalle'
+  get 'downloads_subordinados' => 'users#downloads_subordinados'
 end
