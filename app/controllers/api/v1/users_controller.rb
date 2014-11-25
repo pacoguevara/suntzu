@@ -499,6 +499,8 @@ module Api
 						newlv.save!
 						@lvArray.push(newlv)
 					end
+				else
+					puts "************************************ es empty"
 				end
 				respond_with @lvArray
 			end
