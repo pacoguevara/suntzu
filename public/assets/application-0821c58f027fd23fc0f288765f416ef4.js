@@ -18623,7 +18623,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var $container1, $container2, $container3, $container4, bar_cfg, handler, line_cfg, pie_cfg, typed_cfg;
+    var $container1, $container2, $container3, $container4, $container5, bar_cfg, handler, line_cfg, pie_cfg, typed_cfg;
     line_cfg = {
       chart: {
         type: "line"
@@ -18750,6 +18750,27 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     $container2 = $('#container2');
     $container3 = $('#container3');
     $container4 = $('#container4');
+    $container5 = $('#container5');
+    if ($container5 != null) {
+      $.ajax({
+        url: "/api/users/municipality",
+        dataType: "json",
+        success: function(json) {
+          var tabla;
+          console.log(json);
+          tabla = "<table class='table table-bordered table-striped table-hover'><tr><th>Nombre</th><th>Numero de jugadores</th></tr>";
+          $.each(json, function(i, item) {
+            return tabla = tabla + "<tr><td>" + i + "</td><td>" + item + "</td>";
+          });
+          tabla = tabla + "</table>";
+          return $container5.append(tabla);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(xhr.status + " " + url_root);
+          alert(thrownError);
+        }
+      });
+    }
     if ($container4 != null) {
       $.get('/api/users/groups').success(function(data) {
         return $container4.highcharts({
@@ -18823,7 +18844,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, fill_table_nominal_list2, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
     load_user_in_map = function(user_id) {
       console.log("/api/users/" + user_id + "?cols=zipcode,id,lat,lng");
       return $.ajax({
@@ -18947,22 +18968,21 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           data: filters.data,
           success: function(data) {
             console.log(data);
-            console.log("pudo entrar");
             return fill_table2("#detalle_table", data);
           }
         });
       }
     });
-    $(document).on("change", ".municipality", function() {
+    $(document).on("change", ".filtro_dropdown", function() {
       var filters;
       filters = get_filters();
+      console.log("pudo entrar");
       console.log(filters);
       return $.ajax({
         url: "/api/users",
         data: filters.data,
         success: function(data) {
-          console.log("pos si");
-          return fill_table('#users_table', data);
+          return fill_table_nominal_list('#users_table', data);
         }
       });
     });
@@ -18978,7 +18998,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             return fill_table_nominal_list('#users_table', data);
           },
           error: function(xhr, ajaxOptions, thrownError) {
-            alert(xhr.status + " " + url_root);
+            alert(xhr.status);
             alert(thrownError);
           }
         });
@@ -18995,6 +19015,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             return params[this.name] = $(this).val();
           }
         });
+        console.log("son los inputs");
+        console.log(params);
         if (params) {
           return $.ajax({
             url: "/api/users",
@@ -19056,6 +19078,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     get_filters = function() {
       var $inputs, data, params;
       $inputs = $('.search2');
+      console.log("search2");
+      console.log($inputs);
       params = {};
       data = {};
       $inputs.each(function() {
@@ -19063,6 +19087,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           return params[this.name] = $(this).val();
         }
       });
+      console.log("params");
+      console.log(params);
       if (params) {
         return {
           data: {
@@ -19094,7 +19120,10 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             register_start: params['register_start_date'],
             register_end: params['register_end_date'],
             bird_start: params['bird_start_date'],
-            bird_end: params['bird_end_date']
+            bird_end: params['bird_end_date'],
+            sub_enlace_id: params['sub_enlace_id'],
+            enlace_id: params['enlace_id'],
+            coordinador_id: params['coordinador_id']
           }
         };
       }
@@ -19110,7 +19139,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         },
         success: function(json) {},
         error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status + " " + url_root);
+          alert(xhr.status);
           alert(thrownError);
         }
       });
@@ -19145,18 +19174,18 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
               $(esto).parent().parent().parent().find('#td-coordinador').append(select);
             }
             option = $(esto).find("option[value='" + json["user_id"] + "']")[0];
-            $(option).attr("selected", "selected");
-            return console.log("si se pudo?");
+            return $(option).attr("selected", "selected");
           }
         },
         error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status + " " + url_root);
+          alert(xhr.status);
           alert(thrownError);
         }
       });
     };
     $(document).on("change", ".select_class", function() {
       selectchange($(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
+      console.log("se metio");
       return changeselected($(this), $(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
     });
     $('.page_number').click(function(e) {
@@ -19234,7 +19263,11 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       $("tr:has(td)").remove();
       data = data.data;
       return $.each(data, function(i, item) {
-        var cleared_tds, option, tds;
+        var cleared_tds, option, string_selects, tds;
+        console.log(i);
+        console.log("console");
+        console.log(item);
+        string_selects = "";
         if (data[i].subenlace_id != null) {
           option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0];
           $(option).attr("selected", "selected");
@@ -19256,7 +19289,18 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         stringsubenlace = $(html).prop("outerHTML");
         stringenlace = $(html2).prop("outerHTML");
         stringcoordinador = $(html3).prop("outerHTML");
-        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+        if (data[i].role === "jugador") {
+          string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+        } else if (data[i].role === "subenlace") {
+          console.log("dafuq");
+          string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+        } else if (data[i].role === "enlace") {
+          string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+        }
+        console.log(string_selects);
+        console.log("rol");
+        console.log(data[i].role);
+        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects;
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         $('<tr>').html(cleared_tds).appendTo(table_id);
         if (data[i].subenlace_id != null) {
@@ -19278,14 +19322,12 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         return stringcoordinador = $(html3).prop("outerHTML");
       });
     };
-    fill_table_nominal_list2 = function(table_id, data) {
-      return alert("ey");
-    };
     fill_table_nominal_list = function(table_id, data) {
       var count;
       count = data.total;
       $('#total_result').html(count);
       data = data.data;
+      console.log("en el fill table nominal");
       console.log(data);
       $("tr:has(td)").remove();
       return $.each(data, function(i, item) {
@@ -19295,7 +19337,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         } else {
           checkitem = '<input type="checkbox" name="temp_chek" class="check" ' + 'data-id="' + data[i].id + '" > Ya votó';
         }
-        tds = '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + data[i].first_name + " </p></td> " + '<td><p class="small"> ' + data[i].last_name + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + checkitem + " </p></td> ";
+        tds = '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> " + '<td><p class="small"> ' + data[i].parent + " </p></td> ";
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         return $('<tr>').html(cleared_tds).appendTo(table_id);
       });
@@ -19324,11 +19366,14 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     $('#select_municipality').change(function() {
       var filters;
       filters = get_filters();
+      alert("pos si");
+      console.log("filtros");
       console.log(filters);
       return $.ajax({
         url: "/api/users",
         data: filters.data,
         success: function(data) {
+          console.log("en success");
           console.log(data);
           fill_table_nominal_list('#users_table', data);
           return $('html, body').animate({
@@ -19435,7 +19480,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         },
         success: function(data) {},
         error: function(xhr, ajaxOptions, thrownError) {
-          return alert('no se ha podido registrar el votoSDD ' + thrownError);
+          return alert('no se ha podido registrar el voto ');
         }
       });
     });
@@ -19477,7 +19522,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             return location.reload();
           },
           error: function(xhr, ajaxOptions, thrownError) {
-            return alert('no se ha podido registrar el votoSDD ' + thrownError);
+            return alert('no se ha podido registrar el voto ' + thrownError);
           }
         });
       }

@@ -7,10 +7,10 @@ module Api
 				where_statment = ""
 				if params.has_key? :role
 					if params[:role] != "jugador"
-						where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
+						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
-				if params.has_key? :municipality_id
+				if params.has_key? :municipality_id && params[:municipality_id] != -1
 					if !where_statment.blank?
 						where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
 					else
@@ -302,6 +302,7 @@ module Api
 					else
 						users = User.where(where_statment).limit(User.per_page).offset(0)
 					end					
+					puts "es el queryyyyyy "+where_statment.to_s
 					users_ar = []
 				 	@subenlace = User.where(:role => "subenlace")
 			    @enlace = User.where(:role => "enlace")
@@ -350,19 +351,19 @@ module Api
 					puts "es UNO"
 					user.subenlace_id = params[:id1]
 					user2 = User.find(params[:id1])
-					if user2.parent && user2.parent != 0
-						user.enlace_id = user2.parent
-						user3 = User.find(user2.parent)
-						if user3.parent && user3.parent != 0
-							user.coordinador_id = user3.parent							
+					if !user2.enlace_id.nil? && user2.enlace_id != 0
+						user.enlace_id = user2.enlace_id
+						user3 = User.find(user2.enlace_id)
+						if user3.coordinador_id && user3.coordinador_id != 0
+							user.coordinador_id = user3.coordinador_id							
 						end
 					end
 				elsif params[:tipo] == "2"
 					puts "es DOS"
 					user.enlace_id = params[:id1]
 					user2 = User.find(params[:id1])
-					if user2.parent && user2.parent != 0
-						user.coordinador_id = user2.parent
+					if user2.coordinador_id && user2.coordinador_id != 0
+						user.coordinador_id = user2.coordinador_id
 					end
 				elsif params[:tipo] == "3"
 					puts "es TRES"
@@ -374,22 +375,34 @@ module Api
 			end
 			def get_parent
 				user = User.find(params[:id1])
-				if user.parent != 0
-					parent = User.find(user.parent)
-					h = Hash.new
+				h = Hash.new				
+				if params[:tipo] == "1"
+					if user.enlace_id && user.enlace_id != 0
+						parent = User.find(user.enlace_id)
+						h[:user_id] = parent.id
+						h[:name] = parent.full_name
+						if parent.coordinador_id && parent.coordinador_id != 0
+							bisparent = User.find(parent.coordinador_id)
+							h[:user_id2] = bisparent.id
+							h[:name2] = bisparent.full_name
+						else
+							h[:user_id2] = 0
+							h[:name2] = ""
+						end
+					else
+						h = false
+					end
+				elsif params[:tipo] == "2" 
+					parent = User.find(user.coordinador_id)
 					h[:user_id] = parent.id
 					h[:name] = parent.full_name
-					if parent.parent != 0
-						user = User.find(parent.parent)
-						h[:user_id2] = user.id
-						h[:name2] = user.full_name
-					else
-						h[:user_id2] = 0
-						h[:name2] = ""
-					end
-				else
-					h = false
+					h[:user_id2] = 0
+					h[:name2] = ""					
+				elsif params[:tipo] == "3"
 				end
+					
+					
+				
 				respond_with h
 			end
 			def get_list_votation
@@ -465,12 +478,12 @@ module Api
 				respond_with users 
 			end
 			def list_votation
-				puts "se hace "+params[:prueba][:municipio]+" "+ params[:prueba][:register_start_date]+" "+ params[:prueba][:register_end_date]+" "+params[:prueba][:bird_start_date]+" "+params[:prueba][:bird_end_date]
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
-				
+				puts "*************************** params"+params.to_s
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
+				puts "esta vacio? "+@us.count.to_s
 				if !@us.empty?
 					lvh.save
 					cont = 1
@@ -488,11 +501,12 @@ module Api
 						newlv.save!
 						@lvArray.push(newlv)
 					end
+				else
+					puts "************************************ es empty"
 				end
 				respond_with @lvArray
 			end
 			def list_check
-				puts "EYYYYYY "+params.to_s
 				vl = ListVotation.find(params[:user][:votation_list_id])
 				if params[:user][:temp_chek] == "true"
 					vl.check = true
