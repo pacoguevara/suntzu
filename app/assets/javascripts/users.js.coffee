@@ -578,7 +578,7 @@ $ ->
 					votation_list_id: user_id
 			success: (data) ->
 			error: (xhr, ajaxOptions, thrownError) ->
-				alert 'no se ha podido registrar el votoSDD '
+				alert 'no se ha podido registrar el voto '
 
 	$(document).on "click", ".btn-enviar", ->
 		municipio = $('#select_municipality2').find(":selected").val()

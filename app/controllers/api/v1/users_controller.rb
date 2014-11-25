@@ -477,7 +477,6 @@ module Api
 				respond_with users 
 			end
 			def list_votation
-				puts "se hace "+params[:prueba][:municipio]+" "+ params[:prueba][:register_start_date]+" "+ params[:prueba][:register_end_date]+" "+params[:prueba][:bird_start_date]+" "+params[:prueba][:bird_end_date]
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
 				
@@ -504,7 +503,6 @@ module Api
 				respond_with @lvArray
 			end
 			def list_check
-				puts "EYYYYYY "+params.to_s
 				vl = ListVotation.find(params[:user][:votation_list_id])
 				if params[:user][:temp_chek] == "true"
 					vl.check = true
