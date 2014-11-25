@@ -376,11 +376,11 @@ module Api
 				user = User.find(params[:id1])
 				h = Hash.new				
 				if params[:tipo] == "1"
-					if user.enlace_id != 0
+					if user.enlace_id && user.enlace_id != 0
 						parent = User.find(user.enlace_id)
 						h[:user_id] = parent.id
 						h[:name] = parent.full_name
-						if parent.coordinador_id != 0
+						if parent.coordinador_id && parent.coordinador_id != 0
 							bisparent = User.find(parent.coordinador_id)
 							h[:user_id2] = bisparent.id
 							h[:name2] = bisparent.full_name
