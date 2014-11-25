@@ -167,13 +167,13 @@
         <% @users.each do |user| %>
           <tr>
             <td >
-              <p class="small"><%=user.name%></p>
+              <p class="small"><%=link_to user.name,user%></p>
             </td>
             <td >
-              <p class="small"><%= user.first_name%></p>
+              <p class="small"><%=link_to user.first_name, user%></p>
             </td>
             <td >
-              <p class="small"><%= user.last_name %></p>
+              <p class="small"><%=link_to user.last_name, user %></p>
             </td>
             <td>
               <p class="small"><%= user.age %></p>

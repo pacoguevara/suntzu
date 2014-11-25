@@ -114,7 +114,7 @@ $ ->
 				data:
 					filters.data
 				success: (data) ->
-					fill_table('#users_table', data)
+					fill_table_nominal_list('#users_table', data)
 
 	
 	$('.search2').keypress (e) ->
