@@ -379,16 +379,24 @@ $ ->
 		$("tr:has(td)").remove();
 		data = data.data
 		$.each data, (i, item) ->
+			console.log i
+			console.log "console"
+			console.log item
 			#change selected parents if user has one
+			string_selects = ""
 			if data[i].subenlace_id?
 				option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0] 
 				$(option).attr "selected", "selected"
 			if data[i].enlace_id?
 				option = $(html2).find("option[value='" + data[i].enlace_id + "']")[0]
 				$(option).attr "selected", "selected"
+				
 			if data[i].coordinador_id?
 				option = $(html3).find("option[value='" + data[i].coordinador_id + "']")[0]
 				$(option).attr "selected", "selected"
+				 
+
+
 				
 			$($(html).find("option")).attr "data-user_id", data[i].id
 			$($(html).find("option")).attr "data-tipo", "1"
@@ -399,6 +407,14 @@ $ ->
 			stringsubenlace = $(html).prop "outerHTML"
 			stringenlace = $(html2).prop "outerHTML"
 			stringcoordinador = $(html3).prop "outerHTML"
+			if data[i].role == "jugador"
+				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+			else if data[i].role == "subenlace"
+				string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+			else if data[i].role == "enlace" 
+				string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+
+			console.log string_selects
 			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
@@ -406,10 +422,7 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
-			'<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " +
-			'<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " +
-			'<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> " 
+			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects 
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
