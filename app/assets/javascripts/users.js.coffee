@@ -128,7 +128,7 @@ $ ->
 					success: (data) ->
 						fill_table_nominal_list('#users_table', data)
 					error: (xhr, ajaxOptions, thrownError) ->
-				      alert xhr.status + " " + url_root
+				      alert xhr.status 
 				      alert thrownError
 				      return
 
@@ -281,7 +281,7 @@ $ ->
 					$(option).attr "selected", "selected"
 					
 			error: (xhr, ajaxOptions, thrownError) ->
-				alert xhr.status + " " + url_root
+				alert xhr.status 
 				alert thrownError
 		  return
 
