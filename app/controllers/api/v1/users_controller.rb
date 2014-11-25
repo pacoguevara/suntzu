@@ -345,65 +345,83 @@ module Api
 				respond_with users = User.joins(:municipality).group("municipalities.name").count(:municipality_id)
 			end
 			def enlace
+				puts "son los params" + params.to_s
 				user = User.find(params[:id2])
-				puts "entro a enlace"
-				if params[:tipo] == "1"
-					puts "es UNO"
-					user.subenlace_id = params[:id1]
-					user2 = User.find(params[:id1])
-					if !user2.enlace_id.nil? && user2.enlace_id != 0
-						user.enlace_id = user2.enlace_id
-						user3 = User.find(user2.enlace_id)
-						if user3.coordinador_id && user3.coordinador_id != 0
-							user.coordinador_id = user3.coordinador_id							
+				puts "entro a enlace "+params[:id2].to_s
+				if params[:id1] == "vacio"
+					if params[:tipo] == "1"
+						user.subenlace_id = 0
+					elsif params[:tipo] == "2"
+						user.enlace_id = 0
+					elsif params[:tipo] == "3"
+						user.coordinador_id = 0		
+					end
+				else
+					if params[:tipo] == "1"
+						puts "es UNO"
+						user.subenlace_id = params[:id1]
+						user2 = User.find(params[:id1])
+						if !user2.enlace_id.nil? && user2.enlace_id != 0
+							user.enlace_id = user2.enlace_id
+							user3 = User.find(user2.enlace_id)
+							if user3.coordinador_id && user3.coordinador_id != 0
+								user.coordinador_id = user3.coordinador_id							
+							end
 						end
+					elsif params[:tipo] == "2"
+						puts "es DOS"
+						user.enlace_id = params[:id1]
+						user2 = User.find(params[:id1])
+						if user2.coordinador_id && user2.coordinador_id != 0
+							user.coordinador_id = user2.coordinador_id
+						end
+					elsif params[:tipo] == "3"
+						puts "es TRES"
+						user.coordinador_id = params[:id1]
 					end
-				elsif params[:tipo] == "2"
-					puts "es DOS"
-					user.enlace_id = params[:id1]
-					user2 = User.find(params[:id1])
-					if user2.coordinador_id && user2.coordinador_id != 0
-						user.coordinador_id = user2.coordinador_id
-					end
-				elsif params[:tipo] == "3"
-					puts "es TRES"
-					user.coordinador_id = params[:id1]
+					
 				end
+				
 
-				user.save
+				user.save!
+				puts "se salvo user "+user.id.to_s
 				respond_with true
 			end
 			def get_parent
-				user = User.find(params[:id1])
-				h = Hash.new				
-				if params[:tipo] == "1"
-					if user.enlace_id && user.enlace_id != 0
-						parent = User.find(user.enlace_id)
+
+					h = Hash.new				
+				if params[:id1] != "vacio"
+					user = User.find(params[:id1])					
+					if params[:tipo] == "1"
+						if user.enlace_id && user.enlace_id != 0
+							parent = User.find(user.enlace_id)
+							h[:user_id] = parent.id
+							h[:name] = parent.full_name
+							if parent.coordinador_id && parent.coordinador_id != 0
+								bisparent = User.find(parent.coordinador_id)
+								h[:user_id2] = bisparent.id
+								h[:name2] = bisparent.full_name
+							else
+								h[:user_id2] = 0
+								h[:name2] = ""
+							end
+						else
+							h = false
+						end
+					elsif params[:tipo] == "2" 
+						parent = User.find(user.coordinador_id)
 						h[:user_id] = parent.id
 						h[:name] = parent.full_name
-						if parent.coordinador_id && parent.coordinador_id != 0
-							bisparent = User.find(parent.coordinador_id)
-							h[:user_id2] = bisparent.id
-							h[:name2] = bisparent.full_name
-						else
-							h[:user_id2] = 0
-							h[:name2] = ""
-						end
-					else
-						h = false
+						h[:user_id2] = 0
+						h[:name2] = ""					
+					elsif params[:tipo] == "3"
 					end
-				elsif params[:tipo] == "2" 
-					parent = User.find(user.coordinador_id)
-					h[:user_id] = parent.id
-					h[:name] = parent.full_name
-					h[:user_id2] = 0
-					h[:name2] = ""					
-				elsif params[:tipo] == "3"
-				end
-					
-					
-				
 				respond_with h
+				else
+				respond_with false					
+				end		
+						
+					
 			end
 			def get_list_votation
 				puts "son los params y asi "+params.to_s
@@ -483,7 +501,6 @@ module Api
 				puts "*************************** params"+params.to_s
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
-				puts "esta vacio? "+@us.count.to_s
 				if !@us.empty?
 					lvh.save
 					cont = 1
