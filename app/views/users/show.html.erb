@@ -73,7 +73,7 @@
   					<dt> Enlace </dt>
   					<dd>
   						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
-	  						<%= link_to User.find(@user.enlace_id).full_name.name,@user.get_enlace, 
+	  						<%= link_to User.find(@user.enlace_id).full_name,@user.get_enlace, 
 	  						:target =>'_blank' %>
   						<% else %> 
   							No tiene asignado enlace
