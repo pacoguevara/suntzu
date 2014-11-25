@@ -138,10 +138,26 @@
           <%= f.input_field :group_id, collection: Group.all, class: "form-control" %>
         <% end %>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="group">
+        <%= f.label 'Subenlace:' %><br>
+        <%= f.input_field :subenlace_id, collection: @subenlaces, 
+        class: "form-control", :label_method => :full_name, :value_method => :id %>
+      </div>
+      <div class="form-group" id="group">
+        <%= f.label 'Enlace:' %><br>
+        <%= f.input_field :enlace_id, collection: @enlaces, 
+        class: "form-control", :label_method => :full_name, :value_method => :id %>
+      </div>
+      <div class="form-group" id="group">
+        <%= f.label 'Coordinador:' %><br>
+        <%= f.input_field :coordinador_id, collection: @coordinadores, 
+        class: "form-control", :label_method => :full_name, :value_method => :id %>
+      </div>
+
+      <!-- <div class="form-group">
       	<%= f.label 'Reporta A:' %><br>
         <select id="parent-select" name="user[parent]" class="form-control" required></select>
-      </div>
+      </div> -->
     </div>
     <div class="col-md-4">
       <div class="form-group">

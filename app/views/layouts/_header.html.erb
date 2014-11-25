@@ -6,11 +6,11 @@
     
 	<div class="btn-group pull-right" id="profileMenu">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      	<% if @user && @user.image.exists?%>
-			<%= image_tag @user.image.url(:medium), :size => '100x100' %>	
-		<%else%>
-			<%= image_tag "default.jpg", :size => '100x100' %>
-		<% end %> 
+    	<% if current_user && current_user.image.exists?%>
+				<%= image_tag current_user.image.url(:medium), :size => '30x30' %>	
+			<%else%>
+				<%= image_tag "default.jpg", :size => '30x30' %>
+			<% end %> 
 		<%= current_user.last_name %>
       <span class="caret"></span>
     </button>

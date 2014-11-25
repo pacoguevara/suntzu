@@ -2,10 +2,11 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  attr_accessor :full_name
   has_attached_file :image, :styles => { :medium => "300x300>", 
     :thumb => "24x24>" }
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable
 
   has_one :user, :foreign_key => parent
   belongs_to :municipality
@@ -15,7 +16,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :documents,  :allow_destroy => true
 
 
-  validates_presence_of :role, :parent
+  validates_presence_of :role, :ife_key
   validates_uniqueness_of :ife_key
   # validates :cellphone, :numericality => {:only_integer => true}
   # validates :phone, :numericality => {:only_integer => true}
@@ -50,6 +51,21 @@ class User < ActiveRecord::Base
   }
   self.per_page = 50
 
+  def associate(file)
+    spreadsheet = open_spreadsheet_2 file
+    (1..spreadsheet.last_row).each do |i|
+      if self.subenlace?
+        User.where(:ife_key => spreadsheet.cell(i,1))
+          .update_all :subenlace_id => self.id 
+      elsif self.enlace_id?
+        User.where(:ife_key => spreadsheet.cell(i,1))
+          .update_all :subenlace_id => self.id 
+      elsif self.coordinator_id
+        User.where(:ife_key => spreadsheet.cell(i,1))
+          .update_all :coordinador_id => self.id 
+      end 
+    end
+  end
   def age
     now = Time.now.utc.to_date
     if !bird.nil?
@@ -172,12 +188,20 @@ class User < ActiveRecord::Base
     #user.password_confirmation= '12345678'
     user.save(validate: false)
   end
+  def open_spreadsheet_2(file)
+    case File.extname(file.original_filename)
+    when ".csv" then Csv.new(file.path, nil, :ignore)
+    when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+    when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
+    else raise "Unknown file type: #{file.original_filename}"
+    end
+  end
   def self.open_spreadsheet(file_path)
     case File.extname(file_path)
       when ".csv" then Csv.new(file_path, nil, :ignore)
       when ".xls" then Roo::Excel.new(file_path, nil, :ignore)
       when ".xlsx" then Roo::Excelx.new(file_path, nil, :ignore)
-      else raise "Unknown file type: #{file.original_filename}"
+      else raise "Unknown file type: #{file_path}"
     end
   end
   def self.array_to_xls( users )
