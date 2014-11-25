@@ -410,11 +410,14 @@ $ ->
 			if data[i].role == "jugador"
 				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 			else if data[i].role == "subenlace"
+				console.log "dafuq"
 				string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 			else if data[i].role == "enlace" 
 				string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 
 			console.log string_selects
+			console.log "rol"
+			console.log data[i].role
 			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +

@@ -7,7 +7,7 @@ module Api
 				where_statment = ""
 				if params.has_key? :role
 					if params[:role] != "jugador"
-						where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
+						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
 				if params.has_key? :municipality_id && params[:municipality_id] != -1
