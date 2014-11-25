@@ -133,6 +133,7 @@ $ ->
 				      return
 
 	$('.search').keypress (e) ->
+
 		key = e.which
 		if key is 13
 			$inputs = $('.search')
@@ -140,6 +141,8 @@ $ ->
 			$inputs.each ->
 				unless $(this).val() is ''
 					params[this.name] = $(this).val()
+			console.log "son los inputs"
+			console.log params
 			if params
 				$.ajax 
 					url:"/api/users"

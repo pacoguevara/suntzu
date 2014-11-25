@@ -19,33 +19,33 @@
   <tdead>
     <tr>
       <th>
-        <input type="text" placeholder="Nombre" class="form-control search2" 
+        <input type="text" placeholder="Nombre" class="form-control search" 
           name="name"/>
       </th>
       <th>
-        <input type="text" placeholder="Primer apellido" class="form-control search2" 
+        <input type="text" placeholder="Primer apellido" class="form-control search" 
           name="first_name"/>
       </th>
       <th>
-        <input type="text" placeholder="Segundo apellido" class="form-control search2" 
+        <input type="text" placeholder="Segundo apellido" class="form-control search" 
           name="last_name"/>
       </th>
       <th>
-        <input type="text" placeholder="Género" class="form-control search2" 
+        <input type="text" placeholder="Género" class="form-control search" 
           name="gender"/>
       </th>
       <th>
-        <input type="text" placeholder="Edad" class="form-control search2" 
+        <input type="text" placeholder="Edad" class="form-control search" 
           name="age"/>
       </th>
       <th>
-        <input type="text" placeholder="Seccion" class="form-control search2" 
+        <input type="text" placeholder="Seccion" class="form-control search" 
           name="section"/>
       </th>
       <th>
         <!--<input type="text" placeholder="city" class="form-control search" 
           name="city"/>-->
-        <select class="form-control search search2 filtro_dropdown municipality" id="select_municipality2" 
+        <select class="form-control search filtro_dropdown municipality" id="select_municipality2" 
         name="municipality_id">
         <option value="-1"> </option>
         <option value="0"> Otros </option>
@@ -60,7 +60,7 @@
       </th>
       <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
-          <select class="form-control filtro_dropdown select_search search2"  style="width:100%" 
+          <select class="form-control filtro_dropdown select_search search"  style="width:100%" 
           name="sub_enlace_id">
             <option value="0"></option>
             <%@subenlace.each do |sbenlace|%>
@@ -73,7 +73,7 @@
       <%end%>
       <%if params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
-          <select class="select_search filtro_dropdown search2"  style="width:100%" 
+          <select class="select_search filtro_dropdown search"  style="width:100%" 
           name="enlace_id">
             <option value="0"></option>
             <%@enlace.each do |enlace|%>
@@ -86,7 +86,7 @@
       <%end%>
       <%if params[:role]!="coordinador"%>
         <th>
-          <select class="select_search filtro_dropdown search2"  style="width:100%" 
+          <select class="select_search filtro_dropdown search"  style="width:100%" 
           name="coordinador_id">
             <option value="0"></option>
             <% @coordinador.each do |coor| %>

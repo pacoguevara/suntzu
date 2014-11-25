@@ -10,7 +10,7 @@ module Api
 						where_statment = "lower(role) LIKE '%#{params[:role].downcase}%' "
 					end
 				end
-				if params.has_key? :municipality_id
+				if params.has_key? :municipality_id && params[:municipality_id] != -1
 					if !where_statment.blank?
 						where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
 					else
@@ -302,6 +302,7 @@ module Api
 					else
 						users = User.where(where_statment).limit(User.per_page).offset(0)
 					end					
+					puts "es el queryyyyyy "+where_statment.to_s
 					users_ar = []
 				 	@subenlace = User.where(:role => "subenlace")
 			    @enlace = User.where(:role => "enlace")
