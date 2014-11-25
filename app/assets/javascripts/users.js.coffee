@@ -614,6 +614,6 @@ $ ->
 				success: (data) ->
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
-					alert 'no se ha podido registrar el votoSDD '+thrownError
+					alert 'no se ha podido registrar el voto '+thrownError
 
 return
