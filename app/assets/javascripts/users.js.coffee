@@ -244,7 +244,7 @@ $ ->
 	    success: (json) ->
 
 	    error: (xhr, ajaxOptions, thrownError) ->
-	      alert xhr.status + "yasu"
+	      alert xhr.status
 	      alert thrownError
 	      return
 
