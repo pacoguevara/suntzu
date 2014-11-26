@@ -201,6 +201,19 @@ $ ->
 					fill_table('#users_table', data)
 
 	
+	$('#head_municipality').change ->
+		filters = get_lista_nominal_filters()
+
+		$.ajax 
+			url:"/api/users"
+			data:
+				filters.data
+			success: (data) ->
+				fill_table_nominal_list('#users_table', data)
+			error: (xhr, ajaxOptions, thrownError) ->
+		      alert xhr.status 
+		      alert thrownError
+		      return
 	$('.search2').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -258,6 +271,22 @@ $ ->
 					success: (data) ->
 						console.log data
 						fill_table('#users_table', data)
+	get_lista_nominal_filters = ->
+		$inputs = $('.search2')
+		params = {}
+		data = {}
+		$inputs.each ->
+			unless $(this).val() is ''
+				params[this.name] = $(this).val()
+		console.log params
+		if params
+			data:
+				municipality_id: if params['municipality_id'] isnt '-1' then params['municipality_id']
+				role: 'jugador'
+				register_start: if $('#register_start_date').val() isnt '' then $('#register_start_date').val()
+				register_end: if $('#register_end_date').val() isnt '' then $('#register_end_date').val()
+				bird_start: if $('#bird_start_date').val() isnt '' then $('#bird_start_date').val()
+				bird_end: if $('#bird_end_date').val() isnt '' then $('#bird_end_date').val()
 	get_filters2 = ->
 		$inputs = $('.search3')
 		params = {}
@@ -563,7 +592,7 @@ $ ->
 	$('.datepicker').datepicker(
 			format: 'dd/mm/yyyy'
 		).on 'changeDate', ->
-		filters = get_filters()
+		filters = get_lista_nominal_filters()
 		$.ajax 
 			url:"/api/users"
 			data: filters.data

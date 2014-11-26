@@ -315,7 +315,8 @@ module Api
 						user_hash[:gender] = user.gender
 						user_hash[:age] = user.age
 						user_hash[:section] = user.section
-						user_hash[:city] = user.city
+						user_hash[:city] = !user.municipality_id.nil? ? 
+						user.municipality.name : ''
 						user_hash[:role] = user.role
 						user_hash[:temp_chek] = user.temp_chek
 						user_hash[:municipality_id] = user.municipality_id
