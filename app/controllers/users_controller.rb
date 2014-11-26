@@ -10,11 +10,23 @@ class UsersController < ApplicationController
       @subordinados = User.where(:enlace_id => params[:id])
     elsif user.role == "coordinador"
       @subordinados = User.where(:coordinador_id => params[:id])
+    else
+      @subordinados = []
     end
-    
+  end
+  def import
+    user = User.find params[:id]
+    user.associate params[:file]
+    respond_to do |format|
+      format.html { redirect_to :back }
+    end 
   end
   # GET /users/new
   def new
+    @subenlaces = User.where(:role => 'subenlace')
+    @enlaces = User.where(:role => 'enlace')
+    @coordinadores = User.where(:role => 'coordinador')
+
     @user = User.new
     3.times {@user.documents.build }
     if current_user.admin? 
@@ -71,6 +83,25 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+
+    if params[:user][:documents_attributes].blank? 
+      params[:user].delete(:documents_attributes)
+    else
+      i=0
+      if params[:user][:documents_attributes]["0"]['description'].blank?
+        params[:user][:documents_attributes].delete "0"
+      end
+      if params[:user][:documents_attributes]["1"]['description'].blank?
+        params[:user][:documents_attributes].delete "1"
+      end
+      if params[:user][:documents_attributes]["2"]['description'].blank?
+        params[:user][:documents_attributes].delete "2"
+      end
+    end
     @user = User.new(user_params)
 
     respond_to do |format|
@@ -117,6 +148,10 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @subenlaces = User.where(:role => 'subenlace')
+    @enlaces = User.where(:role => 'enlace')
+    @coordinadores = User.where(:role => 'coordinador')
+
     if @user.documents.count < 1
       3.times {@user.documents.build }
       #@user.documents.build
@@ -196,6 +231,12 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:register_date, :first_name, :last_name, :name, :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector, :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role, :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, :lng, :fb, :tw,:image, documents_attributes: [:user_id, :doc,:description])
+    params.require(:user).permit(:register_date, :first_name, :last_name, :name,
+     :bird, :rnm, :linking, :sub_linking, :group_id, :suburb, :section, :sector,
+      :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role,
+       :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, 
+       :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, 
+       :lng, :fb, :tw,:image, :subenlace_id, :enlace_id, :coordinador_id,
+        documents_attributes: [:user_id, :doc,:description])
   end
 end

@@ -1,5 +1,3 @@
-
-<hr />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
 <ul class="nav nav-tabs">
     <li class="active"><a href="#pane1" data-toggle="tab">Jugadores</a></li>
@@ -14,14 +12,13 @@
     <div class="well well-sm">
       Municipio
       <hr>
-      <select class="form-control search2 filtro_dropdown" id="select_municipality2" name="municipality_id">
-              <option value="-1"> </option>
-              <option value="0"> Otros </option>
-              <% @municipalities.each do |mun| %>
-                <option value="<%= mun.id %>"> <%= mun.name %></option>
-              <% end %>
-            </select>  
-      
+      <select class="form-control search2 filtro_dropdown" name="municipality_id">
+        <option value="-1"> </option>
+        <option value="0"> Otros </option>
+        <% @municipalities.each do |mun| %>
+          <option value="<%= mun.id %>"> <%= mun.name %></option>
+        <% end %>
+      </select>  
     </div>
   </div>
   <div class="col-md-4">
@@ -54,206 +51,203 @@
           class="form-control search2 datepicker" name="bird_end_date"/>
         </div>
       </div>
-      
     </div>
-
   </div>
-
 </div>
-  Votación
-      <hr>
-      <select class="form-control search2" id="select_polling" 
-        name="polling_id">
-        <option value="-1"> </option>
-        <% @polling.each do |p| %>
-          <option value="<%= p.id %>"> <%= p.name %></option>
-        <% end %>
-      </select>  
-      <input type="submit" value="Enviar" class="btn-enviar">   
+Votación
+<hr>
+    <select class="form-control search2" id="select_polling" 
+      name="polling_id">
+      <option value="-1"> </option>
+      <% @polling.each do |p| %>
+        <option value="<%= p.id %>"> <%= p.name %></option>
+      <% end %>
+    </select>  
+    <a href="#" class="btn-enviar btn btn-success btn-block">Guardar</a>
 
-      <br><br>
-    <table class="table table-bordered table-striped table-hover" id="users_table">  
-      <thead>
+    <br><br>
+  <table class="table table-bordered table-striped table-hover" id="users_table">  
+    <thead>
+      <tr>
+        <th>
+          <input type="text" placeholder="Nombre" class="form-control search2" 
+            name="name"/>
+        </th>
+        <th>
+          <input type="text" placeholder="Primer Apellido" 
+          class="form-control search2" name="first_name"/>
+        </th>
+        <th>
+          <input type="text" placeholder="Segundo Apellido" 
+          class="form-control search2" name="last_name"/>
+        </th>
+        <th>
+          <!-- <input type="text" placeholder="age" class="form-control search2" 
+            name="age"/> -->
+        </th>
+        <th>
+          <input type="text" placeholder="Sección" class="form-control search2" 
+            name="section"/>
+        </th>
+        <th>
+          <!-- <input type="text" placeholder="city" class="form-control search2" 
+            name="city"/> -->
+          
+        </th>
+        <th >
+
+        </th>
+        <th >
+          <!-- <select class="form-control">
+            <option value="0"> Sin Asignar</option>
+            <% @sub_links.each do |user| %>
+              <option value="<%= user.id %>"> <%= user.full_name %></option>
+            <% end %>
+          </select> -->
+        </th>
+        <th >
+          <!-- <select class="form-control">
+            <option value="0"> Sin Asignar</option>
+            <% @links.each do |user| %>
+              <option value="<%= user.id %>"> <%= user.full_name %></option>
+            <% end %>
+          </select> -->
+        </th>
+        <th >
+          <!-- <select class="form-control">
+            <option value="0"> Sin Asignar</option>
+            <% @coordinators.each do |user| %>
+              <option value="<%= user.id %>"> <%= user.full_name %></option>
+            <% end %>
+          </select> -->
+        </th>
+      </tr>
+      <tr>
+        <th >
+          <p class="small">Nombre</p>
+        </th>
+        <th >
+          <p class="small">Paterno</p>
+        </th>
+        <th >
+          <p class="small">Materno</p>
+        </th>
+        <th>
+          <p class="small">Edad</p>
+        </th>
+        <th>
+          <p class="small">Sección</p>
+        </th>
+        <th>
+          <p class="small">Municipio</p>
+        </th>
+        <th>
+          <p class="small">Reporta a</p>
+        </th>
+        <th>
+          <p class="small">Sub Enlace</p>
+        </th>
+        <th>
+          <p class="small">Enlace</p>
+        </th>
+        <th>
+          <p class="small">Coordinador</p>
+        </th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
         <tr>
-          <th>
-            <input type="text" placeholder="Nombre" class="form-control search2" 
-              name="name"/>
-          </th>
-          <th>
-            <input type="text" placeholder="Primer Apellido" class="form-control search2" 
-              name="first_name"/>
-          </th>
-          <th>
-            <input type="text" placeholder="Segundo Apellido" class="form-control search2" 
-              name="last_name"/>
-          </th>
-          <th>
-            <!-- <input type="text" placeholder="age" class="form-control search2" 
-              name="age"/> -->
-          </th>
-          <th>
-            <input type="text" placeholder="Sección" class="form-control search2" 
-              name="section"/>
-          </th>
-          <th>
-            <!-- <input type="text" placeholder="city" class="form-control search2" 
-              name="city"/> -->
-            
-          </th>
-          <th >
-
-          </th>
-          <th >
-            <!-- <select class="form-control">
-              <option value="0"> Sin Asignar</option>
-              <% @sub_links.each do |user| %>
-                <option value="<%= user.id %>"> <%= user.full_name %></option>
-              <% end %>
-            </select> -->
-          </th>
-          <th >
-            <!-- <select class="form-control">
-              <option value="0"> Sin Asignar</option>
-              <% @links.each do |user| %>
-                <option value="<%= user.id %>"> <%= user.full_name %></option>
-              <% end %>
-            </select> -->
-          </th>
-          <th >
-            <!-- <select class="form-control">
-              <option value="0"> Sin Asignar</option>
-              <% @coordinators.each do |user| %>
-                <option value="<%= user.id %>"> <%= user.full_name %></option>
-              <% end %>
-            </select> -->
-          </th>
-        </tr>
-        <tr>
-          <th >
-            <p class="small">Nombre</p>
-          </th>
-          <th >
-            <p class="small">Paterno</p>
-          </th>
-          <th >
-            <p class="small">Materno</p>
-          </th>
-          <th>
-            <p class="small">Edad</p>
-          </th>
-          <th>
-            <p class="small">Sección</p>
-          </th>
-          <th>
-            <p class="small">Municipio</p>
-          </th>
-          <th>
-            <p class="small">Reporta a</p>
-          </th>
-          <th>
-            <p class="small">Sub Enlace</p>
-          </th>
-          <th>
-            <p class="small">Enlace</p>
-          </th>
-          <th>
-            <p class="small">Coordinador</p>
-          </th>
-
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @users.each do |user| %>
-          <tr>
-            <td >
-              <p class="small"><%=link_to user.name,user%></p>
-            </td>
-            <td >
-              <p class="small"><%=link_to user.first_name, user%></p>
-            </td>
-            <td >
-              <p class="small"><%=link_to user.last_name, user %></p>
-            </td>
-            <td>
-              <p class="small"><%= user.age %></p>
-            </td>
-            <td>
-              <p class="small"><%= user.section.to_i %></p>
-            </td>
-            <td>
-              <p class="small"><%= user.city %></p>
-            </td>
-            <td>
-              <p class="small">
-                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-              </p>
-            </td>
-            <td>
-              <p class="small">
-                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-              </p>
-            </td>
-            <td>
-              <p class="small">
-                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-              </p>
-            </td>
-            <td>
-              <p class="small">
-                <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-              </p>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    </div>
-    <hr />
-    <div class="col-md-12 center">
-    	<ul class="pagination">
-        <% if @users_t.count >= 10 %>
-          <li class="page_number active" data-num="0"><a>Primera</a></li>
-          <% pages = (@users_t.count / User.per_page).round%>
-          <% 10.times.each do |i|%>
-        	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-          <% end %>
-          <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
-        <% else %>
-          <% @users_t.count.times.each do |i|%>
-            <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-          <% end %>
-        <% end %>
-    	</ul>
-      <p class="page_showing">
-        (
-        <strong id="total_result">
-          <%= @users_t.count %> 
-        </strong>
-        en total)</p>
-    </div>	
-  </div>
-  <div id="pane2" class="tab-pane">
-    <table class="table table-bordered table-striped table-hover" id="users_table">  
-      <thead>
-        <tr>
-          <th >
-            <p class="small">Nombre</p>
-          </th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <% @algo.each do |a| %>
-          <tr>
-            <td >
-              <p class="small"><%=link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
-            </td>
-            
-            <td >
+          <td >
+            <p class="small"><%=link_to user.name,user%></p>
           </td>
-        <%end%>
-      </tbody>
-    </table>
+          <td >
+            <p class="small"><%=link_to user.first_name, user%></p>
+          </td>
+          <td >
+            <p class="small"><%=link_to user.last_name, user %></p>
+          </td>
+          <td>
+            <p class="small"><%= user.age %></p>
+          </td>
+          <td>
+            <p class="small"><%= user.section.to_i %></p>
+          </td>
+          <td>
+            <p class="small"><%= user.city %></p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+  <hr />
+  <div class="col-md-12 center">
+  	<ul class="pagination">
+      <% if @users_t.count >= 10 %>
+        <li class="page_number active" data-num="0"><a>Primera</a></li>
+        <% pages = (@users_t.count / User.per_page).round%>
+        <% 10.times.each do |i|%>
+      	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+        <% end %>
+        <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
+      <% else %>
+        <% @users_t.count.times.each do |i|%>
+          <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+        <% end %>
+      <% end %>
+  	</ul>
+    <p class="page_showing">
+      (
+      <strong id="total_result">
+        <%= @users_t.count %> 
+      </strong>
+      en total)</p>
+  </div>	
+</div>
+<div id="pane2" class="tab-pane">
+  <table class="table table-bordered table-striped table-hover" id="users_table">  
+    <thead>
+      <tr>
+        <th >
+          <p class="small">Nombre</p>
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <% @algo.each do |a| %>
+        <tr>
+          <td >
+            <p class="small"><%=link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
+          </td>
+          
+          <td >
+        </td>
+      <%end%>
+    </tbody>
+  </table>
   </div>
 </div>

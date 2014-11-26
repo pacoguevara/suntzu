@@ -4,7 +4,10 @@ Pan::Application.routes.draw do
 
   resources :documents
 
-  resources :users
+  #resources :users
+  resources :users do
+    collection{ post 'import/:id', :action => 'import', as: :import}
+  end
   resources :messages
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
