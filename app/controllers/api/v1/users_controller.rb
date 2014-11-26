@@ -343,9 +343,7 @@ module Api
 				respond_with users = User.joins(:municipality).group("municipalities.name").count(:municipality_id)
 			end
 			def enlace
-				puts "son los params" + params.to_s
 				user = User.find(params[:id2])
-				puts "entro a enlace "+params[:id2].to_s
 				if params[:id1] == "vacio"
 					if params[:tipo] == "1"
 						user.subenlace_id = 0
@@ -361,10 +359,13 @@ module Api
 						user2 = User.find(params[:id1])
 						if !user2.enlace_id.nil? && user2.enlace_id != 0
 							user.enlace_id = user2.enlace_id
-							user3 = User.find(user2.enlace_id)
-							if user3.coordinador_id && user3.coordinador_id != 0
-								user.coordinador_id = user3.coordinador_id							
-							end
+						else
+							user.enlace_id = 0
+						end
+						if !user2.coordinador_id.nil? && user2.coordinador_id != 0
+							user.coordinador_id = user3.coordinador_id	
+						else
+							user.coordinador_id = 0
 						end
 					elsif params[:tipo] == "2"
 						puts "es DOS"
@@ -372,10 +373,15 @@ module Api
 						user2 = User.find(params[:id1])
 						if user2.coordinador_id && user2.coordinador_id != 0
 							user.coordinador_id = user2.coordinador_id
+						else
+							user.coordinador_id = 0
 						end
+						user.subenlace_id = 0
 					elsif params[:tipo] == "3"
 						puts "es TRES"
 						user.coordinador_id = params[:id1]
+						user.subenlace_id = 0
+						user.enlace_id = 0
 					end
 					
 				end
@@ -386,37 +392,89 @@ module Api
 				respond_with true
 			end
 			def get_parent
-
-					h = Hash.new				
+				h = Hash.new				
 				if params[:id1] != "vacio"
-					user = User.find(params[:id1])					
+					user = User.find(params[:id1])	
 					if params[:tipo] == "1"
 						if user.enlace_id && user.enlace_id != 0
-							parent = User.find(user.enlace_id)
-							h[:user_id] = parent.id
-							h[:name] = parent.full_name
-							if parent.coordinador_id && parent.coordinador_id != 0
-								bisparent = User.find(parent.coordinador_id)
-								h[:user_id2] = bisparent.id
-								h[:name2] = bisparent.full_name
-							else
-								h[:user_id2] = 0
-								h[:name2] = ""
-							end
+							user1 = User.find(user.enlace_id)
+							h[:user_id] = user1.id
+							h[:name] = user1.full_name
 						else
-							h = false
+							h[:user_id] = 0
+							h[:name] = ""
 						end
-					elsif params[:tipo] == "2" 
-						parent = User.find(user.coordinador_id)
-						h[:user_id] = parent.id
-						h[:name] = parent.full_name
-						h[:user_id2] = 0
-						h[:name2] = ""					
+						if user.coordinador_id && user.coordinador_id != 0
+							user1 = User.find(user.coordinador_id)
+							h[:user_id2] = user1.id
+							h[:name2] = user1.full_name
+						else
+							h[:user_id2] = 0
+							h[:name2] = ""
+						end
+					elsif params[:tipo] == "2"
+						if user.subenlace_id && user.subenlace_id != 0
+							user1 = User.find(user.subenlace_id)
+							h[:user_id] = user1.id
+							h[:name] = user1.full_name
+						else
+							h[:user_id] = 0
+							h[:name] = ""
+						end
+						if user.coordinador_id && user.coordinador_id != 0
+							user1 = User.find(user.coordinador_id)
+							h[:user_id2] = user1.id
+							h[:name2] = user1.full_name
+						else
+							h[:user_id2] = 0
+							h[:name2] = ""
+						end
 					elsif params[:tipo] == "3"
-					end
-				respond_with h
-				else
-				respond_with false					
+						if user.subenlace_id && user.subenlace_id != 0
+							user1 = User.find(user.subenlace_id)
+							h[:user_id] = user1.id
+							h[:name] = user1.full_name
+						else
+							h[:user_id] = 0
+							h[:name] = ""
+						end
+						if user.enlace_id && user.enlace_id != 0
+							user1 = User.find(user.enlace_id)
+							h[:user_id2] = user1.id
+							h[:name2] = user1.full_name
+						else
+							h[:user_id2] = 0
+							h[:name2] = ""
+						end
+					end			
+					#if params[:tipo] == "1"
+					#	if user.enlace_id && user.enlace_id != 0
+					#		parent = User.find(user.enlace_id)
+					#		h[:user_id] = parent.id
+					#		h[:name] = parent.full_name
+					#		if parent.coordinador_id && parent.coordinador_id != 0
+					#			bisparent = User.find(parent.coordinador_id)
+					#			h[:user_id2] = bisparent.id
+					#			h[:name2] = bisparent.full_name
+					#		else
+					#			h[:user_id2] = 0
+					#			h[:name2] = ""
+					#		end
+					#	else
+					#		h[:user_id] = 0
+				#			h[:name] = ""
+				#			h[:user_id2] = 0
+				#			h[:name2] = ""
+				#		end
+					#elsif params[:tipo] == "2" 
+				#		parent = User.find(user.coordinador_id)
+				#		h[:user_id] = parent.id
+				##		h[:name] = parent.full_name
+				##		h[:user_id2] = 0
+				#	#	h[:name2] = ""					
+			#		elsif params[:tipo] == "3"
+					#end
+					respond_with h					
 				end		
 						
 					
