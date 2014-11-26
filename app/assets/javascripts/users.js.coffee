@@ -48,6 +48,7 @@ $ ->
 			coordinador_id = searchInEnlaces $(el).val()
 			console.log  coordinador_id
 			$('#user_coordinador_id').val coordinador_id
+			$('#user_subenlace_id').val 0
 			return
 		selectCoordinador = ->
 			$('#user_subenlace_id').val('0')
@@ -237,8 +238,6 @@ $ ->
 			$inputs.each ->
 				unless $(this).val() is ''
 					params[this.name] = $(this).val()
-			console.log "son los inputs"
-			console.log params
 			if params
 				$.ajax 
 					url:"/api/users"
@@ -368,28 +367,21 @@ $ ->
 				id2: user_id
 				tipo: tipo
 			success: (json) ->
+				console.log "succes"
+				console.log json
 				if json isnt false
-					console.log json
+					console.log "respuesta"
+					console.log esto
 					if tipo == 1
-						row = $($(esto).parent().parent().parent().find('.enlace')[0]).remove()
-						console.log "es row"
-						console.log $(esto).parent().parent().parent()
-						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
-						$(esto).parent().parent().parent().find('#td-enlace').append select
-						if json["user_id2"] isnt "0"
-							row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
-							select = '<p class="small"><select class="select_class coordinador"  style="width:100%" data-catid="3"><option value="vacio"></option><option value="'+json["user_id2"]+'" selected>'+json["name2"]+'</option></select></p>'
-							$(esto).parent().parent().parent().find('#td-coordinador').append select
-							
+						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id"]
+						$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
 					if tipo == 2
-						row = $($(esto).parent().parent().parent().find('.coordinador')[0]).remove()
-						select = '<p class="small"><select class="select_class enlace"  style="width:100%" data-catid="2"><option value="vacio"></option><option value="'+json["user_id"]+'" selected>'+json["name"]+'</option></select></p>'
-						$(esto).parent().parent().parent().find('#td-coordinador').append select
-					
+						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val "vacio"
+						$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
+					if tipo == 3
+						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val "vacio"
+						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val "vacio"
 						
-
-					option = $(esto).find("option[value='" + json["user_id"] + "']")[0] 
-					$(option).attr "selected", "selected"
 					
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
@@ -398,9 +390,6 @@ $ ->
 
 			
 	$(document).on "change", ".select_class", ->
-		console.log "checar esto"
-		console.log $(this).val()
-		console.log $(this).find(":selected").data("user_id")
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
@@ -422,8 +411,6 @@ $ ->
 					scrollTop : 0
 				,800)
 	fill_table2 = (table_id, data) ->
-		console.log data
-		console.log table_id
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			if data[i].check == true
@@ -433,8 +420,6 @@ $ ->
 			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
 			'<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + checkaux + " </p></td> " +
-			console.log "ejey"
-			console.log tds
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
 
