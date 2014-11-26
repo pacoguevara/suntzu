@@ -373,8 +373,10 @@ $ ->
 
 			
 	$(document).on "change", ".select_class", ->
+		console.log "checar esto"
+		console.log $(this).val()
+		console.log $(this).find(":selected").data("user_id")
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
-		console.log "se metio"
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	$('.page_number').click (e) ->
 		filters = get_filters()
@@ -483,6 +485,8 @@ $ ->
 				
 			$($(html).find("option")).attr "data-user_id", data[i].id
 			$($(html).find("option")).attr "data-tipo", "1"
+			console.log "option"
+			console.log html
 			$($(html2).find("option")).attr "data-user_id", data[i].id
 			$($(html2).find("option")).attr "data-tipo", "2"
 			$($(html3).find("option")).attr "data-user_id", data[i].id

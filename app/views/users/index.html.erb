@@ -175,7 +175,7 @@
           <td id="td-subenlace">
             <p class="small">
               <select class="select_class subenlace"  style="width:100%" data-catid="1">
-                <option value="vacio"></option>
+                <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "1"></option>
                 <%@subenlace.each do |a|%>
                   <option value="<%=a.id%>" 
                     <%if user.subenlace_id == a.id%> selected <%end%> 
@@ -191,7 +191,7 @@
           <td id="td-enlace">
             <p class="small">
               <select class="select_class enlace"  style="width:100%" data-catid="1">
-                <option value="vacio"></option>
+                <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "2"></option>
                 <%@enlace.each do |a|%>
                   <option value="<%=a.id%>" <%if user.enlace_id == a.id%> selected <%end%> 
                     data-user_id = "<%=user.id%>" data-tipo = "2">
@@ -206,7 +206,7 @@
           <td id="td-coordinador">
             <p class="small">
               <select class="select_class coordinador"  style="width:100%" data-catid="1">
-                <option value="vacio"></option>
+                <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "3"></option>
                 <%@coordinador.each do |a|%>
                   <option value="<%=a.id%>" 
                     <%if user.coordinador_id == a.id%> selected <%end%> 
