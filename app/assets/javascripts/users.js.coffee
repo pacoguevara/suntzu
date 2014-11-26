@@ -83,7 +83,9 @@ $ ->
 		
 		init:init
 	)()
+
 	User.init()
+
 	load_user_in_map = (user_id) ->
 		console.log "/api/users/"+user_id+"?cols=zipcode,id,lat,lng"
 		$.ajax 
@@ -190,14 +192,13 @@ $ ->
 					fill_table2("#detalle_table", data)
 	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
-		console.log "pudo entrar"
-		console.log filters
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
-					fill_table_nominal_list('#users_table', data)
+					console.log data
+					fill_table('#users_table', data)
 
 	
 	$('.search2').keypress (e) ->
@@ -216,7 +217,6 @@ $ ->
 				      return
 
 	$('.search').keypress (e) ->
-
 		key = e.which
 		if key is 13
 			$inputs = $('.search')
@@ -273,16 +273,12 @@ $ ->
 				
 
 	get_filters = ->
-		$inputs = $('.search2')
-		console.log "search2"
-		console.log $inputs
+		$inputs = $('.search')
 		params = {}
 		data = {}
 		$inputs.each ->
 			unless $(this).val() is ''
 				params[this.name] = $(this).val()
-		console.log "params"
-		console.log params
 		if params
 			data:
 				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
@@ -430,7 +426,7 @@ $ ->
 		i = 0
 
 		while i < subenlaces.length
-				full_name=subenlaces[i].name+" "+subenlaces[i].first_name+
+			full_name = subenlaces[i].name+" "+subenlaces[i].first_name+
 				' '+subenlaces[i].last_name
 	  	stringsubenlace = stringsubenlace + 
 		  '<option value = "'+subenlaces[i].id+'">'+full_name
@@ -464,47 +460,44 @@ $ ->
 		$("tr:has(td)").remove();
 		data = data.data
 		$.each data, (i, item) ->
-			console.log i
-			console.log "console"
-			console.log item
 			#change selected parents if user has one
 			string_selects = ""
-			if data[i].subenlace_id?
-				option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0] 
-				$(option).attr "selected", "selected"
-			if data[i].enlace_id?
-				option = $(html2).find("option[value='" + data[i].enlace_id + "']")[0]
-				$(option).attr "selected", "selected"
-				
-			if data[i].coordinador_id?
-				option = $(html3).find("option[value='" + data[i].coordinador_id + "']")[0]
-				$(option).attr "selected", "selected"
-				 
+			#if data[i].subenlace_id?
+			option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0] 
+			$(option).attr "selected", "selected"
+			#if data[i].enlace_id?
+			option = $(html2).find("option[value='" + data[i].enlace_id + "']")[0]
+			$(option).attr "selected", "selected"
+			
+			#if data[i].coordinador_id?
+			option = $(html3).find("option[value='" + data[i].coordinador_id + "']")[0]
+			$(option).attr "selected", "selected"
+			 
 
 
-				
 			$($(html).find("option")).attr "data-user_id", data[i].id
 			$($(html).find("option")).attr "data-tipo", "1"
-			console.log "option"
-			console.log html
+
 			$($(html2).find("option")).attr "data-user_id", data[i].id
 			$($(html2).find("option")).attr "data-tipo", "2"
+
 			$($(html3).find("option")).attr "data-user_id", data[i].id
 			$($(html3).find("option")).attr "data-tipo", "3"
+
 			stringsubenlace = $(html).prop "outerHTML"
 			stringenlace = $(html2).prop "outerHTML"
 			stringcoordinador = $(html3).prop "outerHTML"
-			if data[i].role == "jugador"
-				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-			else if data[i].role == "subenlace"
-				console.log "dafuq"
-				string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-			else if data[i].role == "enlace" 
-				string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 
-			console.log string_selects
-			console.log "rol"
-			console.log data[i].role
+			if getURLParameter('role') is 'jugador'
+				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+			else
+				if data[i].role == "jugador"
+					string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+				else if data[i].role == "subenlace"
+					string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+				else if data[i].role == "enlace" 
+					string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+
 			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
@@ -519,9 +512,7 @@ $ ->
 			$('<tr>').html(cleared_tds).appendTo table_id
 			if data[i].subenlace_id?
 				$($(html).find("option[value='"+data[i].subenlace_id+"']")[0]).removeAttr "selected"
-				console.log $(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")
 			$($(html).find("option[value='" + data[i].subenlace_id + "-"+data[i].id+"']")[0]).val(data[i].subenlace_id) 
-			console.log  html
 			stringsubenlace = $(html).prop "outerHTML"
 
 			if data[i].enlace_id?
@@ -577,21 +568,6 @@ $ ->
 			url:"/api/users"
 			data: filters.data
 			success: (data) ->
-				console.log data
-				fill_table_nominal_list('#users_table',data)
-				$('html, body').animate(
-					scrollTop : 0
-				,800)
-	$('#select_municipality').change ->
-		filters = get_filters()
-		alert "pos si"
-		console.log "filtros"
-		console.log filters
-		$.ajax 
-			url:"/api/users"
-			data: filters.data
-			success: (data) ->
-				console.log "en success"
 				console.log data
 				fill_table_nominal_list('#users_table',data)
 				$('html, body').animate(

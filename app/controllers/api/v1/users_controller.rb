@@ -10,15 +10,14 @@ module Api
 						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
-				if params.has_key? :municipality_id && params[:municipality_id] != -1
-					if !where_statment.blank?
-						where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
-					else
-						where_statment = where_statment +" municipality_id = '#{params[:municipality_id]}'"
+				if params.has_key? :municipality_id 
+			 		if params[:municipality_id].to_s != '-1'
+						if !where_statment.blank?
+							where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
+						else
+							where_statment = where_statment +" municipality_id = '#{params[:municipality_id]}'"
+						end
 					end
-					puts "YEI SI TENIAAA"
-				else
-					puts "NOOOO NO TENIA :("+params.to_json
 				end
 				if params.has_key? :register_start
 					ftime = Time.parse( params[:register_start] )
@@ -302,7 +301,6 @@ module Api
 					else
 						users = User.where(where_statment).limit(User.per_page).offset(0)
 					end					
-					puts "es el queryyyyyy "+where_statment.to_s
 					users_ar = []
 				 	@subenlace = User.where(:role => "subenlace")
 			    @enlace = User.where(:role => "enlace")
