@@ -161,6 +161,11 @@
     </div>
     <div class="col-md-4">
       <div class="form-group">
+        <%= f.label 'Municipio' %><br>
+        <%= f.input_field :municipality_id, collection: @municipalities,
+          class: "form-control" %>
+      </div>
+      <div class="form-group">
         <%= f.label 'DtoFed' %><br>
         <%= f.text_field :dto_fed, class: "form-control" %>
       </div>
@@ -195,10 +200,6 @@
       <div class="form-group">
         <%= f.label 'Colonia' %><br>
         <%= f.text_field :neighborhood, class: "form-control" %>
-      </div>
-      <div class="form-group">
-        <%= f.label 'Ciudad' %><br>
-        <%= f.text_field :city, class: "form-control" %>
       </div>
     </div>
   </div>

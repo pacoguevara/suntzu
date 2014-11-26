@@ -26,7 +26,8 @@ class UsersController < ApplicationController
     @subenlaces = User.where(:role => 'subenlace')
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
-
+    @municipalities = Municipality.all
+    
     @user = User.new
     3.times {@user.documents.build }
     if current_user.admin? 
@@ -151,6 +152,7 @@ class UsersController < ApplicationController
     @subenlaces = User.where(:role => 'subenlace')
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
+    @municipalities = Municipality.all
 
     if @user.documents.count < 1
       3.times {@user.documents.build }
@@ -236,7 +238,7 @@ class UsersController < ApplicationController
       :cp, :phone, :cellphone, :email, :password, :password_confirmation, :role,
        :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, 
        :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, 
-       :lng, :fb, :tw,:image, :subenlace_id, :enlace_id, :coordinador_id,
-        documents_attributes: [:user_id, :doc,:description])
+       :lng, :fb, :tw,:image, :subenlace_id, :enlace_id, :coordinador_id, 
+       :municipality_id, documents_attributes: [:user_id, :doc,:description])
   end
 end

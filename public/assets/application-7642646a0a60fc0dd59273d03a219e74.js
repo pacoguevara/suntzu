@@ -18844,7 +18844,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
     User = (function() {
       var bind, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getSubEnlaces, init, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectSubEnlace, subenlaces;
       subenlaces = [];
@@ -19092,6 +19092,21 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         }
       });
     });
+    $('#head_municipality').change(function() {
+      var filters;
+      filters = get_lista_nominal_filters();
+      return $.ajax({
+        url: "/api/users",
+        data: filters.data,
+        success: function(data) {
+          return fill_table_nominal_list('#users_table', data);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(xhr.status);
+          alert(thrownError);
+        }
+      });
+    });
     $('.search2').keypress(function(e) {
       var filters, key;
       key = e.which;
@@ -19159,6 +19174,30 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         }
       }
     });
+    get_lista_nominal_filters = function() {
+      var $inputs, data, params;
+      $inputs = $('.search2');
+      params = {};
+      data = {};
+      $inputs.each(function() {
+        if ($(this).val() !== '') {
+          return params[this.name] = $(this).val();
+        }
+      });
+      console.log(params);
+      if (params) {
+        return {
+          data: {
+            municipality_id: params['municipality_id'] !== '-1' ? params['municipality_id'] : void 0,
+            role: 'jugador',
+            register_start: $('#register_start_date').val() !== '' ? $('#register_start_date').val() : void 0,
+            register_end: $('#register_end_date').val() !== '' ? $('#register_end_date').val() : void 0,
+            bird_start: $('#bird_start_date').val() !== '' ? $('#bird_start_date').val() : void 0,
+            bird_end: $('#bird_end_date').val() !== '' ? $('#bird_end_date').val() : void 0
+          }
+        };
+      }
+    };
     get_filters2 = function() {
       var $inputs, data, params;
       $inputs = $('.search3');
@@ -19429,7 +19468,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       format: 'dd/mm/yyyy'
     }).on('changeDate', function() {
       var filters;
-      filters = get_filters();
+      filters = get_lista_nominal_filters();
       return $.ajax({
         url: "/api/users",
         data: filters.data,

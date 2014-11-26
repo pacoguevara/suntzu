@@ -11,7 +11,7 @@ module Api
 					end
 				end
 				if params.has_key? :municipality_id 
-			 		if params[:municipality_id].to_s != '-1'
+			 		if params[:municipality_id].to_s != "-1"
 						if !where_statment.blank?
 							where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
 						else
@@ -306,6 +306,7 @@ module Api
 			    @enlace = User.where(:role => "enlace")
 			    @coordinador = User.where(:role => "coordinador")
 					users.each do |user|
+						puts user.id
 						user_hash = {}
 						user_hash[:id] = user.id
 						user_hash[:name] = user.name
@@ -315,7 +316,7 @@ module Api
 						user_hash[:gender] = user.gender
 						user_hash[:age] = user.age
 						user_hash[:section] = user.section
-						user_hash[:city] = user.city
+						user_hash[:city] = !user.municipality_id.blank? ? user.municipality.name : ''
 						user_hash[:role] = user.role
 						user_hash[:temp_chek] = user.temp_chek
 						user_hash[:municipality_id] = user.municipality_id
@@ -323,8 +324,6 @@ module Api
 						user_hash[:subenlace_id] = user.subenlace_id
 						user_hash[:enlace_id] = user.enlace_id
 						user_hash[:coordinador_id] = user.coordinador_id
-						user_hash[:parent] = user.parent == 0 ? "Sin Asignar" : 
-						User.find(user.parent).full_name
 						users_ar.push user_hash
 					end
 					format  = {

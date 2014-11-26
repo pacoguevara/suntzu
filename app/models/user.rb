@@ -174,7 +174,7 @@ class User < ActiveRecord::Base
     user.age = spreadsheet.cell(i,CELLS['age']) || ""
     user.gender = spreadsheet.cell(i,CELLS['gender']) || ""
     user.city = spreadsheet.cell(i,CELLS['city']) || ""
-    user.city_key = spreadsheet.cell(i,CELLS['city_key']) || ""
+    user.municipality_id = spreadsheet.cell(i,CELLS['city_key']) || ""
     user.street_number = spreadsheet.cell(i,CELLS['street_number']) || ""
     user.neighborhood = spreadsheet.cell(i,CELLS['neighborhood']) || ""
     user.dto_fed = spreadsheet.cell(i,CELLS['dto_fed']) || ""
