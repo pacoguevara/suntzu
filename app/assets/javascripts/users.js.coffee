@@ -344,14 +344,16 @@ $ ->
 					console.log "respuesta"
 					console.log esto
 					if tipo == 1
-						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id"]
-						$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
+						if json["user_id"] != null
+							$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id"]
+							$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
 					if tipo == 2
-						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val "vacio"
-						$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
+						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
+						if json["user_id2"] != null
+							$(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val json["user_id2"]
 					if tipo == 3
-						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val "vacio"
-						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val "vacio"
+						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
+						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
 						
 					
 			error: (xhr, ajaxOptions, thrownError) ->

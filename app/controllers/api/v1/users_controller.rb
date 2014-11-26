@@ -349,8 +349,11 @@ module Api
 						user.subenlace_id = 0
 					elsif params[:tipo] == "2"
 						user.enlace_id = 0
+						user.subenlace_id = 0
 					elsif params[:tipo] == "3"
-						user.coordinador_id = 0		
+						user.coordinador_id = 0
+						user.subenlace_id = 0
+						user.enlace_id = 0		
 					end
 				else
 					if params[:tipo] == "1"
@@ -363,7 +366,7 @@ module Api
 							user.enlace_id = 0
 						end
 						if !user2.coordinador_id.nil? && user2.coordinador_id != 0
-							user.coordinador_id = user3.coordinador_id	
+							user.coordinador_id = user2.coordinador_id	
 						else
 							user.coordinador_id = 0
 						end
@@ -388,11 +391,11 @@ module Api
 				
 
 				user.save!
-				puts "se salvo user "+user.id.to_s
 				respond_with true
 			end
 			def get_parent
 				h = Hash.new				
+				puts "params "+params.to_s
 				if params[:id1] != "vacio"
 					user = User.find(params[:id1])	
 					if params[:tipo] == "1"
@@ -400,17 +403,11 @@ module Api
 							user1 = User.find(user.enlace_id)
 							h[:user_id] = user1.id
 							h[:name] = user1.full_name
-						else
-							h[:user_id] = 0
-							h[:name] = ""
 						end
 						if user.coordinador_id && user.coordinador_id != 0
 							user1 = User.find(user.coordinador_id)
 							h[:user_id2] = user1.id
 							h[:name2] = user1.full_name
-						else
-							h[:user_id2] = 0
-							h[:name2] = ""
 						end
 					elsif params[:tipo] == "2"
 						if user.subenlace_id && user.subenlace_id != 0
@@ -425,9 +422,6 @@ module Api
 							user1 = User.find(user.coordinador_id)
 							h[:user_id2] = user1.id
 							h[:name2] = user1.full_name
-						else
-							h[:user_id2] = 0
-							h[:name2] = ""
 						end
 					elsif params[:tipo] == "3"
 						if user.subenlace_id && user.subenlace_id != 0
@@ -474,9 +468,25 @@ module Api
 				#	#	h[:name2] = ""					
 			#		elsif params[:tipo] == "3"
 					#end
-					respond_with h					
+				else
+					user = User.find(params[:id2])
+					if params[:tipo] == "1"
+						h[:user_id] = nil
+						h[:name] = "vacio"
+						h[:user_id2] = nil
+						h[:name2] = "vacio"
+					elsif params[:tipo] == "2"
+						h[:user_id] = 0
+						h[:name] = "vacio"
+						h[:user_id2] = nil
+						h[:name2] = "vacio"
+					elsif params[:tipo] == "3"
+						user.subenlace_id = 0
+						user.subenlace_id = 0
+					end
+
 				end		
-						
+				respond_with h		
 					
 			end
 			def get_list_votation
