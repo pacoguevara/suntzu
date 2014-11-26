@@ -64,7 +64,7 @@
 						<dt> SubEnlace </dt>
 						<dd>
 							<% if !@user.subenlace_id.nil? && @user.subenlace_id != 0 %>
-						 		<%= link_to User.find(@user.subenlace_id).full_name, @user.get_subenlace, 
+						 		<%= link_to User.find(@user.subenlace_id).full_name, User.find(@user.subenlace_id), 
 							 		:target => '_blank' %>
 						 	<% else %> 
 							 	No tiene asignado subenlace
@@ -73,7 +73,7 @@
   					<dt> Enlace </dt>
   					<dd>
   						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
-	  						<%= link_to User.find(@user.enlace_id).full_name,@user.get_enlace, 
+	  						<%= link_to User.find(@user.enlace_id).full_name,User.find(@user.enlace_id), 
 	  						:target =>'_blank' %>
   						<% else %> 
   							No tiene asignado enlace
@@ -82,7 +82,7 @@
 						<dt> Coordinador </dt>
 						<dd>
 							<%if !@user.coordinador_id.nil? && @user.coordinador_id != 0 %> 
-								<%= link_to User.find(@user.coordinador_id).full_name, @user.get_coordinador,
+								<%= link_to User.find(@user.coordinador_id).full_name, User.find(@user.coordinador_id),
 								:target =>'_blank' %>
 							<% else %> 
 								No tiene asignado coordinador 
