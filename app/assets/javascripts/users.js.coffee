@@ -189,6 +189,7 @@ $ ->
 				data:
 					filters.data
 				success: (data) ->
+					console.log "data"
 					console.log data
 					fill_table2("#detalle_table", data)
 	$(document).on "change", ".filtro_dropdown", ->	
@@ -423,7 +424,7 @@ $ ->
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
 			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
 			'<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + checkaux + " </p></td> " +
+			'<td><p class="small"> ' + checkaux + " </p></td> "
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
 
@@ -436,11 +437,11 @@ $ ->
 		
 		#console.log data
 		stringsubenlace = '<select class="default select_class subenlace" style="width:100%">'+
-			'<option value="0" ></option>'
+			'<option value="vacio" ></option>'
 		stringenlace = '<select class="default select_class enlace" style="width:100%">'+
-			'<option value="0" ></option>'
+			'<option value="vacio" ></option>'
 		stringcoordinador = '<select class="default select_class coordinador" '+
-			'style="width:100%"><option value="0" ></option>'
+			'style="width:100%"><option value="vacio" ></option>'
 		i = 0
 
 		while i < subenlaces.length
