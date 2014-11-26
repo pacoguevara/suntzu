@@ -215,8 +215,10 @@ $ ->
 		      alert xhr.status 
 		      alert thrownError
 		      return
+		      
 	$('.search2').keypress (e) ->
 		key = e.which
+		console.log key
 		if key is 13
 			filters = get_filters()
 			$.ajax 
