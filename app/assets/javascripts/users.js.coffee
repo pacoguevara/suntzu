@@ -1,7 +1,89 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+
 $ ->	
+	User = (->
+		subenlaces = []
+		enlaces = []
+		coordinadores = []
+		complete =  3
+		
+		init = ->
+			getSubEnlaces()
+			getEnlaces()
+			getCoordinadores()
+			return
+		bind = ->
+			$('#user_subenlace_id').change ->
+				selectSubEnlace( @ )
+			$('#user_enlace_id').change ->
+				selectEnlace( @ )
+			$('#user_coordinador_id').change ->
+				selectCoordinador( @ )
+			return
+		searchInSubenlaces = (id) ->
+			enlace_id = 0
+			coordinador_id = 0
+			$(subenlaces).each (i) ->
+				if subenlaces[i].id is parseInt(id)
+					enlace_id = subenlaces[i].enlace_id
+					coordinador_id = subenlaces[i].coordinador_id
+					return false
+			return [enlace_id, coordinador_id]
+		searchInEnlaces = (id) ->
+			coordinador_id = 0
+			$(enlaces).each (i) ->
+				if enlaces[i].id is parseInt(id)
+					coordinador_id = enlaces[i].coordinador_id
+					return false
+			return coordinador_id
+		selectSubEnlace = (el)->
+			enlace_id = searchInSubenlaces($(el).val())[0]
+			coordinador_id = searchInSubenlaces($(el).val())[1]
+			$('#user_enlace_id').val enlace_id
+			$('#user_coordinador_id').val coordinador_id
+			return
+		selectEnlace = (el)->
+			coordinador_id = searchInEnlaces $(el).val()
+			console.log  coordinador_id
+			$('#user_coordinador_id').val coordinador_id
+			return
+		selectCoordinador = ->
+			$('#user_subenlace_id').val('0')
+			$('#user_enlace_id').val('0')
+			return
+		getCoordinadores = ->
+			$.ajax
+				url: '/api/users/coordinadores'
+				success: (data)->
+					coordinadores = data
+					complete = complete - 1
+					if complete is 0
+						bind()
+			return
+		getEnlaces = ->
+			$.ajax
+				url: '/api/users/enlaces'
+				success: (data)->
+					enlaces = data
+					complete = complete - 1
+					if complete is 0
+						bind()
+			return
+		getSubEnlaces = ->
+			$.ajax
+				url: '/api/users/subenlaces'
+				success: (data)->
+					subenlaces = data
+					complete = complete - 1
+					if complete is 0
+						bind()
+			return
+		
+		init:init
+	)()
+	User.init()
 	load_user_in_map = (user_id) ->
 		console.log "/api/users/"+user_id+"?cols=zipcode,id,lat,lng"
 		$.ajax 
@@ -16,32 +98,33 @@ $ ->
 			url = "https://maps.googleapis.com/maps/api/geocode/json?address="+user_data[0].zipcode+", "+user_data[0].neighborhood+", "+user_data[0].city+", NL, Mexico"
 			console.log url
 			$.get(url).success (data) ->
-				initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng)
-				mapOptions =
-					zoom: 17
-					center: initCenter
-				map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions)
-				marker = new google.maps.Marker
-					position: initCenter
-					map: map
-					draggable: true
-					center: initCenter
-					title: "Casa de "+user_data[0].name
-				google.maps.event.addListener(marker, 'dragend', ->
-					if confirm '¿Está seguro que desea cambiar la ubicación del jugador?'
-						$.ajax
-							url:"/api/users/"+user_data[0].id
-							type: "PUT"						
-							data:
-								user: 
-									lat: marker.getPosition().lat()
-									lng: marker.getPosition().lng()
-							dataType: "json"
-							success: (data, textStatus, jqXHR) ->
-								console.log data
-					else
-								
-						)
+				if data.results.length > 0
+					initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng)
+					mapOptions =
+						zoom: 17
+						center: initCenter
+					map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions)
+					marker = new google.maps.Marker
+						position: initCenter
+						map: map
+						draggable: true
+						center: initCenter
+						title: "Casa de "+user_data[0].name
+					google.maps.event.addListener(marker, 'dragend', ->
+						if confirm '¿Está seguro que desea cambiar la ubicación del jugador?'
+							$.ajax
+								url:"/api/users/"+user_data[0].id
+								type: "PUT"						
+								data:
+									user: 
+										lat: marker.getPosition().lat()
+										lng: marker.getPosition().lng()
+								dataType: "json"
+								success: (data, textStatus, jqXHR) ->
+									console.log data
+						else
+									
+							)
 		else
 			initCenter = new google.maps.LatLng(user_data[0].lat,user_data[0].lng)
 			mapOptions =

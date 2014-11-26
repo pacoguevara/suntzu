@@ -14,6 +14,9 @@ Pan::Application.routes.draw do
       resources :messages
       resources :users do 
       	collection do
+          get 'subenlaces', :action => 'subenlaces'
+          get 'enlaces', :action => 'enlaces'
+          get 'coordinadores', :action => 'coordinadores'
       		get "parents", :action=>"parents"
           get "groups", :action=>"groups"
           get "enlace", :action => "enlace"

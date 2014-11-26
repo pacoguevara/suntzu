@@ -450,7 +450,6 @@ module Api
 					respond_with User.where(:id=>params[:id]).select("#{params[:cols]}")
 				end
 			end
-
 			def update
 				@user = User.find(params[:id])
 				respond_with @user do |format|
@@ -462,9 +461,15 @@ module Api
 					end
 				end
 			end
-
-
-
+			def subenlaces
+				respond_with User.where :role => 'subenlace'	
+			end
+			def enlaces
+				respond_with User.where :role => 'enlace'
+			end
+			def coordinadores
+				respond_with User.where :role => 'coordinador'
+			end
 			def parents
 				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", 
 					"enlace"=>"coordinador", "coordinador"=>"grupo	"}

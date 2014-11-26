@@ -18844,7 +18844,111 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    User = (function() {
+      var bind, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getSubEnlaces, init, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectSubEnlace, subenlaces;
+      subenlaces = [];
+      enlaces = [];
+      coordinadores = [];
+      complete = 3;
+      init = function() {
+        getSubEnlaces();
+        getEnlaces();
+        getCoordinadores();
+      };
+      bind = function() {
+        $('#user_subenlace_id').change(function() {
+          return selectSubEnlace(this);
+        });
+        $('#user_enlace_id').change(function() {
+          return selectEnlace(this);
+        });
+        $('#user_coordinador_id').change(function() {
+          return selectCoordinador(this);
+        });
+      };
+      searchInSubenlaces = function(id) {
+        var coordinador_id, enlace_id;
+        enlace_id = 0;
+        coordinador_id = 0;
+        $(subenlaces).each(function(i) {
+          if (subenlaces[i].id === parseInt(id)) {
+            enlace_id = subenlaces[i].enlace_id;
+            coordinador_id = subenlaces[i].coordinador_id;
+            return false;
+          }
+        });
+        return [enlace_id, coordinador_id];
+      };
+      searchInEnlaces = function(id) {
+        var coordinador_id;
+        coordinador_id = 0;
+        $(enlaces).each(function(i) {
+          if (enlaces[i].id === parseInt(id)) {
+            coordinador_id = enlaces[i].coordinador_id;
+            return false;
+          }
+        });
+        return coordinador_id;
+      };
+      selectSubEnlace = function(el) {
+        var coordinador_id, enlace_id;
+        enlace_id = searchInSubenlaces($(el).val())[0];
+        coordinador_id = searchInSubenlaces($(el).val())[1];
+        $('#user_enlace_id').val(enlace_id);
+        $('#user_coordinador_id').val(coordinador_id);
+      };
+      selectEnlace = function(el) {
+        var coordinador_id;
+        coordinador_id = searchInEnlaces($(el).val());
+        console.log(coordinador_id);
+        $('#user_coordinador_id').val(coordinador_id);
+      };
+      selectCoordinador = function() {
+        $('#user_subenlace_id').val('0');
+        $('#user_enlace_id').val('0');
+      };
+      getCoordinadores = function() {
+        $.ajax({
+          url: '/api/users/coordinadores',
+          success: function(data) {
+            coordinadores = data;
+            complete = complete - 1;
+            if (complete === 0) {
+              return bind();
+            }
+          }
+        });
+      };
+      getEnlaces = function() {
+        $.ajax({
+          url: '/api/users/enlaces',
+          success: function(data) {
+            enlaces = data;
+            complete = complete - 1;
+            if (complete === 0) {
+              return bind();
+            }
+          }
+        });
+      };
+      getSubEnlaces = function() {
+        $.ajax({
+          url: '/api/users/subenlaces',
+          success: function(data) {
+            subenlaces = data;
+            complete = complete - 1;
+            if (complete === 0) {
+              return bind();
+            }
+          }
+        });
+      };
+      return {
+        init: init
+      };
+    })();
+    User.init();
     load_user_in_map = function(user_id) {
       console.log("/api/users/" + user_id + "?cols=zipcode,id,lat,lng");
       return $.ajax({
@@ -18864,39 +18968,41 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         console.log(url);
         return $.get(url).success(function(data) {
           var initCenter, map, mapOptions, marker;
-          initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
-          mapOptions = {
-            zoom: 17,
-            center: initCenter
-          };
-          map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions);
-          marker = new google.maps.Marker({
-            position: initCenter,
-            map: map,
-            draggable: true,
-            center: initCenter,
-            title: "Casa de " + user_data[0].name
-          });
-          return google.maps.event.addListener(marker, 'dragend', function() {
-            if (confirm('¿Está seguro que desea cambiar la ubicación del jugador?')) {
-              return $.ajax({
-                url: "/api/users/" + user_data[0].id,
-                type: "PUT",
-                data: {
-                  user: {
-                    lat: marker.getPosition().lat(),
-                    lng: marker.getPosition().lng()
+          if (data.results.length > 0) {
+            initCenter = new google.maps.LatLng(data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
+            mapOptions = {
+              zoom: 17,
+              center: initCenter
+            };
+            map = new google.maps.Map(document.getElementById('containerMapas'), mapOptions);
+            marker = new google.maps.Marker({
+              position: initCenter,
+              map: map,
+              draggable: true,
+              center: initCenter,
+              title: "Casa de " + user_data[0].name
+            });
+            return google.maps.event.addListener(marker, 'dragend', function() {
+              if (confirm('¿Está seguro que desea cambiar la ubicación del jugador?')) {
+                return $.ajax({
+                  url: "/api/users/" + user_data[0].id,
+                  type: "PUT",
+                  data: {
+                    user: {
+                      lat: marker.getPosition().lat(),
+                      lng: marker.getPosition().lng()
+                    }
+                  },
+                  dataType: "json",
+                  success: function(data, textStatus, jqXHR) {
+                    return console.log(data);
                   }
-                },
-                dataType: "json",
-                success: function(data, textStatus, jqXHR) {
-                  return console.log(data);
-                }
-              });
-            } else {
+                });
+              } else {
 
-            }
-          });
+              }
+            });
+          }
         });
       } else {
         initCenter = new google.maps.LatLng(user_data[0].lat, user_data[0].lng);
