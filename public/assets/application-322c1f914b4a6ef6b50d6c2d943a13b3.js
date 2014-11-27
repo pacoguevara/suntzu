@@ -19074,6 +19074,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           url: "/api/users/get_list_votation",
           data: filters.data,
           success: function(data) {
+            console.log("data");
             console.log(data);
             return fill_table2("#detalle_table", data);
           }
@@ -19110,6 +19111,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     $('.search2').keypress(function(e) {
       var filters, key;
       key = e.which;
+      console.log(key);
       if (key === 13) {
         filters = get_filters();
         return $.ajax({
@@ -19298,16 +19300,20 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             console.log("respuesta");
             console.log(esto);
             if (tipo === 1) {
-              $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val(json["user_id"]);
-              $(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val(json["user_id2"]);
+              if (json["user_id"] !== null) {
+                $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val(json["user_id"]);
+                $(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val(json["user_id2"]);
+              }
             }
             if (tipo === 2) {
-              $(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val("vacio");
-              $(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val(json["user_id2"]);
+              $(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val(json["user_id"]);
+              if (json["user_id2"] !== null) {
+                $(esto).parent().parent().parent().find('#td-coordinador').find('.coordinador').val(json["user_id2"]);
+              }
             }
             if (tipo === 3) {
-              $(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val("vacio");
-              return $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val("vacio");
+              $(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val(json["user_id"]);
+              return $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val(json["user_id2"]);
             }
           }
         },
@@ -19350,7 +19356,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         } else {
           checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="' + data[i].id + '">Ya votó';
         }
-        tds = '<td><p class="small"> ' + data[i].number + " </p></td> " + '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + checkaux + " </p></td> " + (cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', ''));
+        tds = '<td><p class="small"> ' + data[i].number + " </p></td> " + '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + checkaux + " </p></td> ";
+        cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         return $('<tr>').html(cleared_tds).appendTo('#detalle_table');
       });
     };
@@ -19361,9 +19368,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       enlaces = data.enlaces;
       coordinadores = data.coordinadores;
       $('#total_result').html(count);
-      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="0" ></option>';
-      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="0" ></option>';
-      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="0" ></option>';
+      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="vacio" ></option>';
+      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="vacio" ></option>';
+      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="vacio" ></option>';
       i = 0;
       while (i < subenlaces.length) {
         full_name = subenlaces[i].name + " " + subenlaces[i].first_name + ' ' + subenlaces[i].last_name;
