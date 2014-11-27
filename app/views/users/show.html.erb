@@ -120,7 +120,7 @@
 				<%= @user.neighborhood %>
 				
 				<dt>Municipio:</dt>
-				<%= @user.municipality.name if !@user.municipality_id.nil? %>
+				<%= @user.municipality.name if !@user.municipality_id.blank? %>
 			</dl>
 		</div>
 	</div>
