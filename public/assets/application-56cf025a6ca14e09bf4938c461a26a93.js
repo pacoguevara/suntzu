@@ -18844,7 +18844,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, fill_table_show, get_filters, get_filters2, get_filters_role, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
     User = (function() {
       var bind, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getSubEnlaces, init, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectSubEnlace, subenlaces;
       subenlaces = [];
@@ -19081,13 +19081,31 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         });
       }
     });
+    $(document).on("change", ".filtro_role", function() {
+      var filters;
+      filters = get_filters_role();
+      console.log("filters");
+      console.log(filters.data);
+      return $.ajax({
+        url: "/api/users/tabla_show",
+        data: filters.data,
+        success: function(data) {
+          console.log("succeess");
+          console.log(data);
+          return fill_table_show('#users_table', data);
+        }
+      });
+    });
     $(document).on("change", ".filtro_dropdown", function() {
       var filters;
       filters = get_filters();
+      console.log("filter");
+      console.log(filters.data);
       return $.ajax({
         url: "/api/users",
         data: filters.data,
         success: function(data) {
+          console.log("succeess");
           console.log(data);
           return fill_table('#users_table', data);
         }
@@ -19220,6 +19238,28 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         };
       }
     };
+    get_filters_role = function() {
+      var $inputs, data, params;
+      $inputs = $('.search4');
+      params = {};
+      data = {};
+      $inputs.each(function() {
+        if ($(this).val() !== '') {
+          return params[this.name] = $(this).val();
+        }
+      });
+      console.log("params");
+      console.log(params);
+      if (params) {
+        return {
+          data: {
+            role: params['role_select'],
+            usuario_id: params['usuario_id'],
+            usuario_role: params['usuario_role']
+          }
+        };
+      }
+    };
     get_filters = function() {
       var $inputs, data, params;
       $inputs = $('.search');
@@ -19230,6 +19270,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           return params[this.name] = $(this).val();
         }
       });
+      console.log("params");
+      console.log(params);
       if (params) {
         return {
           data: {
@@ -19264,7 +19306,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             bird_end: params['bird_end_date'],
             sub_enlace_id: params['sub_enlace_id'],
             enlace_id: params['enlace_id'],
-            coordinador_id: params['coordinador_id']
+            coordinador_id: params['coordinador_id'],
+            group_id: params['group_id'],
+            role_select: params['role_select']
           }
         };
       }
@@ -19361,6 +19405,17 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         return $('<tr>').html(cleared_tds).appendTo('#detalle_table');
       });
     };
+    fill_table_show = function(table_id, data) {
+      $("tr:has(td)").remove();
+      $("#total_result").html(data.data.length);
+      data = data.data;
+      return $.each(data, function(i, item) {
+        var cleared_tds, tds;
+        tds = '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + data[i].first_name + " </p></td> " + '<td><p class="small"> ' + data[i].last_name + " </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + '<td><p class="small"> ' + data[i].role + " </p></td> ";
+        cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
+        return $('<tr>').html(cleared_tds).appendTo(table_id);
+      });
+    };
     fill_table = function(table_id, data) {
       var coordinadores, count, enlaces, full_name, html, html2, html3, i, stringcoordinador, stringenlace, stringsubenlace, subenlaces;
       count = data.total;
@@ -19399,7 +19454,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       $("tr:has(td)").remove();
       data = data.data;
       return $.each(data, function(i, item) {
-        var cleared_tds, option, string_selects, tds;
+        var cleared_tds, option, string_grupo, string_selects, tds;
         string_selects = "";
         option = $(html).find("option[value='" + data[i].subenlace_id + "']")[0];
         $(option).attr("selected", "selected");
@@ -19418,16 +19473,20 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         stringcoordinador = $(html3).prop("outerHTML");
         if (getURLParameter('role') === 'jugador') {
           string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+          string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
         } else {
           if (data[i].role === "jugador") {
             string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+            string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
           } else if (data[i].role === "subenlace") {
             string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+            string_grupo = "";
           } else if (data[i].role === "enlace") {
             string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
+            string_grupo = "";
           }
         }
-        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects;
+        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + parseInt(data[i].section) + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects + string_grupo;
         cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         $('<tr>').html(cleared_tds).appendTo(table_id);
         if (data[i].subenlace_id != null) {
@@ -19452,8 +19511,6 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       count = data.total;
       $('#total_result').html(count);
       data = data.data;
-      console.log("en el fill table nominal");
-      console.log(data);
       $("tr:has(td)").remove();
       return $.each(data, function(i, item) {
         var checkitem, cleared_tds, tds;

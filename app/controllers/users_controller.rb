@@ -13,6 +13,12 @@ class UsersController < ApplicationController
     else
       @subordinados = []
     end
+    @roles = {
+      "jugador" => "Jugador",
+      "subenlace" => "Subenlace",
+      "enlace" => "Enlace",
+      "coordinador" => "Coordinador",
+    }
   end
   def import
     user = User.find params[:id]
@@ -195,6 +201,13 @@ class UsersController < ApplicationController
       "coordinador" => "Coordinadores"
     }
     @municipalities = Municipality.all.order( :name )
+    @groups = Group.all.order(:name)
+    @roles = {
+      "jugador" => "Jugador",
+      "subenlace" => "Subenlace",
+      "enlace" => "Enlace",
+      "coordinador" => "Coordinador",
+    }
   	if params[:role] == 'jugador'
   		@users = User.all.limit(User.per_page).offset(0).order(:created_at)
       @users_t = User.all

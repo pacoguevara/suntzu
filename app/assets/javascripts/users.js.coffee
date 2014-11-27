@@ -192,13 +192,28 @@ $ ->
 					console.log "data"
 					console.log data
 					fill_table2("#detalle_table", data)
+	$(document).on "change", ".filtro_role", ->	
+		filters = get_filters_role()
+		console.log "filters"
+		console.log filters.data
+		$.ajax 
+				url:"/api/users/tabla_show"
+				data:
+					filters.data
+				success: (data) ->
+					console.log "succeess"
+					console.log data
+					fill_table_show('#users_table', data)
 	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
+		console.log "filter"
+		console.log filters.data
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
+					console.log "succeess"
 					console.log data
 					fill_table('#users_table', data)
 
@@ -302,7 +317,20 @@ $ ->
 				name: params['name']
 				polling_id: $('.hidd')[0].value
 				
-
+	get_filters_role = ->
+		$inputs = $('.search4')
+		params = {}
+		data = {}
+		$inputs.each ->
+			unless $(this).val() is ''
+				params[this.name] = $(this).val()
+		console.log "params"
+		console.log params
+		if params
+			data:
+				role: params['role_select']
+				usuario_id: params['usuario_id']
+				usuario_role: params['usuario_role']
 	get_filters = ->
 		$inputs = $('.search')
 		params = {}
@@ -310,6 +338,8 @@ $ ->
 		$inputs.each ->
 			unless $(this).val() is ''
 				params[this.name] = $(this).val()
+		console.log "params"
+		console.log params
 		if params
 			data:
 				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
@@ -344,7 +374,8 @@ $ ->
 				sub_enlace_id: params['sub_enlace_id']
 				enlace_id: params['enlace_id']
 				coordinador_id: params['coordinador_id']
-
+				group_id: params['group_id']
+				role_select: params['role_select']
 	selectchange = (id, user_id, tipo) ->
 	  $.ajax
 	    url: "/api/users/enlace"
@@ -427,6 +458,22 @@ $ ->
 			'<td><p class="small"> ' + checkaux + " </p></td> "
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
+	fill_table_show = (table_id, data) ->
+		$("tr:has(td)").remove();
+		$("#total_result").html(data.data.length)
+		data = data.data
+		$.each data, (i, item) ->
+			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].gender + " </p></td> " +
+			'<td><p class="small"> ' + data[i].age + " </p></td> " +
+			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
+			'<td><p class="small"> ' + data[i].city + " </p></td> " +
+			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " +
+			'<td><p class="small"> ' + data[i].role + " </p></td> "
+			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
+			$('<tr>').html(cleared_tds).appendTo table_id
 
 	fill_table = (table_id, data) ->
 		count = data.total
@@ -509,13 +556,17 @@ $ ->
 
 			if getURLParameter('role') is 'jugador'
 				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+				string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 			else
 				if data[i].role == "jugador"
 					string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+					string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 				else if data[i].role == "subenlace"
 					string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+					string_grupo = ""
 				else if data[i].role == "enlace" 
 					string_selects = '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
+					string_grupo = ""
 
 			tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
 			'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
@@ -524,7 +575,8 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects 
+			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects +
+			string_grupo
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds
@@ -548,8 +600,6 @@ $ ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
-		console.log "en el fill table nominal"
-		console.log data
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
