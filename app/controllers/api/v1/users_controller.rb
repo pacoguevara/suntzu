@@ -6,7 +6,7 @@ module Api
 			def index	
 				where_statment = ""
 				if params.has_key? :role
-					if params[:role] != "jugador"
+					if params[:role] != "jugador" && params[:role] != "0"
 						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
@@ -230,6 +230,24 @@ module Api
 							"#{params[:internal_number].downcase}"
 					end
 				end
+				if (params.has_key? :group_id) && (params[:group_id] != "0")
+					if !where_statment.blank?
+						where_statment=where_statment +" AND group_id = "+
+							"#{params[:group_id].downcase}"
+					else
+						where_statment=where_statment +" group_id = "+
+							"#{params[:group_id].downcase}"
+					end
+				end
+				if (params.has_key? :role_select) && (params[:role_select] != "0")
+					if !where_statment.blank?
+						where_statment=where_statment +" AND role = "+
+							"'#{params[:role_select].downcase}'"
+					else
+						where_statment=where_statment +" role = "+
+							"'#{params[:role_select].downcase}'"
+					end
+				end
 				if params.has_key? :neighborhood
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(neighborhood) LIKE "+
@@ -293,6 +311,7 @@ module Api
 						end
 					end
 				end
+				puts "el whereeee "+where_statment
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page
@@ -324,6 +343,11 @@ module Api
 						user_hash[:subenlace_id] = user.subenlace_id
 						user_hash[:enlace_id] = user.enlace_id
 						user_hash[:coordinador_id] = user.coordinador_id
+						if user.group_id == nil
+							user_hash[:group] = "Sin grupo"
+						else
+							user_hash[:group] = Group.find(user.group_id).name
+						end
 						users_ar.push user_hash
 					end
 					format  = {
@@ -392,6 +416,44 @@ module Api
 
 				user.save!
 				respond_with true
+			end
+			def tabla_show
+				where_statment = ""
+				if (params.has_key? :role) && (params[:role] != 0)
+					if !where_statment.blank?
+							where_statment = where_statment +" AND role = '#{params[:role]}'"
+						else
+							where_statment = where_statment +" role = '#{params[:role]}'"
+						end
+				end
+				if params[:usuario_role] == "subenlace"
+					where_statment = where_statment + " AND subenlace_id = #{params[:usuario_id]}"
+				elsif params[:usuario_role] == "enlace"
+					where_statment = where_statment + " AND enlace_id = #{params[:usuario_id]}"
+				elsif params[:usuario_role] == "coordinador"
+					where_statment = where_statment + " AND coordinador_id = #{params[:usuario_id]}"
+				end
+				users = User.where(where_statment)
+				users_count = User.where(where_statment).count
+				users_ar = []
+				users.each do |user|
+					user_hash = {}
+					user_hash[:name] = user.name
+					user_hash[:first_name] = user.first_name
+					user_hash[:last_name] = user.last_name
+					user_hash[:gender] = user.gender
+					user_hash[:age] = user.age
+					user_hash[:section] = user.section
+					user_hash[:city] = !user.municipality_id.blank? ? user.municipality.name : ''
+					user_hash[:neighborhood] = user.neighborhood
+					user_hash[:role] = user.role
+					users_ar.push user_hash
+				end
+				format  = {
+						"data" => users_ar,
+						"total" => users_count
+					}
+					respond_with format
 			end
 			def get_parent
 				h = Hash.new				
@@ -490,6 +552,7 @@ module Api
 					
 			end
 			def get_list_votation
+
 				puts "son los params y asi "+params.to_s
 				swhere = ""
 				if params[:number]

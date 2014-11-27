@@ -14,6 +14,7 @@
 <hr />
 <!--<table class="table table-hover table-bordered table-striped" id="users_table">-->
 
+
 <div class="table-responsive">
 <table class="table table-bordered table-striped table-hover" id="users_table">  
   <tdead>
@@ -98,7 +99,28 @@
           </select>
         </th>
       <%end%>
-      
+      <%if params[:role]=="jugador"%>
+        <th>
+          <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="group_id">
+            <option value="0"></option>
+            <% @groups.each do |group| %>
+              <option value="<%= group.id %>"> 
+                <%= group.name %>
+              </option>
+            <%end%>
+          </select>
+        </th>
+        <th>
+          <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="role_select">
+            <option value="0"></option>
+            <% @roles.each do |role| %>
+              <option value="<%= role[0] %>"> 
+                <%= role[1] %>
+              </option>
+            <%end%>
+          </select>
+        </th>
+      <%end%>
     </tr>
     <tr>
       <th >
@@ -140,7 +162,14 @@
           <p class="small">Coordinador</p>
         </th>
       <%end%>
-      
+      <%if params[:role]=="jugador"%>
+        <th class="small">
+          Grupo
+        </th>
+        <th class="small">
+          Rol
+        </th>
+      <%end%>
     </tr>
   </thead>
 
@@ -217,6 +246,14 @@
               </select>
             </p>
           </td>
+        <%end%>
+        <%if params[:role]=="jugador"%>
+        <td>
+          <%=user.get_group%>
+        </td>
+        <td>
+          <%=user.role%>
+        </td>
         <%end%>
       </tr>
     <% end %>

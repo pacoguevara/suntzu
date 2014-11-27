@@ -112,6 +112,11 @@ class User < ActiveRecord::Base
     return nil if User.where(:id => self.parent).count < 1
     return User.find self.parent if self.parent != 0
   end
+  def get_group
+    return "Sin grupo" if self.group_id == nil
+    return Group.find(self.group_id).name
+    
+  end
   def get_enlace
     return nil if self.parent == 0
     if self.get_deep == 0
