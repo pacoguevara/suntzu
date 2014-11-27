@@ -1,33 +1,52 @@
 <div class="row">
-  <div id="container1" class="col-sm-12 well">
+  <div  class="col-sm-12">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Votaciones Internas</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <select class="form-control" id="votation_pollings">
+              <option></option>
+              <% @pollings.each do |p| %>
+                <option value="<%=p.id %>"><%= p.name %></option>
+              <% end %>
+            </select>
+            <div id="container6"></div>
+          </div>
+          <div  class="col-md-6">
+            <select class="form-control" id="votation_groups">
+              <option></option>
+              <% @groups.each do |g| %>
+                <option value="<%=g.id%>"><%=g.name%></option>
+              <% end %>
+            </select>
+            <div id="container7"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<hr />
 <div class="row">
-  <div class="col-sm-12">
+  <div  class="col-sm-6">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        Gráfica de Jugadores por Grupo
+      </div>
+      <div class="panel-body">
+        <div id="container4"></div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div id="container2" class="col-sm-4">
-  </div>
-  <div id="container3" class="col-sm-4">
-  </div>
-</div>
-<div class="row">
-  <div id="container4" class="col-sm-12">
-  </div>
-</div>
-<div class="row">
-  <div id="container5" class="col-sm-12">
-  </div>
-</div>
-<hr />
-<div class="row">
-  <div class="col-sm-12">
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-      <div id="map" style='height: 400px; margin:50px;'></div>
+  <div  class="col-sm-6">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Tabla de Municipios</div>
+      <div class="panel-body">
+        <div id="container5"></div>
+      </div>
+    </div>
   </div>
 </div>

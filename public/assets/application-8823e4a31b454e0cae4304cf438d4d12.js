@@ -18623,134 +18623,212 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var $container1, $container2, $container3, $container4, $container5, bar_cfg, handler, line_cfg, pie_cfg, typed_cfg;
-    line_cfg = {
-      chart: {
-        type: "line"
-      },
-      title: {
-        text: "Grupo 1 vs Grupo 2"
-      },
-      xAxis: {
-        categories: ["7AM", "8AM", "9AM", "10AM", "11AM", "12AM", "1PM", "2PM", "3PM", "4PM", "5PM", "6PM"]
-      },
-      yAxis: {
-        title: {
-          text: "Tendencias (%)"
-        }
-      },
-      plotOptions: {
-        line: {
-          dataLabels: {
-            enabled: true
-          },
-          enableMouseTracking: false
-        }
-      },
-      series: [
-        {
-          name: "Felipe Calderón Hinojosa",
-          data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-          name: "Vicente Fox Quesada",
-          data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-        }
-      ]
-    };
-    bar_cfg = {
-      chart: {
-        type: "column"
-      },
-      title: {
-        text: "Adquisición de Nuevos Militantes por Grupo"
-      },
-      xAxis: {
-        categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-      },
-      yAxis: {
-        title: {
-          text: "Tendencias (%)"
-        }
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0.2,
-          borderWidth: 0
-        }
-      },
-      series: [
-        {
-          name: "Vicente Fox Quesada",
-          data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }, {
-          name: "Felipe Calderón Hinojosa",
-          data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-        }
-      ]
-    };
-    pie_cfg = {
-      chart: {
-        type: "pie",
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false
-      },
-      title: {
-        text: "Jugadores por grupo"
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: false
-          },
-          showInLegend: true
-        }
-      },
-      series: [
-        {
-          name: "Pie",
-          data: [['Felipe Calderón Hinojosa', 55.0], ['Vicente Fox Quesada', 45.0]]
-        }
-      ]
-    };
-    typed_cfg = {
-      chart: {
-        renderTo: 'container',
-        type: "column",
-        margin: 75,
-        options3d: {
-          enabled: true,
-          alpha: 15,
-          beta: 15,
-          depth: 50,
-          viewDistance: 25
-        }
-      },
-      title: {
-        text: "Militantes por Grupo"
-      },
-      plotOptions: {
-        column: {
-          depth: 25
-        }
-      },
-      series: [
-        {
-          name: 'Felipe Calderon Hinojosa',
-          data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }, {
-          name: 'Vicente Fox Quesada',
-          data: [39.9, 81.5, 206.4, 159.2, 244.0, 136.0, 13.6, 80.5, 216.4, 124.1, 65.6, 154.4]
-        }
-      ]
-    };
-    $container1 = $('#container1');
-    $container2 = $('#container2');
-    $container3 = $('#container3');
+    var $container4, $container5, $container6, $container7, VotationPanel;
     $container4 = $('#container4');
     $container5 = $('#container5');
+    $container6 = $('#container6');
+    $container7 = $('#container7');
+    VotationPanel = (function() {
+      var bind, groups_url, init, options_groups, options_pollings, pollings_url, selectGroups, selectPollings;
+      pollings_url = '/api/pollings';
+      groups_url = pollings_url + '/groups';
+      options_groups = {
+        chart: {
+          renderTo: 'container7',
+          defaultSeriesType: 'spline'
+        },
+        series: [],
+        title: {
+          text: "Votaciones por Coordinadores",
+          x: -20
+        },
+        subtitle: {
+          text: "Selecciona una votación",
+          x: -20
+        },
+        xAxis: {
+          categories: ["8 hrs", "9 hrs", "10 hrs", "11 hrs", "12 hrs", "13 hrs", "14 hrs", "15 hrs", "16 hrs", "17 hrs", "18 hrs", "19 hrs"]
+        },
+        yAxis: {
+          title: {
+            text: "Temperature (°C)"
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ]
+        },
+        tooltip: {
+          valueSuffix: "Votos"
+        }
+      };
+      options_pollings = {
+        chart: {
+          renderTo: 'container6',
+          defaultSeriesType: 'spline'
+        },
+        series: [],
+        xAxis: {
+          categories: ["8 hrs", "9 hrs", "10 hrs", "11 hrs", "12 hrs", "13 hrs", "14 hrs", "15 hrs", "16 hrs", "17 hrs", "18 hrs", "19 hrs"]
+        },
+        yAxis: {
+          title: {
+            text: "Temperature (°C)"
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ]
+        },
+        tooltip: {
+          valueSuffix: "Votos"
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+          borderWidth: 0
+        }
+      };
+      init = function() {
+        bind();
+      };
+      bind = function() {
+        $('#votation_groups').change(function() {
+          selectGroups(this);
+        });
+        $('#votation_pollings').change(function() {
+          selectPollings(this);
+        });
+      };
+      selectGroups = function(el) {
+        groups_url = pollings_url + '/groups/' + $(el).val();
+        $.ajax({
+          url: groups_url,
+          success: function(data) {
+            var chart;
+            options_groups.series = data;
+            return chart = new Highcharts.Chart(options_groups);
+          }
+        });
+      };
+      selectPollings = function(el) {
+        pollings_url = pollings_url + '/' + $(el).val();
+        $.ajax({
+          url: pollings_url + '/groups',
+          success: function(data) {
+            var chart;
+            console.log(data);
+            options_pollings.series = data;
+            return chart = new Highcharts.Chart(options_pollings);
+          }
+        });
+      };
+      return {
+        init: init
+      };
+    })();
+    VotationPanel.init();
+    if ($container6 != null) {
+      $container6.highcharts({
+        title: {
+          text: "Votaciones por Grupos",
+          x: -20
+        },
+        subtitle: {
+          text: "Selecciona una votación",
+          x: -20
+        },
+        xAxis: {
+          categories: ["8 hrs", "9 hrs", "10 hrs", "11 hrs", "12 hrs", "13 hrs", "14 hrs", "15 hrs", "16 hrs", "17 hrs", "18 hrs", "19 hrs"]
+        },
+        yAxis: {
+          title: {
+            text: "Temperature (°C)"
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ]
+        },
+        tooltip: {
+          valueSuffix: "Votos"
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+          borderWidth: 0
+        },
+        series: [
+          {
+            name: "Tokyo",
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+          }, {
+            name: "New York",
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+          }, {
+            name: "Berlin",
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+          }, {
+            name: "London",
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+          }
+        ]
+      });
+      $container7.highcharts({
+        title: {
+          text: "Votaciones por Coordinadores",
+          x: -20
+        },
+        subtitle: {
+          text: "Selecciona un grupo",
+          x: -20
+        },
+        xAxis: {
+          categories: ["8 hrs", "9 hrs", "10 hrs", "11 hrs", "12 hrs", "13 hrs", "14 hrs", "15 hrs", "16 hrs", "17 hrs", "18 hrs", "19 hrs"]
+        },
+        yAxis: {
+          title: {
+            text: "Temperature (°C)"
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ]
+        },
+        tooltip: {
+          valueSuffix: "°C"
+        },
+        series: [
+          {
+            name: "Tokyo",
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+          }, {
+            name: "New York",
+            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+          }, {
+            name: "Berlin",
+            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+          }, {
+            name: "London",
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+          }
+        ]
+      });
+    }
     if ($container5 != null) {
       $.ajax({
         url: "/api/users/municipality",
@@ -18758,7 +18836,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         success: function(json) {
           var tabla;
           console.log(json);
-          tabla = "<table class='table table-bordered table-striped table-hover'><tr><th>Nombre</th><th>Numero de jugadores</th></tr>";
+          tabla = "<table class='table table-bordered table-striped table-hover'>" + "<tr><th>Municipio</th><th>Numero de jugadores</th></tr>";
           $.each(json, function(i, item) {
             return tabla = tabla + "<tr><td>" + i + "</td><td>" + item + "</td>";
           });
@@ -18766,8 +18844,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           return $container5.append(tabla);
         },
         error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status + " " + url_root);
-          alert(thrownError);
+          console.log(xhr.status + " " + url_root);
+          console.log(thrownError);
         }
       });
     }
@@ -18801,40 +18879,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           ]
         });
       });
-      return;
     }
-    handler = Gmaps.build('Google');
-    return handler.buildMap({
-      provider: {},
-      zoom: 8,
-      internal: {
-        id: "map"
-      }
-    }, function() {
-      var markers;
-      markers = handler.addMarkers([
-        {
-          lat: 25.723,
-          lng: -100.312,
-          infowindow: "hello!"
-        }, {
-          lat: 25.670,
-          lng: -100.289,
-          infowindow: "hello!"
-        }, {
-          lat: 25.37,
-          lng: -100.06,
-          infowindow: "hello!"
-        }, {
-          lat: 25.582,
-          lng: -100.423,
-          infowindow: "hello!"
-        }
-      ]);
-      handler.bounds.extendWith(markers);
-      handler.fitMapToBounds();
-      return handler.getMap().setZoom(7);
-    });
   });
 
 }).call(this);
@@ -18846,15 +18891,27 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
   $(function() {
     var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, get_filters, get_filters2, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
     User = (function() {
-      var bind, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getSubEnlaces, init, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectSubEnlace, subenlaces;
+      var bind, bind_witho_load, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getSubEnlaces, init, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectSubEnlace, subenlaces;
       subenlaces = [];
       enlaces = [];
       coordinadores = [];
       complete = 3;
       init = function() {
+        bind_witho_load();
         getSubEnlaces();
         getEnlaces();
         getCoordinadores();
+      };
+      bind_witho_load = function() {
+        $('#is_user').change(function() {
+          if ($(this).is(':checked')) {
+            $('#user_password').removeClass('hide');
+            return $('#user_password_confirmation').removeClass('hide');
+          } else {
+            $('#user_password').addClass('hide');
+            return $('#user_password_confirmation').addClass('hide');
+          }
+        });
       };
       bind = function() {
         $('#user_subenlace_id').change(function() {

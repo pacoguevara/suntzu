@@ -10,9 +10,19 @@ $ ->
 		complete =  3
 		
 		init = ->
+			bind_witho_load()
 			getSubEnlaces()
 			getEnlaces()
 			getCoordinadores()
+			return
+		bind_witho_load = ->
+			$('#is_user').change ->
+				if $(this).is(':checked')
+					$('#user_password').removeClass 'hide'
+					$('#user_password_confirmation').removeClass 'hide'
+				else
+					$('#user_password').addClass 'hide'
+					$('#user_password_confirmation').addClass 'hide'
 			return
 		bind = ->
 			$('#user_subenlace_id').change ->

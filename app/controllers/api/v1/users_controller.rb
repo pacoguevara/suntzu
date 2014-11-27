@@ -339,7 +339,8 @@ module Api
 				end
 			end
 			def municipality
-				respond_with users = User.joins(:municipality).group("municipalities.name").count(:municipality_id)
+				respond_with users = User.joins(:municipality)
+					.group("municipalities.name").limit(10).count(:municipality_id)
 			end
 			def enlace
 				user = User.find(params[:id2])

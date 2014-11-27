@@ -11,6 +11,12 @@ Pan::Application.routes.draw do
   resources :messages
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
+      resources :pollings do
+        collection do
+          get ':id/groups/:group', :action => 'groups_show'
+          get ':id/groups/', :action => 'groups'
+        end
+      end
       resources :messages
       resources :users do 
       	collection do

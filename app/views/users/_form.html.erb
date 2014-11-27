@@ -1,7 +1,8 @@
 <%= simple_form_for(@user) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <h2><%= pluralize(@user.errors.count, "error") %> 
+        prohibited this user from being saved:</h2>
       <ul>
       <% @user.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -37,7 +38,8 @@
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Nacimiento' %><br>
-        <%= f.date_select :bird, class: "form-control", :order => [:day, :month, :year], :start_year => 1950 %>
+        <%= f.date_select :bird, class: "form-control", 
+        :order => [:day, :month, :year], :start_year => 1950 %>
       </div>
       <div class="form-group">
         <%= f.label 'Edad' %><br>
@@ -45,7 +47,8 @@
       </div>
       <div class="form-group">
         <%= f.label 'Sexo' %><br>
-        <%= f.collection_radio_buttons :gender, [['H', 'Hombre'] ,['M', 'Mujer']], :first, :last %>
+        <%= f.collection_radio_buttons :gender, [['H', 'Hombre'] ,['M', 'Mujer']],
+         :first, :last %>
       </div>
       <div class="form-group">
         <%= f.label 'Correo Electrónico' %><br>
@@ -53,12 +56,19 @@
       </div>
       <% if current_user.admin? || current_user.coordinador? %>
         <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="is_user"> ¿Es usuario del sistema?
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
           <%= f.label 'Contraseña' %><br>
-          <%= f.password_field :password, class: "form-control" %>
+          <%= f.password_field :password, class: "form-control hide" %>
         </div>
         <div class="form-group">
           <%= f.label 'Confirmar Contraseña' %><br>
-          <%= f.password_field :password_confirmation, class: "form-control" %>
+          <%= f.password_field :password_confirmation, class: "form-control hide" %>
         </div>
       <% end %>
       <div class="row">
@@ -74,29 +84,7 @@
             <%= f.number_field :cellphone, class: "form-control only-numbers"%>
           </div>
         </div>
-      </div>
-      <div class="form-group">
-        <%= f.label 'Ingresa el link de facebook' %><br>
-        <%= f.text_field :fb, class: "form-control" %>
-      </div>
-      <div class="form-group">
-        <%= f.label 'Ingresa el link de twitter' %><br>
-        <%= f.text_field :tw, class: "form-control" %>
-      </div>
-      
-      <%= f.simple_fields_for :documents do |builder| %>
-        <div class="well">
-          <div class="form-group">
-            <%= builder.label 'Nombre' %><br>
-            <%= builder.text_field :description, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= builder.label 'Archivo' %><br>
-            <%= builder.file_field :doc, class: "form-control" %>
-          </div>
-        </div>    
-      <% end %>
-      
+      </div>      
     </div>
     <div class="col-md-4">
       <div class="form-group">
@@ -115,49 +103,62 @@
       <div class="form-group">
         <%= f.label 'Nivel Jerárquico:' %>
         <% if current_user.admin? %>
-          <%= f.input_field :role, collection: User::ROLES_ADMIN, class: "form-control", id: "role_select_form", required: true%>
+          <%= f.input_field :role, collection: User::ROLES_ADMIN, 
+          class: "form-control", id: "role_select_form", required: true%>
         <% end %>
         <% if current_user.coordinador? %>
-          <%= f.input_field :role, collection: User::ROLES_COORDINADOR, :label => "Rol", class: "form-control", required: true%>
+          <%= f.input_field :role, collection: User::ROLES_COORDINADOR, 
+          :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.enlace? %>
-          <%= f.input_field :role, collection: User::ROLES_ENLACE, :label => "Rol", class: "form-control", required: true%>
+          <%= f.input_field :role, collection: User::ROLES_ENLACE, 
+          :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.subenlace? %>
-          <%= f.input_field :role, collection: User::ROLES_SUBENLACE, :label => "Rol", class: "form-control", required: true%>
+          <%= f.input_field :role, collection: User::ROLES_SUBENLACE, 
+          :label => "Rol", class: "form-control", required: true%>
         <% end %>
         <% if current_user.grupo? %>
-          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", class: "form-control", required: true%>
-        <% end %>
-      </div>
-      <div class="form-group" id="group">
-        <%= f.label 'Grupo:' %><br>
-        <% if current_user.admin? || current_user.coordinador?%>
-          <%= f.input_field :group_id, collection: Group.all, class: "form-control" %>
-        <% else %>
-          <%= f.input_field :group_id, collection: Group.all, class: "form-control" %>
+          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", 
+          class: "form-control", required: true%>
         <% end %>
       </div>
       <div class="form-group" id="group">
         <%= f.label 'Subenlace:' %><br>
         <%= f.input_field :subenlace_id, collection: @subenlaces, 
-        class: "form-control", :label_method => :full_name, :value_method => :id %>
+        class: "form-control", :label_method => :full_name, 
+          :value_method => :id %>
       </div>
       <div class="form-group" id="group">
         <%= f.label 'Enlace:' %><br>
         <%= f.input_field :enlace_id, collection: @enlaces, 
-        class: "form-control", :label_method => :full_name, :value_method => :id %>
+        class: "form-control", :label_method => :full_name, 
+          :value_method => :id %>
       </div>
       <div class="form-group" id="group">
         <%= f.label 'Coordinador:' %><br>
         <%= f.input_field :coordinador_id, collection: @coordinadores, 
-        class: "form-control", :label_method => :full_name, :value_method => :id %>
+        class: "form-control", :label_method => :full_name,
+         :value_method => :id %>
       </div>
-
-      <!-- <div class="form-group">
-      	<%= f.label 'Reporta A:' %><br>
-        <select id="parent-select" name="user[parent]" class="form-control" required></select>
-      </div> -->
+      <div class="form-group" id="group">
+        <%= f.label 'Grupo:' %><br>
+        <% if current_user.admin? || current_user.coordinador?%>
+          <%= f.input_field :group_id, collection: Group.all, 
+          class: "form-control" %>
+        <% else %>
+          <%= f.input_field :group_id, collection: Group.all, 
+          class: "form-control" %>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Ingresa el link de facebook' %><br>
+        <%= f.text_field :fb, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label 'Ingresa el link de twitter' %><br>
+        <%= f.text_field :tw, class: "form-control" %>
+      </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
@@ -202,6 +203,22 @@
         <%= f.text_field :neighborhood, class: "form-control" %>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <%= f.simple_fields_for :documents do |builder| %>
+      <div class="col-md-4">
+      <div class="well">
+        <div class="form-group">
+          <%= builder.label 'Nombre' %><br>
+          <%= builder.text_field :description, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= builder.label 'Archivo' %><br>
+          <%= builder.file_field :doc, class: "form-control" %>
+        </div>
+      </div>
+      </div>    
+    <% end %>
   </div>
   <div class="actions">
     <hr>
