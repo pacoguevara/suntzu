@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-md-6">
             <select class="form-control" id="votation_pollings">
-              <option></option>
+              <option value="0"></option>
               <% @pollings.each do |p| %>
                 <option value="<%=p.id %>"><%= p.name %></option>
               <% end %>
@@ -16,7 +16,7 @@
           </div>
           <div  class="col-md-6">
             <select class="form-control" id="votation_groups">
-              <option></option>
+              <option value="0"></option>
               <% @groups.each do |g| %>
                 <option value="<%=g.id%>"><%=g.name%></option>
               <% end %>
