@@ -113,7 +113,7 @@ class User < ActiveRecord::Base
     return User.find self.parent if self.parent != 0
   end
   def get_group
-    return "Sin grupo" if self.group_id == nil
+    return "Sin grupo" if self.group_id == nil || self.group_id == 0
     return Group.find(self.group_id).name
     
   end

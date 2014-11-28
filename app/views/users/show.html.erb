@@ -61,6 +61,7 @@
 				<dd><%= @user.role %></dd>
 			</dl>
 				<dl>
+						
 						<dt> SubEnlace </dt>
 						<dd>
 							<% if !@user.subenlace_id.nil? && @user.subenlace_id != 0 %>
@@ -68,8 +69,8 @@
 							 		:target => '_blank' %>
 						 	<% else %> 
 							 	No tiene asignado subenlace
-						 	<% end %>
 						</dd>
+						<%end%>
   					<dt> Enlace </dt>
   					<dd>
   						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
