@@ -113,6 +113,11 @@ class User < ActiveRecord::Base
     return nil if User.where(:id => self.parent).count < 1
     return User.find self.parent if self.parent != 0
   end
+  def get_group
+    return "Sin grupo" if self.group_id == nil || self.group_id == 0
+    return Group.find(self.group_id).name
+    
+  end
   def get_enlace
     return nil if self.parent == 0
     if self.get_deep == 0
@@ -221,7 +226,7 @@ class User < ActiveRecord::Base
     worksheet.write(0, 7, 'Sexo')
     worksheet.write(0, 8, 'Perfil')
     worksheet.write(0, 9, 'Grupo')
-    worksheet.write(0, 10, 'Reporta a')
+    #worksheet.write(0, 10, 'Reporta a')
     worksheet.write(0, 11, 'Sección')
     worksheet.write(0, 12, 'Dto Fed')
     worksheet.write(0, 13, 'DtoLoc')
@@ -238,7 +243,7 @@ class User < ActiveRecord::Base
 
     i = 1
     users.each do |user|
-      parent = user.parent == 0 ? "Sin Asignar" : User.find(user.parent).full_name
+      #parent = user.parent == 0 ? "Sin Asignar" : User.find(user.parent).full_name
       worksheet.write(i, 0, user.rnm)
       worksheet.write(i, 1, user.register_date)
       worksheet.write(i, 2, user.ife_key)
@@ -249,7 +254,7 @@ class User < ActiveRecord::Base
       worksheet.write(i, 7, user.gender)
       worksheet.write(i, 8, user.role)
       worksheet.write(i, 9, user.group_id.nil? ? "Sin Asignar" : user.group.name)
-      worksheet.write(i, 10, parent)
+      #worksheet.write(i, 10, parent)
       worksheet.write(i, 11, user.section)
       worksheet.write(i, 12, user.dto_fed)
       worksheet.write(i, 13, user.dto_loc)

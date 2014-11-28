@@ -61,6 +61,7 @@
 				<dd><%= @user.role %></dd>
 			</dl>
 				<dl>
+						
 						<dt> SubEnlace </dt>
 						<dd>
 							<% if !@user.subenlace_id.nil? && @user.subenlace_id != 0 %>
@@ -68,8 +69,8 @@
 							 		:target => '_blank' %>
 						 	<% else %> 
 							 	No tiene asignado subenlace
-						 	<% end %>
 						</dd>
+						<%end%>
   					<dt> Enlace </dt>
   					<dd>
   						<%if !@user.enlace_id.nil? && @user.enlace_id != 0%> 
@@ -120,7 +121,7 @@
 				<%= @user.neighborhood %>
 				
 				<dt>Municipio:</dt>
-				<%= @user.municipality.name if !@user.municipality_id.nil? %>
+				<%= @user.municipality.name if !@user.municipality_id.blank? %>
 			</dl>
 		</div>
 	</div>
@@ -139,6 +140,7 @@
 <div>
 	<div class="row">
 		<%if @subordinados && !@subordinados.empty?%>
+
 			<div class="row">
 				<div class="col-md-6">
 					<%= form_tag import_users_path(params[:id]), multipart:true do %>
@@ -154,11 +156,41 @@
 					<%= link_to 'Descargar', downloads_subordinados_path(:id => @user.id, 
 					:role => @user.role), class: "btn btn-success btn-block"%>
 				</div>
+
 			</div>
-  	
+			<hr />
+				<center><p style="font-size:18px">
+			    <strong id="total_result">
+			      <%= @subordinados.count %> 
+			    </strong>
+			    en total
+			  </p></center>
+			</div>	
 			<table class="table table-bordered table-striped table-hover"
 			 id="users_table" style="margin-top:10px;">  
 	      <thead>
+	      	<tr>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th></th>
+	      		<th>
+	      			<select class="filtro_role search4"  style="width:100%" name="role_select">
+		            <option value="0"></option>
+		            <% @roles.each do |role| %>
+		              <option value="<%= role[0] %>"> 
+		                <%= role[1] %>
+		              </option>
+		            <%end%>
+		          </select>
+		          <input type="hidden" class="search4" value="<%=@user.role%>" name="usuario_role"/>
+		          <input type="hidden" class="search4" value="<%=@user.id%>" name="usuario_id"/>
+	      		</th>
+	      	</tr>
 	        <tr>
 			      <th >
 			        <p class="small">Nombre</p>
@@ -183,7 +215,10 @@
 			      </th>
 			      <th>
 			        <p class="small">Colonia</p>
-			      </th>		      
+			      </th>	
+			      <th>
+			        <p class="small">Rol</p>
+			      </th>		     	      
 			    </tr>
 	    	</thead>
 	    	<tbody>
@@ -212,6 +247,9 @@
 	            </td>
 	            <td>
 	            	<p class="small"><%= s.city %></p>
+	            </td>
+	            <td>
+	            	<p class="small"><%= s.role %></p>
 	            </td>
 	          </tr>
 	        <% end %>

@@ -11,10 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20141128000411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -71,10 +73,13 @@ ActiveRecord::Schema.define(version: 20141128000411) do
   add_index "list_votation_headers", ["polling_id"], name: "index_list_votation_headers_on_polling_id", using: :btree
 
   create_table "list_votations", force: true do |t|
-    t.integer "list_votation_header_id"
-    t.integer "user_id"
-    t.integer "number"
-    t.boolean "check"
+    t.integer  "list_votation_header_id"
+    t.integer  "user_id"
+    t.integer  "number"
+    t.boolean  "check"
+    t.datetime "created_at"
+    t.datetime "update_at"
+    t.datetime "updated_at"
   end
 
   add_index "list_votations", ["list_votation_header_id"], name: "index_list_votations_on_list_votation_header_id", using: :btree

@@ -6,7 +6,7 @@ module Api
 			def index	
 				where_statment = ""
 				if params.has_key? :role
-					if params[:role] != "jugador"
+					if params[:role] != "jugador" && params[:role] != "0"
 						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
@@ -230,6 +230,24 @@ module Api
 							"#{params[:internal_number].downcase}"
 					end
 				end
+				if (params.has_key? :group_id) && (params[:group_id] != "0")
+					if !where_statment.blank?
+						where_statment=where_statment +" AND group_id = "+
+							"#{params[:group_id].downcase}"
+					else
+						where_statment=where_statment +" group_id = "+
+							"#{params[:group_id].downcase}"
+					end
+				end
+				if (params.has_key? :role_select) && (params[:role_select] != "0")
+					if !where_statment.blank?
+						where_statment=where_statment +" AND role = "+
+							"'#{params[:role_select].downcase}'"
+					else
+						where_statment=where_statment +" role = "+
+							"'#{params[:role_select].downcase}'"
+					end
+				end
 				if params.has_key? :neighborhood
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(neighborhood) LIKE "+
@@ -293,6 +311,7 @@ module Api
 						end
 					end
 				end
+				puts "el whereeee "+where_statment
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page
@@ -326,6 +345,16 @@ module Api
 						user_hash[:subenlace_id] = user.subenlace_id
 						user_hash[:enlace_id] = user.enlace_id
 						user_hash[:coordinador_id] = user.coordinador_id
+						user_hash[:subenlace] = !(user.subenlace_id.nil? || user.subenlace_id == 0) ? User.find(user.subenlace_id).full_name : ''
+						user_hash[:enlace] = !(user.enlace_id.nil? || user.enlace_id == 0) ? User.find(user.enlace_id).full_name : ''
+						user_hash[:coordinador] = !(user.coordinador_id.nil? || user.coordinador_id == 0) ? User.find(user.coordinador_id).full_name : ''
+						user_hash[:group] = user.get_group
+						
+						if user.group_id == nil
+							user_hash[:group] = "Sin grupo"
+						else
+							user_hash[:group] = Group.find(user.group_id).name
+						end
 						users_ar.push user_hash
 					end
 					format  = {
@@ -341,7 +370,8 @@ module Api
 				end
 			end
 			def municipality
-				respond_with users = User.joins(:municipality).group("municipalities.name").count(:municipality_id)
+				respond_with users = User.joins(:municipality)
+					.group("municipalities.name").count(:municipality_id)
 			end
 			def enlace
 				user = User.find(params[:id2])
@@ -355,6 +385,11 @@ module Api
 						user.coordinador_id = 0
 						user.subenlace_id = 0
 						user.enlace_id = 0		
+					elsif params[:tipo] == "4"
+						user.coordinador_id = 0
+						user.subenlace_id = 0
+						user.enlace_id = 0
+						user.group_id = 0
 					end
 				else
 					if params[:tipo] == "1"
@@ -393,6 +428,44 @@ module Api
 
 				user.save!
 				respond_with true
+			end
+			def tabla_show
+				where_statment = ""
+				if (params.has_key? :role) && (params[:role] != 0)
+					if !where_statment.blank?
+							where_statment = where_statment +" AND role = '#{params[:role]}'"
+						else
+							where_statment = where_statment +" role = '#{params[:role]}'"
+						end
+				end
+				if params[:usuario_role] == "subenlace"
+					where_statment = where_statment + " AND subenlace_id = #{params[:usuario_id]}"
+				elsif params[:usuario_role] == "enlace"
+					where_statment = where_statment + " AND enlace_id = #{params[:usuario_id]}"
+				elsif params[:usuario_role] == "coordinador"
+					where_statment = where_statment + " AND coordinador_id = #{params[:usuario_id]}"
+				end
+				users = User.where(where_statment)
+				users_count = User.where(where_statment).count
+				users_ar = []
+				users.each do |user|
+					user_hash = {}
+					user_hash[:name] = user.name
+					user_hash[:first_name] = user.first_name
+					user_hash[:last_name] = user.last_name
+					user_hash[:gender] = user.gender
+					user_hash[:age] = user.age
+					user_hash[:section] = user.section
+					user_hash[:city] = !user.municipality_id.blank? ? user.municipality.name : ''
+					user_hash[:neighborhood] = user.neighborhood
+					user_hash[:role] = user.role
+					users_ar.push user_hash
+				end
+				format  = {
+						"data" => users_ar,
+						"total" => users_count
+					}
+					respond_with format
 			end
 			def get_parent
 				h = Hash.new				
@@ -476,14 +549,29 @@ module Api
 						h[:name] = "vacio"
 						h[:user_id2] = nil
 						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
 					elsif params[:tipo] == "2"
 						h[:user_id] = 0
 						h[:name] = "vacio"
 						h[:user_id2] = nil
 						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
 					elsif params[:tipo] == "3"
-						user.subenlace_id = 0
-						user.subenlace_id = 0
+						h[:user_id] = 0
+						h[:name] = "vacio"
+						h[:user_id2] = 0
+						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
+					elsif params[:tipo] == "4"
+						h[:user_id] = 0
+						h[:name] = "vacio"
+						h[:user_id2] = 0
+						h[:name2] = "vacio"
+						h[:user_id3] = 0
+						h[:name3] = "vacio"
 					end
 
 				end		
@@ -491,7 +579,7 @@ module Api
 					
 			end
 			def get_list_votation
-				puts "son los params y asi "+params.to_s
+
 				swhere = ""
 				if params[:number]
 					swhere = "number = "+params[:number]
@@ -519,7 +607,7 @@ module Api
 			def groups
 				groups_by_name = {}
 				User.all.group(:group_id).count.to_a.each do |k,v|
-					if k.nil?
+					if k.nil? || k == 0
 						group_name = "Sin Grupo"
 					else
 						group_name = Group.find(k).name
@@ -570,7 +658,6 @@ module Api
 			def list_votation
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
-				puts "*************************** params"+params.to_s
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
 				if !@us.empty?
