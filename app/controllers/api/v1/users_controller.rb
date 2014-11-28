@@ -343,6 +343,11 @@ module Api
 						user_hash[:subenlace_id] = user.subenlace_id
 						user_hash[:enlace_id] = user.enlace_id
 						user_hash[:coordinador_id] = user.coordinador_id
+						user_hash[:subenlace] = !(user.subenlace_id.nil? || user.subenlace_id == 0) ? User.find(user.subenlace_id).full_name : ''
+						user_hash[:enlace] = !(user.enlace_id.nil? || user.enlace_id == 0) ? User.find(user.enlace_id).full_name : ''
+						user_hash[:coordinador] = !(user.coordinador_id.nil? || user.coordinador_id == 0) ? User.find(user.coordinador_id).full_name : ''
+						user_hash[:group] = user.get_group
+						
 						if user.group_id == nil
 							user_hash[:group] = "Sin grupo"
 						else

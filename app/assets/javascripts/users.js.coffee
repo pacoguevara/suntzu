@@ -462,7 +462,7 @@ $ ->
 					if tipo == 3
 						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
 						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
-						
+
 						
 					
 			error: (xhr, ajaxOptions, thrownError) ->
@@ -663,9 +663,11 @@ $ ->
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
 			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + data[i].parent + " </p></td> "+
-			'<td><p class="small"> ' + data[i].parent + " </p></td> "
+			'<td><p class="small"> ' + data[i].subenlace + " </p></td> "+
+			'<td><p class="small"> ' + data[i].enlace + " </p></td> "+
+			'<td><p class="small"> ' + data[i].coordinador + " </p></td> "+
+			'<td><p class="small"> ' + data[i].group + " </p></td> "+
+			'<td><p class="small"> ' + data[i].role + " </p></td> "
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds

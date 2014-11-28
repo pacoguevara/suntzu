@@ -122,6 +122,12 @@ Votación
             <% end %>
           </select> -->
         </th>
+        <th >
+
+        </th>
+        <th >
+
+        </th>
       </tr>
       <tr>
         <th >
@@ -153,6 +159,12 @@ Votación
         </th>
         <th>
           <p class="small">Coordinador</p>
+        </th>
+        <th>
+          <p class="small">Grupo</p>
+        </th>
+        <th>
+          <p class="small">Rol</p>
         </th>
 
       </tr>
@@ -197,6 +209,16 @@ Votación
           <td>
             <p class="small">
               <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.get_group %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= user.role %>
             </p>
           </td>
         </tr>
