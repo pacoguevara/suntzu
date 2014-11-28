@@ -18,6 +18,11 @@ Pan::Application.routes.draw do
         end
       end
       resources :messages
+      resources :groups do
+        collection do
+          get 'grupos', :action => 'grupos'
+        end
+      end
       resources :users do 
       	collection do
           get 'subenlaces', :action => 'subenlaces'

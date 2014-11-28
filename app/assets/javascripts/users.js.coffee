@@ -7,13 +7,15 @@ $ ->
 		subenlaces = []
 		enlaces = []
 		coordinadores = []
-		complete =  3
+		grupos = []
+		complete =  4
 		
 		init = ->
 			bind_witho_load()
 			getSubEnlaces()
 			getEnlaces()
 			getCoordinadores()
+			getGrupos()
 			return
 		bind_witho_load = ->
 			$('#is_user').change ->
@@ -31,38 +33,71 @@ $ ->
 				selectEnlace( @ )
 			$('#user_coordinador_id').change ->
 				selectCoordinador( @ )
+			$('#user_group_id').change ->
+				selectGrupo( @ )
 			return
+		searchInCoordinador = (id) ->
+			grupo_id = 0
+			$(coordinadores).each (i) ->
+				if coordinadores[i].id is parseInt(id)
+					grupo_id = coordinadores[i].group_id
+					return false
+			return grupo_id
 		searchInSubenlaces = (id) ->
 			enlace_id = 0
 			coordinador_id = 0
+			group_id = 0
 			$(subenlaces).each (i) ->
 				if subenlaces[i].id is parseInt(id)
 					enlace_id = subenlaces[i].enlace_id
 					coordinador_id = subenlaces[i].coordinador_id
+					group_id = subenlaces[i].group_id
 					return false
-			return [enlace_id, coordinador_id]
+			return [enlace_id, coordinador_id, group_id]
 		searchInEnlaces = (id) ->
 			coordinador_id = 0
+			group_id = 0
 			$(enlaces).each (i) ->
 				if enlaces[i].id is parseInt(id)
 					coordinador_id = enlaces[i].coordinador_id
+					group_id = enlaces[i].group_id
 					return false
-			return coordinador_id
+			return [coordinador_id,group_id]
+
+		selectGrupo = (el)->
+			$('#user_subenlace_id').val 0
+			$('#user_enlace_id').val 0
+			$('#user_coordinador_id').val 0
+			return
 		selectSubEnlace = (el)->
 			enlace_id = searchInSubenlaces($(el).val())[0]
 			coordinador_id = searchInSubenlaces($(el).val())[1]
+			grupo_id = searchInSubenlaces($(el).val())[2]
 			$('#user_enlace_id').val enlace_id
 			$('#user_coordinador_id').val coordinador_id
+			$('#user_group_id').val grupo_id
 			return
 		selectEnlace = (el)->
-			coordinador_id = searchInEnlaces $(el).val()
-			console.log  coordinador_id
+			coordinador_id = searchInEnlaces($(el).val())[0]
+			grupo_id = searchInEnlaces($(el).val())[1]
+			$('#user_group_id').val grupo_id
 			$('#user_coordinador_id').val coordinador_id
 			$('#user_subenlace_id').val 0
 			return
-		selectCoordinador = ->
+		selectCoordinador = (el)->
+			grupo_id = searchInCoordinador $(el).val()
+			$('#user_group_id').val grupo_id
 			$('#user_subenlace_id').val('0')
 			$('#user_enlace_id').val('0')
+			return
+		getGrupos = ->
+			$.ajax
+				url: '/api/groups/grupos'
+				success: (data)->
+					grupos = data
+					complete = complete - 1
+					if complete is 0
+						bind()
 			return
 		getCoordinadores = ->
 			$.ajax
@@ -427,6 +462,7 @@ $ ->
 					if tipo == 3
 						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
 						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
+						
 						
 					
 			error: (xhr, ajaxOptions, thrownError) ->

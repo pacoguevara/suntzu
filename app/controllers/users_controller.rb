@@ -218,6 +218,7 @@ class UsersController < ApplicationController
     @subenlace = User.where(:role => "subenlace")
     @enlace = User.where(:role => "enlace")
     @coordinador = User.where(:role => "coordinador")
+    @groups = Group.all
   	@canedit = true
   end
   def downloads

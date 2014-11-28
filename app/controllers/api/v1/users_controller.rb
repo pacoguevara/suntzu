@@ -378,6 +378,11 @@ module Api
 						user.coordinador_id = 0
 						user.subenlace_id = 0
 						user.enlace_id = 0		
+					elsif params[:tipo] == "4"
+						user.coordinador_id = 0
+						user.subenlace_id = 0
+						user.enlace_id = 0
+						user.group_id = 0
 					end
 				else
 					if params[:tipo] == "1"
@@ -537,14 +542,29 @@ module Api
 						h[:name] = "vacio"
 						h[:user_id2] = nil
 						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
 					elsif params[:tipo] == "2"
 						h[:user_id] = 0
 						h[:name] = "vacio"
 						h[:user_id2] = nil
 						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
 					elsif params[:tipo] == "3"
-						user.subenlace_id = 0
-						user.subenlace_id = 0
+						h[:user_id] = 0
+						h[:name] = "vacio"
+						h[:user_id2] = 0
+						h[:name2] = "vacio"
+						h[:user_id3] = nil
+						h[:name3] = "vacio"
+					elsif params[:tipo] == "4"
+						h[:user_id] = 0
+						h[:name] = "vacio"
+						h[:user_id2] = 0
+						h[:name2] = "vacio"
+						h[:user_id3] = 0
+						h[:name3] = "vacio"
 					end
 
 				end		
@@ -581,7 +601,7 @@ module Api
 			def groups
 				groups_by_name = {}
 				User.all.group(:group_id).count.to_a.each do |k,v|
-					if k.nil?
+					if k.nil? || k == 0
 						group_name = "Sin Grupo"
 					else
 						group_name = Group.find(k).name
