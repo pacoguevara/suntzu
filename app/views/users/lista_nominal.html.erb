@@ -15,7 +15,6 @@
       <select class="form-control search2" name="municipality_id"
         id="head_municipality">
         <option value="-1"> </option>
-        <option value="0"> Otros </option>
         <% @municipalities.each do |mun| %>
           <option value="<%= mun.id %>"> <%= mun.name %></option>
         <% end %>

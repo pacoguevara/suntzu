@@ -780,7 +780,7 @@ $ ->
 				alert 'no se ha podido registrar el voto '
 
 	$(document).on "click", ".btn-enviar", ->
-		municipio = $('#select_municipality2').find(":selected").val()
+		municipio = $('#head_municipality').find(":selected").val()
 		polling = $('#select_polling').find(":selected").val()
 		register_start_date = $('#register_start_date').val()
 		register_end_date = $('#register_end_date').val()

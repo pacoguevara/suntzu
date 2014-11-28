@@ -578,7 +578,6 @@ module Api
 			end
 			def get_list_votation
 
-				puts "son los params y asi "+params.to_s
 				swhere = ""
 				if params[:number]
 					swhere = "number = "+params[:number]
@@ -657,7 +656,6 @@ module Api
 			def list_votation
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
-				puts "*************************** params"+params.to_s
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
 				if !@us.empty?
