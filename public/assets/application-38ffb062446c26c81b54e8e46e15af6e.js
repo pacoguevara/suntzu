@@ -18582,8 +18582,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 
   message = {
     url: "/api/messages",
-    send: function(cell, msg) {
-      console.log('sending');
+    send: function(cell, msg, user) {
+      console.log(user);
       return $.ajax({
         type: 'POST',
         url: "/api/messages",
@@ -18591,25 +18591,116 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           cellphone: cell,
           message: msg
         },
-        success: function() {
-          return alert('Se ha enviado el mensaje');
+        success: function(data) {
+          alert('Se ha enviado el mensaje');
+          console.log(user);
+          return $.ajax({
+            type: 'POST',
+            url: "/api/messages/" + data.id + "/user",
+            data: {
+              user_id: user
+            },
+            success: function(data) {
+              return alert(user_id);
+            }
+          });
         }
       });
     }
   };
 
   $(function() {
-    return $('#send_twilio').click(function() {
+    var fill_table;
+    $('.select_search_m').change(function() {
+      alert("Hello");
+    });
+    $('#send_twilio').click(function() {
       var table_items;
       table_items = $('#militants_table > tbody > tr');
       table_items.each(function() {
         var cellphone;
-        console.log;
+        console.log($(this)[0].id);
         cellphone = $(this).find('td.cellphone').html();
-        return message.send(cellphone, $('#message_message').val());
+        return message.send(cellphone, $('#message_message').val(), $(this)[0].id);
       });
       return false;
     });
+    $('.search_m').keypress(function(e) {
+      var $inputs, key, params;
+      key = e.which;
+      if (key === 13) {
+        $inputs = $('.search_m');
+        params = {};
+        $inputs.each(function() {
+          if ($(this).val() !== '') {
+            return params[this.name] = $(this).val();
+          }
+        });
+        if (params) {
+          return $.ajax({
+            url: "/api/users",
+            data: {
+              role: params['role'] !== void 0 ? params['role'] : getURLParameter('role'),
+              municipality_id: params['municipality_id'],
+              age: params['age'],
+              section: params['section'],
+              city: params['city'],
+              zipcode: params['zipcode'],
+              phone: params['phone'],
+              parent: params['parent'],
+              email: params['email'],
+              cellphone: params['cellphone'],
+              gender: params['gender'],
+              name: params['name'],
+              first_name: params['first_name'],
+              last_name: params['last_name'],
+              parent: params['parent']
+            },
+            success: function(data) {
+              return fill_table('#militants_table', data);
+            }
+          });
+        }
+      }
+    });
+    return fill_table = function(table_id, data) {
+      var coordinadores, count, enlaces, subenlaces;
+      count = data.total;
+      subenlaces = data.subenlaces;
+      enlaces = data.enlaces;
+      coordinadores = data.coordinadores;
+      $('#total_result').html(count);
+      $("tr:has(td)").remove();
+      console.log(data.data);
+      data = data.data;
+      return $.each(data, function(i, item) {
+        var cleared_tds, stringcoordinador, stringenlace, stringsubenlace, tds;
+        stringsubenlace = '<td><p class="small"> ';
+        $.each(subenlaces, function(j, item) {
+          if (subenlaces[j].id === data[i].subenlace_id) {
+            stringsubenlace = stringsubenlace + subenlaces[j].name + " " + subenlaces[j].first_name;
+            return +" " + subenlaces[j].last_name + '</p></td>';
+          }
+        });
+        stringenlace = '<td><p class="small"> ';
+        $.each(enlaces, function(j, item) {
+          if (enlaces[j].id === data[i].enlace_id) {
+            stringenlace = stringenlace + enlaces[j].name + " " + enlaces[j].first_name;
+            return +" " + enlaces[j].last_name + '</p></td>';
+          }
+        });
+        stringcoordinador = '<td><p class="small"> ';
+        $.each(coordinadores, function(j, item) {
+          if (coordinadores[j].id === data[i].coordinador_id) {
+            stringcoordinador = stringcoordinador + coordinadores[j].name + " " + coordinadores[j].first_name;
+            return +" " + coordinadores[j].last_name + '</p></td>';
+          }
+        });
+        tds = '<td><p class="small"><a href="/users/' + data[i].id + '"> ' + data[i].name + " </a></p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].first_name + " </a> </p></td> " + '<td><p class="small"> <a href="/users/' + data[i].id + '"> ' + data[i].last_name + " </a> </p></td> " + '<td class="cellphone"><p class="small"> ' + data[i].cellphone + " </p></td> " + '<td><p class="small"> ' + data[i].email + " </p></td> " + '<td><p class="small"> ' + data[i].gender + " </p></td> " + '<td><p class="small"> ' + data[i].age + " </p></td> " + '<td><p class="small"> ' + data[i].city + " </p></td> " + '<td><p class="small"> ' + "#" + " </p></td> " + stringsubenlace + stringenlace + stringcoordinador + '<td><p class="small"> ' + "#" + " </p></td> ";
+        cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
+        return $('<tr>').html(cleared_tds).appendTo(table_id);
+      });
+    };
   });
 
 }).call(this);
@@ -19074,6 +19165,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           url: "/api/users/get_list_votation",
           data: filters.data,
           success: function(data) {
+            console.log("data");
             console.log(data);
             return fill_table2("#detalle_table", data);
           }
@@ -19355,7 +19447,8 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         } else {
           checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="' + data[i].id + '">Ya votó';
         }
-        tds = '<td><p class="small"> ' + data[i].number + " </p></td> " + '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + checkaux + " </p></td> " + (cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', ''));
+        tds = '<td><p class="small"> ' + data[i].number + " </p></td> " + '<td><p class="small"> ' + data[i].name + " </p></td> " + '<td><p class="small"> ' + checkaux + " </p></td> ";
+        cleared_tds = ((tds.replace('null', '')).replace('null', '')).replace('NaN', '');
         return $('<tr>').html(cleared_tds).appendTo('#detalle_table');
       });
     };
@@ -19366,9 +19459,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       enlaces = data.enlaces;
       coordinadores = data.coordinadores;
       $('#total_result').html(count);
-      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="0" ></option>';
-      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="0" ></option>';
-      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="0" ></option>';
+      stringsubenlace = '<select class="default select_class subenlace" style="width:100%">' + '<option value="vacio" ></option>';
+      stringenlace = '<select class="default select_class enlace" style="width:100%">' + '<option value="vacio" ></option>';
+      stringcoordinador = '<select class="default select_class coordinador" ' + 'style="width:100%"><option value="vacio" ></option>';
       i = 0;
       while (i < subenlaces.length) {
         full_name = subenlaces[i].name + " " + subenlaces[i].first_name + ' ' + subenlaces[i].last_name;

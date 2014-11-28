@@ -164,7 +164,7 @@ module Api
 						"#{params[:age]}"
 					else
 						where_statment=where_statment +" age = "+
-						"'#{params[:age]}%'"
+						"'#{params[:age]}'"
 					end
 				end
 				if params.has_key? :section
@@ -312,6 +312,8 @@ module Api
 						user_hash[:name] = user.name
 						user_hash[:first_name] = user.first_name
 						user_hash[:last_name] = user.last_name
+						user_hash[:cellphone] = user.cellphone
+						user_hash[:email] = user.email
 						user_hash[:full_name] = user.full_name
 						user_hash[:gender] = user.gender
 						user_hash[:age] = user.age

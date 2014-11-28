@@ -11,7 +11,11 @@ Pan::Application.routes.draw do
   resources :messages
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :messages
+      resources :messages do 
+        collection do 
+          post '/:id/user', :action => 'create_user_message'
+        end     
+      end
       resources :users do 
       	collection do
           get 'subenlaces', :action => 'subenlaces'

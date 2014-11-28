@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :documents, :dependent => :destroy
   has_many :list_votations
   accepts_nested_attributes_for :documents,  :allow_destroy => true
+  belongs_to :user_message
 
 
   validates_presence_of :role, :ife_key
