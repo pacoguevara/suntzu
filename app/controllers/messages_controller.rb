@@ -15,13 +15,8 @@ class MessagesController < ApplicationController
 
   # GET /messages/new
   def new
-    if params[:role] == 'jugador'
-      @users = User.all.limit(User.per_page).offset(0).order(:created_at)
-      @users_t = User.all
-    else
-      @users = User.where(:role => params[:role]).limit(User.per_page).offset(0)
-      @users_t = User.where(:role => params[:role])
-    end
+    @users = User.all.limit(User.per_page).offset(0).order(:created_at)
+    @users_t = User.all
     @message = Message.new
     @militants = User.all
     @canedit = false
