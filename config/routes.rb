@@ -16,7 +16,7 @@ Pan::Application.routes.draw do
         collection do 
           post '/:id/user', :action => 'create_user_message'
         end     
-
+      end 
       resources :pollings do
         collection do
           get ':id/groups/:group', :action => 'groups_show'

@@ -18,11 +18,11 @@ class Message < ActiveRecord::Base
 	end
 
   private
-  def self.save_message(message, sid)
+  def self.save_message(message, user_id)
     Message.connection
     new_message = Message.new
     new_message.message = message
-    new_message.message_sid = 2
+    new_message.user_id = user_id
     new_message.save
     new_message.id
   end 
