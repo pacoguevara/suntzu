@@ -11,6 +11,14 @@ Pan::Application.routes.draw do
   resources :messages
   namespace :api, defaults: {format: 'json'} do 
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
+
+
+      resources :messages do 
+        collection do 
+          post '/:id/user', :action => 'create_user_message'
+        end     
+      end 
+
       resources :pollings do
         collection do
           get ':id/groups/:group', :action => 'groups_show'
@@ -35,6 +43,7 @@ Pan::Application.routes.draw do
           get "get_list_votation", :action => "get_list_votation"
           get "list_votation", :action => "list_votation"
           get "get_parent",:action => "get_parent"
+          get "update_hijos",:action => "update_hijos"
           get "municipality",:action => "municipality"
           get "tabla_show",:action => "tabla_show"
       	end

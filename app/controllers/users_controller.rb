@@ -142,9 +142,9 @@ class UsersController < ApplicationController
         params[:user][:documents_attributes].delete "2"
       end
     end
-    
     respond_to do |format|
       if @user.update user_params
+        @user.update_subordinados
         format.html { redirect_to(@user, notice: 'El usuario se ha actualizado.' )}
         format.json { render action: 'show', status: :created, location: @user }
       else

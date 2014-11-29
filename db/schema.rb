@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141127174910) do
+
+ActiveRecord::Schema.define(version: 20141128233305) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -139,6 +143,7 @@ ActiveRecord::Schema.define(version: 20141127174910) do
     t.boolean "is_mail"
     t.integer "user_id"
     t.integer "message_id"
+    t.string  "message_sid"
   end
 
   add_index "user_messages", ["message_id"], name: "index_user_messages_on_message_id", using: :btree

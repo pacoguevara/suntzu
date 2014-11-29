@@ -164,7 +164,7 @@ module Api
 						"#{params[:age]}"
 					else
 						where_statment=where_statment +" age = "+
-						"'#{params[:age]}%'"
+						"'#{params[:age]}'"
 					end
 				end
 				if params.has_key? :section
@@ -331,6 +331,8 @@ module Api
 						user_hash[:name] = user.name
 						user_hash[:first_name] = user.first_name
 						user_hash[:last_name] = user.last_name
+						user_hash[:cellphone] = user.cellphone
+						user_hash[:email] = user.email
 						user_hash[:full_name] = user.full_name
 						user_hash[:gender] = user.gender
 						user_hash[:age] = user.age
@@ -463,7 +465,12 @@ module Api
 						"data" => users_ar,
 						"total" => users_count
 					}
-					respond_with format
+				respond_with format
+			end
+			def update_hijos
+				user = User.find(params[:id2])
+				user.update_subordinados
+				respond_with true
 			end
 			def get_parent
 				h = Hash.new				
@@ -657,6 +664,7 @@ module Api
 			def list_votation
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
+<<<<<<< HEAD
 				
 				@us = User.where("municipality_id = ? AND register_date >= ? "+"
 					AND register_date <= ? AND bird >= ? AND bird <=?",
@@ -666,6 +674,10 @@ module Api
 					params[:prueba][:bird_start_date].to_date, 
 					params[:prueba][:bird_end_date].to_date)
 				lvArray = Array.new
+=======
+				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
+				@lvArray = Array.new
+>>>>>>> 408a9d8174c57afee745cf7f0bbd484bb70d0c4c
 				if !@us.empty?
 					lvh.save
 					cont = 1

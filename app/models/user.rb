@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :documents, :dependent => :destroy
   has_many :list_votations
   accepts_nested_attributes_for :documents,  :allow_destroy => true
+  belongs_to :user_message
 
 
   validates_presence_of :role, :ife_key
@@ -115,7 +116,33 @@ class User < ActiveRecord::Base
   def get_group
     return "Sin grupo" if self.group_id == nil || self.group_id == 0
     return Group.find(self.group_id).name
-    
+  end
+
+  def update_subordinados
+    if self.role == "subenlace"
+      users = User.where(:subenlace_id => self.id)
+      users.each do |u|      
+        u.enlace_id = self.enlace_id
+        u.coordinador_id = self.coordinador_id
+        u.save
+      end
+    elsif self.role == "enlace"
+      users = User.where(:enlace_id => self.id) 
+      users.each do |u|      
+        u.subenlace_id = self.subenlace_id
+        u.enlace_id = self.id
+        u.coordinador_id = self.coordinador_id
+        u.save
+      end 
+    elsif self.role == "enlace"
+      users = User.where(:coordinador_id => self.id) 
+      users.each do |u|      
+        u.subenlace_id = self.subenlace_id
+        u.enlace_id = self.enlace_id
+        u.coordinador_id = self.id
+        u.save
+      end 
+    end
   end
   def get_enlace
     return nil if self.parent == 0
