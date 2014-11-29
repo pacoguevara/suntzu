@@ -14,7 +14,7 @@ class Message < ActiveRecord::Base
     )
     puts response.status
     puts response.sid
-    mid = save_message(message, 2)
+    mid = save_message(message, response.sid)
 	end
 
   private
