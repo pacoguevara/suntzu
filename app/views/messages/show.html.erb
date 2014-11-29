@@ -1,19 +1,38 @@
-<p id="notice"><%= notice %></p>
+<div class="jumbotron">
+	<p id="notice"><%= notice %></p>
+<div class="row">
+	<div class="col-md-6">
+		<p>
+		  <strong>ID del mensaje:</strong>
+		  <%= @message.id %>
+		</p>
+		<p>
+		  <strong>Emisor:</strong>
+		  <%= @message.user_id %>
+		</p>
 
-<p>
-  <strong>User:</strong>
-  <%= @message.user_id %>
-</p>
+		<p>
+		  <strong>Mensaje:</strong>
+		  <%= @message.message %>
+		</p>
 
-<p>
-  <strong>Message:</strong>
-  <%= @message.message %>
-</p>
+		<p>
+		  <strong>Deep:</strong>
+		  <%= @message.deep %>
+		</p>
+	</div>
+	<div class="col-md-6">
+		<p>
+		  <strong>Mensaje recibido por:</strong>
+		  <ul>
+		  	<li>Usuario 1</li>
+		  	<li>usuario 2</li>
+		  	<li>usuario 3</li>
+		  </ul>
+		</p>
+	</div>
+</div>
 
-<p>
-  <strong>Deep:</strong>
-  <%= @message.deep %>
-</p>
+</div>
 
-<%= link_to 'Edit', edit_message_path(@message) %> |
 <%= link_to 'Back', messages_path %>

@@ -15,10 +15,21 @@ class MessagesController < ApplicationController
 
   # GET /messages/new
   def new
+    if params[:role] == 'jugador'
+      @users = User.all.limit(User.per_page).offset(0).order(:created_at)
+      @users_t = User.all
+    else
+      @users = User.where(:role => params[:role]).limit(User.per_page).offset(0)
+      @users_t = User.where(:role => params[:role])
+    end
     @message = Message.new
     @militants = User.all
     @canedit = false
-  end
+    @municipalities = Municipality.all
+    @subenlace = User.where(:role => 'subenlace')
+    @enlace = User.where(:role => 'enlace')
+    @coordinador = User.where(:role => 'coordinador')
+ end
 
   # GET /messages/1/edit
   def edit

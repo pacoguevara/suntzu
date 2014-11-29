@@ -31,56 +31,271 @@
 		<!-- </table>  -->
 		<table class="table table-hover table-bordered table-striped" id="militants_table">
 		  <thead>
+		  	<tr>
+		  		<th>
+		        <input type="text" placeholder="Nombre" class="form-control search_m" 
+		          name="name"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="Primer apellido" class="form-control search_m" 
+		          name="first_name"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="Segundo apellido" class="form-control search_m" 
+		          name="last_name"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="# Celular" class="form-control search_m" 
+		          name="cellphone_number"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="Email" class="form-control search_m" 
+		          name="email_address"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="Género" class="form-control search_m" 
+		          name="gender"/>
+		      </th>
+		      <th>
+		        <input type="text" placeholder="Edad" class="form-control search_m" 
+		          name="age"/>
+		      </th>
+		      <th>
+		        <select class="form-control search_m select_search_m municipality" id="select_municipality" 
+		        name="municipality_id">
+			        <option value="-1"> </option>
+			        <option value="0"> Otros </option>
+			        <% @municipalities.each do |mun| %>
+			          <option value="<%= mun.id %>"> <%= mun.name %></option>
+			        <% end %>
+			      </select> 
+		      </th>
+		      <th>
+		        <select class="form-control search_m select_search_m search_m municipality" id="select_group" 
+		        name="group_id">
+			        <option value="-1"> </option>
+			        <option value="0"> Otros </option>
+			      </select> 
+		      </th>
+		      <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
+	        <th>
+	          <select class="form-control select_search_m search_m"  style="width:100%" 
+	          name="sub_enlace_id">
+	            <option value="0"></option>
+	            <%@subenlace.each do |sbenlace|%>
+	              <option value="<%= sbenlace.id %>"> 
+	                <%= sbenlace.full_name %>
+	              </option>
+	            <%end%>
+	          </select>
+	        </th>
+	      <%end%>
+	      <%if params[:role] != "enlace" && params[:role] != "coordinador"%>
+	        <th>
+	          <select class="form-control select_search_m search_m"  style="width:100%" 
+	          name="enlace_id">
+	            <option value="0"></option>
+	            <%@enlace.each do |enlace|%>
+	              <option value="<%= enlace.id %>"> 
+	                <%= enlace.full_name %>
+	              </option>
+	            <%end%>
+	          </select>
+	        </th>
+	      <%end%>
+	      <%if params[:role]!="coordinador"%>
+	        <th>
+						<select class="form-control select_search_m search_m"  style="width:100%" 
+	          name="coordinador_id">
+	            <option value="0"></option>
+	            <% @coordinador.each do |coor| %>
+	              <option value="<%= coor.id %>"> 
+	                <%= coor.full_name %>
+	              </option>
+	            <%end%>
+	          </select>
+	        </th>
+	      <%end%>
+	      <th>
+					<select class="form-control select_search_m search_m" id="status_id" style="width:100%" 
+          name="status_id">
+            <option value="0">Enviado</option>
+            <option value="1">En proceso</option>
+            <option value="2">Falló</option>
+          </select>
+        </th>
+		  	</tr>
 		    <tr>
-		      <th>RNM</th>
-		      <th>Nombre</th>
-		      <th>Código Postal</th>
-		      <th># Celular</th>
-		      <th>Email</th>
-		      <th>Grupo</th>
-		      <th>Sección</th>
-		      <th></th>
+		      <th >
+		        <p class="small">Nombre</p>
+		      </th>
+		      <th >
+		        <p class="small">Paterno</p>
+		      </th>
+		      <th >
+		        <p class="small">Materno</p>
+		      </th>
+		      <th>
+		      	<p class="small"># Celular</p>
+		      </th>
+		      <th>
+		      	<p class="small">Email</p>
+		      </th>
+		      <th>
+		        <p class="small">Sexo</p>
+		      </th>
+		      <th>
+		        <p class="small">Edad</p>
+		      </th>
+		      <th>
+		        <p class="small">Municipio</p>
+		      </th>
+		      <th>
+		      	<p class="small">Grupo</p>
+		      </th>
+		      <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
+		        <th>
+		          <p class="small">Subenlace</p>
+		        </th>
+		      <%end%>
+		      <%if params[:role] != "enlace" && params[:role] != "coordinador"%>
+		        <th>
+		          <p class="small">Enlace</p>
+		        </th>
+		      <%end%>
+		      <%if params[:role]!="coordinador"%>
+		        <th>
+		          <p class="small">Coordinador</p>
+		        </th>
+		      <%end%>
+		      <th>
+	          	<p class="small">Status</p>
+	          </th>
 		    </tr>
 		  </thead>
 
 		  <tbody>
-		    <tr>
-		    	<td>#</td>
-		      <td>Eduardo Williams Hinojosa</td>
-		      <td>#</td>
-		      <td class="cellphone">8180291458</td>
-		      <td>ewilliams@tegik.com</td>
-		      <td>#</td>
-		      <td ></td>
+		  	 <% @users.each do |user| %>
+		  	 	<tr>
+			  	 	<td id = "<%=user.id%>">
+		          <p class="small"><%= link_to  user.name,(user_path user)+"?role=#{params[:role]}"%></p>
+	        	</td>
+		        <td >
+		          <p class="small"><%= link_to  user.first_name,(user_path user)+"?role=#{params[:role]}"%></p>
+		        </td>
+		        <td >
+		          <p class="small"><%= link_to  user.last_name,(user_path user)+"?role=#{params[:role]}"%></p>
+		        </td>
+		        <td>
+		          <p class="small cellphone"><%= user.cellphone %></p>
+		        </td>
+		        <td>
+		          <p class="small"><%= user.email %></p>
+		        </td>
+		        <td>
+		          <p class="small"><%= user.gender %></p>
+		        </td>
+		        <td>
+		          <p class="small"><%= user.age %></p>
+		        </td>
+		        <td>
+		          <p class="small"><%= user.municipality.name if !user.municipality.nil? %></p>
+		        </td>
+		        <td>
+		        	<p>#</p>
+		        </td>
+		        <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
+		          <td id="td-subenlace">
+		            <p class="small">
+		              <%@subenlace.each do |a|%>
+	                    <%if user.subenlace_id == a.id%>
+	                    	<%=a.full_name%>
+	                    <%end%> 
+	                <%end%>
+		            </p>
+		          </td>
+		        <%end%>
+		        <%if params[:role]!="enlace" && params[:role] != "coordinador"%>
+		          <td id="td-enlace">
+		            <p class="small">
+		                <%@enlace.each do |a|%>
+		                	<%if user.enlace_id == a.id%>
+		                    <%=a.full_name%>
+		                  <%end%>
+		                <%end%>
+		            </p>
+		          </td>
+		        <%end%>
+		        <%if params[:role]!="coordinador"%>
+		          <td id="td-coordinador">
+		            <p class="small">
+		                <%@coordinador.each do |a|%>
+		                    <%if user.coordinador_id == a.id%>
+		                    	<%=a.full_name%>
+		                    <%end%>
+		                <%end%>
+		            </p>
+		          </td>
+		        <%end%>
+		        <td>
+		        	<p>#</p>
+		        </td>
+	        </tr>
+		  	 <% end %>
+		  <!--  
+		    <tr id="<%= current_user.id %>">
+		      <td>Francisco</td> 
+		      <td>Guevara</td>
+		      <td>Zavala</td>
+		      <td class="cellphone">8341182625</td>
+		      <td>fguevara@tegik.com</td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
 		    </tr>
-		    <tr>
-		    	<td>#</td>
-		      <td>Jesús Lerma Sánchez</td>
-		      <td>#</td>
-		      <td class="cellphone">8341444418</td>
-		      <td>jlerma@tegik.com</td>
-		      <td>#</td>
-		      <td ></td>
-		    </tr>
-		    <tr>
-		    	<td>#</td>
-		      <td>Miguel Ferringo</td>
-		      <td>#</td>
-		      <td class="cellphone">8110775378</td>
-		      <td>ferrigno_buendia@hotmail.com</td>
-		      <td>#</td>
-		      <td ></td>
-		    </tr>
-		    <tr>
-		    	<td>#</td>
-		      <td>Juanjo José Rdz</td>
-		      <td>#</td>
-		      <td class="cellphone">8116361257</td>
-		      <td>jlerma@tegik.com</td>
-		      <td>#</td>
-		      <td ></td>
-		    </tr>
+		 		<tr id="12345">
+		      <td>Daniel</td> 
+		      <td>Guevara</td> 
+		      <td>Zavala</td>
+		      <td class="cellphone">9981287260</td>
+		      <td>fguevara@tegik.com</td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		      <td></td>
+		    </tr>-->
 		  </tbody>
 	</table>
 	</div>
 </div>
+<div class="col-md-12 center">
+	<ul class="pagination">
+    <% if @users_t.count >= 10 %>
+      <li class="page_number active" data-num="0"><a>Primera</a></li>
+      <% pages = (@users_t.count / User.per_page).round%>
+      <% 10.times.each do |i|%>
+    	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+      <% end %>
+      <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
+    <% else %>
+      <% @users_t.count.times.each do |i|%>
+        <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
+      <% end %>
+    <% end %>
+	</ul>
+  <p class="page_showing">
+    (
+    <strong id="total_result">
+      <%= @users_t.count %> 
+    </strong>
+    en total)</p>
+</div>	
