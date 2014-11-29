@@ -465,7 +465,12 @@ module Api
 						"data" => users_ar,
 						"total" => users_count
 					}
-					respond_with format
+				respond_with format
+			end
+			def update_hijos
+				user = User.find(params[:id2])
+				user.update_subordinados
+				respond_with true
 			end
 			def get_parent
 				h = Hash.new				

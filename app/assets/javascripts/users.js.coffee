@@ -484,7 +484,7 @@ $ ->
 				id2: user_id
 				tipo: tipo
 			success: (json) ->
-
+				console.log "se pudoooooo"
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
 				alert thrownError
