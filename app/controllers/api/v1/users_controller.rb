@@ -664,20 +664,11 @@ module Api
 			def list_votation
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
-<<<<<<< HEAD
-				
-				@us = User.where("municipality_id = ? AND register_date >= ? "+"
-					AND register_date <= ? AND bird >= ? AND bird <=?",
-					params[:prueba][:municipio], 
-					params[:prueba][:register_start_date].to_date, 
-					params[:prueba][:register_end_date].to_date, 
-					params[:prueba][:bird_start_date].to_date, 
-					params[:prueba][:bird_end_date].to_date)
-				lvArray = Array.new
-=======
+
+
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
->>>>>>> 408a9d8174c57afee745cf7f0bbd484bb70d0c4c
+
 				if !@us.empty?
 					lvh.save
 					cont = 1
