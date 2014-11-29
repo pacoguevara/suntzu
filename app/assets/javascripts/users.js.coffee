@@ -16,6 +16,7 @@ $ ->
 			getEnlaces()
 			getCoordinadores()
 			getGrupos()
+			bind()
 			return
 		bind_witho_load = ->
 			$('#is_user').change ->
@@ -73,6 +74,13 @@ $ ->
 			enlace_id = searchInSubenlaces($(el).val())[0]
 			coordinador_id = searchInSubenlaces($(el).val())[1]
 			grupo_id = searchInSubenlaces($(el).val())[2]
+			if !coordinador_id 
+				coordinador_id = 0
+			if !grupo_id 
+				grupo_id = 0
+			if !enlace_id 
+				enlace_id = 0
+			
 			$('#user_enlace_id').val enlace_id
 			$('#user_coordinador_id').val coordinador_id
 			$('#user_group_id').val grupo_id
@@ -82,7 +90,7 @@ $ ->
 			grupo_id = searchInEnlaces($(el).val())[1]
 			$('#user_group_id').val grupo_id
 			$('#user_coordinador_id').val coordinador_id
-			$('#user_subenlace_id').val 0
+			$('#user_subenlace_id').val('0')
 			return
 		selectCoordinador = (el)->
 			grupo_id = searchInCoordinador $(el).val()
@@ -469,6 +477,18 @@ $ ->
 				alert xhr.status 
 				alert thrownError
 		  return
+		$.ajax
+			url: "/api/users/update_hijos"
+			data:
+				id1: id
+				id2: user_id
+				tipo: tipo
+			success: (json) ->
+
+			error: (xhr, ajaxOptions, thrownError) ->
+				alert xhr.status 
+				alert thrownError
+		  return
 
 			
 	$(document).on "change", ".select_class", ->
@@ -601,9 +621,21 @@ $ ->
 			stringcoordinador = $(html3).prop "outerHTML"
 
 			if getURLParameter('role') is 'jugador'
+				if data[i].role == "subenlace"
+					stringsubenlace = ""
+				else if data[i].role == "enlace"
+					stringsubenlace = ""
+					stringenlace = ""
+				else if data[i].role == "coordinador"
+					stringsubenlace = ""
+					stringenlace = ""
+					stringcoordinador = ""
+
 				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 				string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 			else
+				console.log "heyyy"
+				console.log data[i].role
 				if data[i].role == "jugador"
 					string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 					string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"

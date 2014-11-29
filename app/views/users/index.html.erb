@@ -201,8 +201,10 @@
           <p class="small"><%= user.neighborhood %></p>
         </td>
         <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
+          
           <td id="td-subenlace">
             <p class="small">
+            <%if user.role == "jugador"%>
               <select class="select_class subenlace"  style="width:100%" data-catid="1">
                 <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "1"></option>
                 <%@subenlace.each do |a|%>
@@ -213,12 +215,16 @@
                   </option>
                 <%end%>
               </select>
+              <%end%>
             </p>
           </td>
+          
         <%end%>
         <%if params[:role]!="enlace" && params[:role] != "coordinador"%>
+        
           <td id="td-enlace">
             <p class="small">
+            <%if user.role == "jugador" || user.role == "subenlace"%>
               <select class="select_class enlace"  style="width:100%" data-catid="1">
                 <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "2"></option>
                 <%@enlace.each do |a|%>
@@ -228,12 +234,16 @@
                   </option>
                 <%end%>
               </select>
+              <%end%>
             </p>
           </td>
+          
         <%end%>
         <%if params[:role]!="coordinador"%>
+          
           <td id="td-coordinador">
             <p class="small">
+            <%if user.role == "jugador" || user.role == "subenlace" || user.role == "enlace"%>
               <select class="select_class coordinador"  style="width:100%" data-catid="1">
                 <option value="vacio" data-user_id = "<%=user.id%>" data-tipo = "3"></option>
                 <%@coordinador.each do |a|%>
@@ -244,8 +254,10 @@
                   </option>
                 <%end%>
               </select>
+              <%end%>
             </p>
           </td>
+          
         <%end%>
         <%if params[:role]=="jugador"%>
         <td id="td-grupo">

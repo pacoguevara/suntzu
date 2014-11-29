@@ -126,25 +126,25 @@
       <% if @user.role == "jugador"%>
         <div class="form-group" id="group">
           <%= f.label 'Subenlace:' %><br>
-          <%= f.input_field :subenlace_id, collection: @subenlaces, 
-          class: "form-control", :label_method => :full_name, 
-            :value_method => :id %>
+          <%= f.select :subenlace_id, options_for_select(
+            [['', '0']].concat(
+           @subenlaces.map{|c|[c.full_name, c.id]}), @user.subenlace_id), include_blank: false, class: 'form-control'%>
         </div>
       <%end%>
       <% if @user.role == "jugador" || @user.role == "subenlace"%>
         <div class="form-group" id="group">
           <%= f.label 'Enlace:' %><br>
-          <%= f.input_field :enlace_id, collection: @enlaces, 
-          class: "form-control", :label_method => :full_name, 
-            :value_method => :id %>
+          <%= f.select :enlace_id,options_for_select(
+            [['', '0']].concat(
+           @enlaces.map{|c|[c.full_name, c.id]}), @user.enlace_id), label_html: { class: 'my_class' }, include_blank: false%>
         </div>
       <%end%>
       <% if @user.role == "jugador" || @user.role == "subenlace" || @user.role == "enlace"%>
         <div class="form-group" id="group">
           <%= f.label 'Coordinador:' %><br>
-          <%= f.input_field :coordinador_id, collection: @coordinadores, 
-          class: "form-control", :label_method => :full_name,
-           :value_method => :id %>
+          <%= f.select :coordinador_id, options_for_select(
+            [['', '0']].concat(
+           @coordinadores.map{|c|[c.full_name, c.id]}), @user.coordinador_id), include_blank: false, class: 'form-control'%>
         </div>
       <%end%>
       <div class="form-group" id="group">
