@@ -38,8 +38,8 @@
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Nacimiento' %><br>
-        <%= f.date_select :bird, class: "form-control", 
-        :order => [:day, :month, :year], :start_year => 1950 %>
+        <input type="text" id="user_bird" 
+          class="form-control datepicker" name="user[bird]" />
       </div>
       <div class="form-group">
         <%= f.label 'Edad' %><br>
@@ -97,7 +97,8 @@
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Registro' %><br>
-        <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
+        <input type="text" id="user_register_date" 
+          class="form-control datepicker" name="user[register_date]" />
       </div>
       
       <div class="form-group">
@@ -123,30 +124,30 @@
           class: "form-control", required: true%>
         <% end %>
       </div>
-      <% if @user.role == "jugador"%>
-        <div class="form-group" id="group">
+      
+        <div class="form-group" id="select_subenlace">
           <%= f.label 'Subenlace:' %><br>
           <%= f.select :subenlace_id, options_for_select(
             [['', '0']].concat(
            @subenlaces.map{|c|[c.full_name, c.id]}), @user.subenlace_id), include_blank: false, class: 'form-control'%>
         </div>
-      <%end%>
-      <% if @user.role == "jugador" || @user.role == "subenlace"%>
-        <div class="form-group" id="group">
+      
+      
+        <div class="form-group" id="select_enlace">
           <%= f.label 'Enlace:' %><br>
           <%= f.select :enlace_id,options_for_select(
             [['', '0']].concat(
            @enlaces.map{|c|[c.full_name, c.id]}), @user.enlace_id), label_html: { class: 'my_class' }, include_blank: false%>
         </div>
-      <%end%>
-      <% if @user.role == "jugador" || @user.role == "subenlace" || @user.role == "enlace"%>
-        <div class="form-group" id="group">
+      
+      
+        <div class="form-group" id="select_coordinador">
           <%= f.label 'Coordinador:' %><br>
           <%= f.select :coordinador_id, options_for_select(
             [['', '0']].concat(
            @coordinadores.map{|c|[c.full_name, c.id]}), @user.coordinador_id), include_blank: false, class: 'form-control'%>
         </div>
-      <%end%>
+      
       <div class="form-group" id="group">
         <%= f.label 'Grupo:' %><br>
         <% if current_user.admin? || current_user.coordinador?%>

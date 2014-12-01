@@ -56,14 +56,14 @@
 </div>
 Votación
 <hr>
-    <select class="form-control search2" id="select_polling" 
-      name="polling_id">
-      <option value="-1"> </option>
-      <% @polling.each do |p| %>
-        <option value="<%= p.id %>"> <%= p.name %></option>
-      <% end %>
-    </select>  
-    <a href="#" class="btn-enviar btn btn-success btn-block">Guardar</a>
+<select class="form-control search2" id="select_polling" name="polling_id"
+  style="margin-bottom:10px;">
+  <option value="-1"> </option>
+  <% @polling.each do |p| %>
+    <option value="<%= p.id %>"> <%= p.name %></option>
+  <% end %>
+</select>  
+<a href="#" class="btn btn-success btn-block" id="btn-enviar">Guardar</a>
 
     <br><br>
   <table class="table table-bordered table-striped table-hover" id="users_table">  
@@ -195,9 +195,9 @@ Votación
       <% @algo.each do |a| %>
         <tr>
           <td >
-            <p class="small"><%=link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
+            <p class="small">
+              <%= link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
           </td>
-          
           <td >
         </td>
       <%end%>
