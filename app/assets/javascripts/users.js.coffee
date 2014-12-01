@@ -862,7 +862,6 @@ $ ->
 						bird_start_date: bird_start_date
 						bird_end_date: bird_end_date
 				success: (data) ->
-					alert 'Alert para no continuar'
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'No se ha podido registrar la nueva votación ' + thrownError
