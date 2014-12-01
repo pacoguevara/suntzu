@@ -80,7 +80,7 @@
   							No tiene asignado enlace
   						<% end %>
   					</dd>
-						<dt> Grupo </dt>
+						<dt> Coordinador </dt>
 						<dd>
 							<%if !@user.coordinador_id.nil? && @user.coordinador_id != 0 %> 
 								<%= link_to User.find(@user.coordinador_id).full_name, User.find(@user.coordinador_id),
@@ -89,7 +89,7 @@
 								No tiene asignado coordinador 
 							<% end %>
 						</dd>
-						<dt> Coordinador </dt>
+						<dt> Grupo </dt>
 						<dd>
 							<%if !@user.group_id.nil? && @user.group_id != 0 %> 
 								<%= @user.group.name %>
