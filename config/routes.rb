@@ -43,6 +43,7 @@ Pan::Application.routes.draw do
           get "get_list_votation", :action => "get_list_votation"
           get "list_votation", :action => "list_votation"
           get "get_parent",:action => "get_parent"
+          get "update_hijos",:action => "update_hijos"
           get "municipality",:action => "municipality"
           get "tabla_show",:action => "tabla_show"
       	end

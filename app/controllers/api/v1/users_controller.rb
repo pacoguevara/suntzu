@@ -465,7 +465,12 @@ module Api
 						"data" => users_ar,
 						"total" => users_count
 					}
-					respond_with format
+				respond_with format
+			end
+			def update_hijos
+				user = User.find(params[:id2])
+				user.update_subordinados
+				respond_with true
 			end
 			def get_parent
 				h = Hash.new				
@@ -579,16 +584,17 @@ module Api
 					
 			end
 			def get_list_votation
-
 				swhere = ""
 				if params[:number]
 					swhere = "number = "+params[:number]
 				end
 				@lvh = ListVotationHeader.find(params[:polling_id])
 				if swhere == ""
-    				@listvotation = ListVotation.where(:list_votation_header_id => @lvh.id).order(:number)
-    			else
-    				@listvotation = ListVotation.where(:list_votation_header_id => @lvh.id).where(swhere).order(:number)
+  				@listvotation = ListVotation.where(:list_votation_header_id => 
+  					@lvh.id).order(:number)
+  			else
+  				@listvotation = ListVotation.where(:list_votation_header_id => 
+  					@lvh.id).where(swhere).order(:number)
 				end
 				
     			user_hash = Hash.new
@@ -658,8 +664,11 @@ module Api
 			def list_votation
 				lvh = ListVotationHeader.new
 				lvh.polling_id = params[:prueba][:polling]
+
+
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
 				@lvArray = Array.new
+
 				if !@us.empty?
 					lvh.save
 					cont = 1
@@ -675,12 +684,10 @@ module Api
 							newlv.check = true
 						end
 						newlv.save!
-						@lvArray.push(newlv)
+						lvArray.push(newlv)
 					end
-				else
-					puts "************************************ es empty"
 				end
-				respond_with @lvArray
+				respond_with lvArray
 			end
 			def list_check
 				vl = ListVotation.find(params[:user][:votation_list_id])

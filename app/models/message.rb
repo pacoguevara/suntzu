@@ -17,6 +17,7 @@ class Message < ActiveRecord::Base
     mid = response.sid
     #mid = '2e3r4t'
     UserMessage.create user_id, message_id, mid
+
 	end
 
   #private

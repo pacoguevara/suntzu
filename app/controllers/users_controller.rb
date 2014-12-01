@@ -142,10 +142,8 @@ class UsersController < ApplicationController
         params[:user][:documents_attributes].delete "2"
       end
     end
-    puts "en el update** "+@user.to_json.to_s
     respond_to do |format|
       if @user.update user_params
-        puts "estoy en update"
         @user.update_subordinados
         format.html { redirect_to(@user, notice: 'El usuario se ha actualizado.' )}
         format.json { render action: 'show', status: :created, location: @user }
