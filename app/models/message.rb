@@ -1,7 +1,7 @@
 class Message < ActiveRecord::Base
   belongs_to :user_message
 
-	def self.send_sms(to, message)
+	def self.send_sms(to, message, user_id, message_id)
 		twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
     twilio_token = "6e26775044f3087e7d9f44f003db29ae"
     twilio_phone_number = "+18027339326"
@@ -14,10 +14,13 @@ class Message < ActiveRecord::Base
     )
     puts response.status
     puts response.sid
-    mid = save_message(message, response.sid)
+    mid = response.sid
+    #mid = '2e3r4t'
+    UserMessage.create user_id, message_id, mid
+
 	end
 
-  private
+  #private
   def self.save_message(message, user_id)
     Message.connection
     new_message = Message.new

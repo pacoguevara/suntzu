@@ -124,25 +124,28 @@ class User < ActiveRecord::Base
       users.each do |u|      
         u.enlace_id = self.enlace_id
         u.coordinador_id = self.coordinador_id
+        u.group_id = self.group_id
         u.save
       end
     elsif self.role == "enlace"
       users = User.where(:enlace_id => self.id) 
       users.each do |u|      
-        u.subenlace_id = self.subenlace_id
         u.enlace_id = self.id
         u.coordinador_id = self.coordinador_id
+        u.group_id = self.group_id
         u.save
       end 
-    elsif self.role == "enlace"
+    elsif self.role == "coordinador"
       users = User.where(:coordinador_id => self.id) 
       users.each do |u|      
-        u.subenlace_id = self.subenlace_id
-        u.enlace_id = self.enlace_id
+
         u.coordinador_id = self.id
+        u.group_id = self.group_id
         u.save
       end 
     end
+
+
   end
   def get_enlace
     return nil if self.parent == 0

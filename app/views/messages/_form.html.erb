@@ -187,7 +187,7 @@
 		          <p class="small"><%= link_to  user.last_name,(user_path user)+"?role=#{params[:role]}"%></p>
 		        </td>
 		        <td>
-		          <p class="small cellphone"><%= user.cellphone %></p>
+		          <p class="small cellphone" id="<%=user.id%>"><%= user.cellphone %></p>
 		        </td>
 		        <td>
 		          <p class="small"><%= user.email %></p>
