@@ -90,6 +90,9 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    @subenlaces = User.where(:role => 'subenlace')
+    @enlaces = User.where(:role => 'enlace')
+    @coordinadores = User.where(:role => 'coordinador')
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
