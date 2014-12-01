@@ -253,6 +253,7 @@ class UsersController < ApplicationController
        :age, :gender, :city, :street_number, :neighborhood, :parent, :group_id, 
        :dto_fed, :dto_loc, :ife_key, :internal_number, :outside_number, :lat, 
        :lng, :fb, :tw,:image, :subenlace_id, :enlace_id, :coordinador_id, 
+       :enabled,
        :municipality_id, documents_attributes: [:user_id, :doc,:description])
   end
 end

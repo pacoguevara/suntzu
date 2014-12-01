@@ -13,9 +13,13 @@ class Ability
         can :read, Candidate
         can :read, CandidateVotation
         can :read, Polling
+    elsif user.jugador? 
+        can :read, User
+        can :update, User if :user_id == user.id
     else
         can :home, :whatever
     end
+        
     #
     # The first argument to `can` is the action you are giving the user
     # permission to do.

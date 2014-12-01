@@ -7,13 +7,14 @@ class Municipality < ActiveRecord::Base
     'city_key'=>12
   }
 	def self.update
-		file_path=Rails.public_path.to_s + '/xls/users.xlsx'
+		file_path = Rails.public_path.to_s + '/xls/users.xlsx'
     spreadsheet = open_spreadsheet(file_path)
     #(2..spreadsheet.last_row).each do |i|
     (2..spreadsheet.last_row).each do |i|
       ife_key  = spreadsheet.cell(i,CELLS['ife_key']) || ""
       city_key = spreadsheet.cell(i,CELLS['city_key']) || ""
       user = User.where(:ife_key => ife_key).first
+      city_key = city_key.to_i
       user.update_attribute :municipality_id, city_key
     end
 	end

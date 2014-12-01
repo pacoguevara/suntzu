@@ -19,14 +19,14 @@ $ ->
 			bind()
 			return
 		bind_witho_load = ->
-			$('#is_user').change ->
+			$('#user_enabled').change ->
 				if $(this).is(':checked')
 					$('#user_password').removeClass 'hide'
 					$('#user_password_confirmation').removeClass 'hide'
 				else
 					$('#user_password').addClass 'hide'
 					$('#user_password_confirmation').addClass 'hide'
-			return
+			return 
 		bind = ->
 			$('#user_subenlace_id').change ->
 				selectSubEnlace( @ )

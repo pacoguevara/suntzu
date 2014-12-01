@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128233305) do
+ActiveRecord::Schema.define(version: 20141201172503) do
 
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 20141128233305) do
     t.integer  "subenlace_id"
     t.integer  "enlace_id"
     t.integer  "coordinador_id"
+    t.boolean  "enabled"
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
