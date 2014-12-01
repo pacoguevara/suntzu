@@ -845,6 +845,6 @@ $ ->
 				success: (data) ->
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
-					alert 'no se ha podido registrar el voto '+thrownError
+					alert 'No se ha podido registrar la nueva votación ' + thrownError
 
 return
