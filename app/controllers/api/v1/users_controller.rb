@@ -22,7 +22,6 @@ module Api
 				if params.has_key? :register_start
 					ftime = Time.parse( params[:register_start] )
         	start = ftime.to_formatted_s( :db )
-        	puts params[:register_start]
 					if !where_statment.blank?
 						where_statment = where_statment +" AND register_date >= '#{start}'"
 					else
@@ -285,7 +284,6 @@ module Api
 							where_statment=where_statment +" subenlace_id = "+
 							"#{params[:sub_enlace_id]}"
 						end
-						puts "a ver que "+where_statment.to_s
 					else
 					end
 				end		
@@ -311,7 +309,6 @@ module Api
 						end
 					end
 				end
-				puts "el whereeee "+where_statment
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page
@@ -325,7 +322,6 @@ module Api
 			    @enlace = User.where(:role => "enlace")
 			    @coordinador = User.where(:role => "coordinador")
 					users.each do |user|
-						puts user.id
 						user_hash = {}
 						user_hash[:id] = user.id
 						user_hash[:name] = user.name
@@ -474,7 +470,6 @@ module Api
 			end
 			def get_parent
 				h = Hash.new				
-				puts "params "+params.to_s
 				if params[:id1] != "vacio"
 					user = User.find(params[:id1])	
 					if params[:tipo] == "1"
@@ -584,7 +579,6 @@ module Api
 					
 			end
 			def get_list_votation
-
 				swhere = ""
 				if params[:number]
 					swhere = "number = "+params[:number]
@@ -606,7 +600,6 @@ module Api
     				user_hash[:id] = l.id
     				user_ar.push user_hash
     			end
-				
 				respond_with user_ar
 			end
 			def groups
@@ -683,7 +676,7 @@ module Api
 						@lvArray.push(newlv)
 					end
 				else
-					puts "************************************ es empty"
+					
 				end
 				respond_with @lvArray
 			end
