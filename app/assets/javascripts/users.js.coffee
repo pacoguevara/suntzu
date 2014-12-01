@@ -27,6 +27,8 @@ $ ->
 					$('#user_password').addClass 'hide'
 					$('#user_password_confirmation').addClass 'hide'
 			return 
+			#$('#role_select_form'). ->
+
 		bind = ->
 			$('#user_subenlace_id').change ->
 				selectSubEnlace( @ )
@@ -231,7 +233,24 @@ $ ->
 		# 	show_groups()
 		# else
 		# 	hide_groups()
-		load_parents(role)
+		#load_parents(role)
+		if role is 'jugador'
+			$('#select_subenlace').show()
+			$('#select_enlace').show()
+			$('#select_coordinador').show()
+		if role is 'subenlace'
+			$('#select_subenlace').hide()
+			$('#select_enlace').show()
+			$('#select_coordinador').show()
+		if role is 'enlace'
+			$('#select_subenlace').hide()
+			$('#select_enlace').hide()
+			$('#select_coordinador').show()
+		if role is 'coordinador'
+			$('#select_subenlace').hide()
+			$('#select_enlace').hide()
+			$('#select_coordinador').hide()
+
 		
 	$('.search3').keypress (e) ->
 		key = e.which
@@ -694,7 +713,7 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].subenlace + " </p></td> " +
+			'<td><p class="small"> ' + data[i].subenlace  + " </p></td> " +
 			'<td><p class="small"> ' + data[i].enlace + " </p></td> " +
 			'<td><p class="small"> ' + data[i].coordinador + " </p></td> " +
 			'<td><p class="small"> ' + data[i].group + " </p></td> " +
@@ -810,13 +829,14 @@ $ ->
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert 'no se ha podido registrar el voto '
 
-	$(document).on "click", ".btn-enviar", ->
+	$("#btn-enviar").click ->
 		municipio = $('#head_municipality').find(":selected").val()
 		polling = $('#select_polling').find(":selected").val()
 		register_start_date = $('#register_start_date').val()
 		register_end_date = $('#register_end_date').val()
 		bird_start_date = $('#bird_start_date').val()
 		bird_end_date = $('#bird_end_date').val()
+		
 		if municipio == "-1"
 			alert "Selecciona un municipio."
 		else if polling == "-1"
@@ -842,8 +862,9 @@ $ ->
 						bird_start_date: bird_start_date
 						bird_end_date: bird_end_date
 				success: (data) ->
+					alert 'Alert para no continuar'
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'No se ha podido registrar la nueva votación ' + thrownError
-
+		return false
 return
