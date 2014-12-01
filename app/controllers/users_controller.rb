@@ -59,7 +59,6 @@ class UsersController < ApplicationController
     @polling = Polling.all
     @algo = ListVotationHeader.all
     if params && !params[:prueba].nil?
-      puts "pos si hay params "+params[:prueba][:polling_id].to_s
       lvh = ListVotationHeader.new
       lvh.polling_id = params[:prueba][:polling_id]
       lvh.save
