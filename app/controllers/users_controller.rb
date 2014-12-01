@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
-    
+    @groups = Group.all
     @user = User.new
     3.times {@user.documents.build }
     if current_user.admin? 
@@ -91,6 +91,7 @@ class UsersController < ApplicationController
   def create
     @subenlaces = User.where(:role => 'subenlace')
     @enlaces = User.where(:role => 'enlace')
+    @groups = Group.all
     @coordinadores = User.where(:role => 'coordinador')
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete(:password)
@@ -157,6 +158,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @groupsdropdown = Group.all
     @subenlaces = User.where(:role => 'subenlace')
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
