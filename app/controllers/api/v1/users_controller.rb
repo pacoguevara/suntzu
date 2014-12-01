@@ -402,7 +402,10 @@ module Api
 						else
 							user.coordinador_id = 0
 						end
-						user.group_id = user2.group_id
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
+						
 					elsif params[:tipo] == "2"
 						puts "es DOS"
 						user.enlace_id = params[:id1]
@@ -412,10 +415,16 @@ module Api
 						else
 							user.coordinador_id = 0
 						end
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
 						user.subenlace_id = 0
 						user.group_id = user2.group_id
 					elsif params[:tipo] == "3"
 						puts "es TRES"
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
 						user.coordinador_id = params[:id1]
 						user.subenlace_id = 0
 						user.enlace_id = 0
