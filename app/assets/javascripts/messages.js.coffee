@@ -4,24 +4,33 @@
 
 message = 
 	url: "/api/messages"
-	send: (cell, msg, user)->
-		console.log user
+	send: (msg, table_items)->
+		console.log table_items
 		$.ajax
 		 	type: 'POST'
 		 	url:"/api/messages"
 		 	data:
-		 		cellphone:cell
 		 		message: msg
 		 	success:(data)->
 		 		alert 'Se ha enviado el mensaje'
-		 		console.log user
-					$.ajax
-						type: 'POST'
-					 url:"/api/messages/"+data.id+"/user"
-					 data:
-				 		user_id:user
-			 		success:(data)->
-			 			alert user_id
+		 		console.log data
+		 		msg_id = data.id
+		 		console.log msg_id
+	 			table_items.each ->
+	 				cell = $(this).find('td > p.cellphone').html()
+	 				user = $(this).find('td > p.cellphone').attr('id')
+	 				console.log cell
+	 				console.log user
+						$.ajax
+							type: 'POST'
+						 url:"/api/messages/"+data.id+"/user"
+						 data:
+					 		user_id: user
+					 		cellphone: cell
+					 		message: msg
+					 		message_id: msg_id
+				 		success:(data)->
+				 			console.log data
 
 			
 $ ->
@@ -29,11 +38,11 @@ $ ->
 
 		table_items = $('#militants_table > tbody > tr')
 		#console.log table_items
-		table_items.each -> 
-			console.log $(@)[0].id
-			cellphone = $(this).find('td > p.cellphone').html()
-			console.log cellphone
-		 message.send(cellphone, $('#message_message').val(), $(@)[0].id)
+		#table_items.each -> 
+		#	console.log $(@)[0].id
+		#	cellphone = $(this).find('td > p.cellphone').html()
+		#	console.log cellphone
+		message.send($('#message_message').val(), table_items)
 		false
 
 
@@ -50,7 +59,7 @@ $ ->
 					$.ajax 
 						url:"/api/users"
 						data:
-							role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
+							role: 'jugador'
 							municipality_id: params['municipality_id']
 							age: params['age']
 							section: params['section']
@@ -69,7 +78,6 @@ $ ->
 							enlace_id: params['enlace_id']
 							coordinador_id: params['coordinador_id']
 						success: (data) ->
-							#console.log data
 							fill_table('#militants_table', data)
 
 	$('.select_search_m').change ->
@@ -143,7 +151,7 @@ $ ->
 				tds = '<td><p class="small"><a href="/users/'+data[i].id+'"> ' + data[i].name + " </a></p></td> " +
 				'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
 				'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
-				'<td><p class="small cellphone"> ' + data[i].cellphone + " </p></td> " +
+				'<td><p class="small cellphone" id="'+data[i].id+'"> ' + data[i].cellphone + " </p></td> " +
 				'<td><p class="small"> ' + data[i].email + " </p></td> " +
 				'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 				'<td><p class="small"> ' + data[i].age + " </p></td> " +

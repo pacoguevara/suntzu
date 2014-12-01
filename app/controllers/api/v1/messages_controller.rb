@@ -7,18 +7,21 @@ module Api
 				respond_with Message.all
 			end
 			def create
-				params[:cellphone]
 				params[:message]
-				Message.send_sms params[:cellphone], params[:message]
+				Message.save_message params[:message], current_user.id
 				respond_with Message.last
 			end
 
 			def create_user_message 
-				id = params[:id]
+				msg = params[:message]
 				user_id = params[:user_id]
-				UserMessage.create({:user_id => user_id, :message_id => id})
-				h = {:user_id => user_id, :message_id => id}
-				respond_with h
+				cellphone = params[:cellphone]
+				message_id = params[:message_id]
+				Message.send_sms cellphone, msg, user_id, message_id
+
+				#Message.send_sms({:user_id => user_id, :message_id => id})
+				#h = {:user_id => user_id, :message_id => id}
+				#respond_with h
 			end
 		end
 	end
