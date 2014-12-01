@@ -694,7 +694,6 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
 			'<td><p class="small"> ' + data[i].subenlace + " </p></td> "+
 			'<td><p class="small"> ' + data[i].enlace + " </p></td> "+
 			'<td><p class="small"> ' + data[i].coordinador + " </p></td> "+

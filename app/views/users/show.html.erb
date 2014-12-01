@@ -80,7 +80,7 @@
   							No tiene asignado enlace
   						<% end %>
   					</dd>
-						<dt> Coordinador </dt>
+						<dt> Grupo </dt>
 						<dd>
 							<%if !@user.coordinador_id.nil? && @user.coordinador_id != 0 %> 
 								<%= link_to User.find(@user.coordinador_id).full_name, User.find(@user.coordinador_id),
@@ -89,18 +89,26 @@
 								No tiene asignado coordinador 
 							<% end %>
 						</dd>
+						<dt> Coordinador </dt>
+						<dd>
+							<%if !@user.group_id.nil? && @user.group_id != 0 %> 
+								<%= @user.group.name %>
+							<% else %> 
+								No tiene asignado un grupo 
+							<% end %>
+						</dd>
 				</dl>
 		</div>
 		<div class="col-md-2">
 			<dl>
 				<dt>DtoFed:</dt>
-				<%= @user.dto_fed.to_i %>
+				<%= @user.dto_fed.to_i if !@user.dto_fed.to_i.blank? %>
 				
 				<dt>DtoLoc:</dt>
-				<%= @user.dto_loc.to_i %>
+				<%= @user.dto_loc.to_i if !@user.dto_loc.to_i.blank? %>
 				
 				<dt>Seccion:</dt>
-				<%= @user.section.to_i %>
+				<%= @user.section.to_i if !@user.section.to_i.blank? %>
 				
 				<dt>Sector:</dt>
 				<%= @user.sector.to_i if !@user.sector.blank? %>
@@ -142,7 +150,7 @@
 		<%if @subordinados && !@subordinados.empty?%>
 
 			<div class="row">
-				<div class="col-md-6">
+				<!-- <div class="col-md-6">
 					<%= form_tag import_users_path(params[:id]), multipart:true do %>
 			      <%= file_field_tag :file %>
 			      <%= hidden_field_tag :id,  params[:id] %>
@@ -151,7 +159,7 @@
 			      <%= hidden_field_tag :year, params[:year]  %>
 			      <%= submit_tag "+Importar", class: "btn btn-small btn-primary" %>
 			    <% end %>
-				</div>
+				</div> -->
 				<div class="col-md-6">
 					<%= link_to 'Descargar', downloads_subordinados_path(:id => @user.id, 
 					:role => @user.role), class: "btn btn-success btn-block"%>

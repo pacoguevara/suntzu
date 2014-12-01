@@ -661,7 +661,7 @@ module Api
 
 
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
-				@lvArray = Array.new
+				lvArray = Array.new
 
 				if !@us.empty?
 					lvh.save

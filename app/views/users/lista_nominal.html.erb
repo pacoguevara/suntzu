@@ -69,66 +69,6 @@ Votación
   <table class="table table-bordered table-striped table-hover" id="users_table">  
     <thead>
       <tr>
-        <th>
-          <input type="text" placeholder="Nombre" class="form-control search2" 
-            name="name"/>
-        </th>
-        <th>
-          <input type="text" placeholder="Primer Apellido" 
-          class="form-control search2" name="first_name"/>
-        </th>
-        <th>
-          <input type="text" placeholder="Segundo Apellido" 
-          class="form-control search2" name="last_name"/>
-        </th>
-        <th>
-          <!-- <input type="text" placeholder="age" class="form-control search2" 
-            name="age"/> -->
-        </th>
-        <th>
-          <input type="text" placeholder="Sección" class="form-control search2" 
-            name="section"/>
-        </th>
-        <th>
-          <!-- <input type="text" placeholder="city" class="form-control search2" 
-            name="city"/> -->
-          
-        </th>
-        <th >
-
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @sub_links.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @links.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @coordinators.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-
-        </th>
-        <th >
-
-        </th>
-      </tr>
-      <tr>
         <th >
           <p class="small">Nombre</p>
         </th>
@@ -146,9 +86,6 @@ Votación
         </th>
         <th>
           <p class="small">Municipio</p>
-        </th>
-        <th>
-          <p class="small">Reporta a</p>
         </th>
         <th>
           <p class="small">Sub Enlace</p>
@@ -189,11 +126,6 @@ Votación
           </td>
           <td>
             <p class="small"><%= user.city %></p>
-          </td>
-          <td>
-            <p class="small">
-              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-            </p>
           </td>
           <td>
             <p class="small">
