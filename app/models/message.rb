@@ -30,7 +30,7 @@ class Message < ActiveRecord::Base
       return message.status
     rescue Twilio::REST::RequestError => e
       puts e.message
-      return "Envío fallido" 
+      return "failed" 
     end
   end
 
