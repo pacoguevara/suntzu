@@ -33,6 +33,7 @@ class UsersController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
+
     @groupsdropdown = Group.all
     @user = User.new
     3.times {@user.documents.build }
