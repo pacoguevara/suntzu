@@ -230,12 +230,20 @@ module Api
 					end
 				end
 				if (params.has_key? :group_id) && (params[:group_id] != "0")
-					if !where_statment.blank?
-						where_statment=where_statment +" AND group_id = "+
-							"#{params[:group_id].downcase}"
+					if params[:group_id] == "-1"
+						if !where_statment.blank?
+							where_statment=where_statment +" AND (group_id IS NULL OR group_id = 0) "
+						else
+							where_statment=where_statment +" (group_id IS NULL OR group_id = 0) "
+						end
 					else
-						where_statment=where_statment +" group_id = "+
-							"#{params[:group_id].downcase}"
+						if !where_statment.blank?
+							where_statment=where_statment +" AND group_id = "+
+								"#{params[:group_id].downcase}"
+						else
+							where_statment=where_statment +" group_id = "+
+								"#{params[:group_id].downcase}"
+						end
 					end
 				end
 				if (params.has_key? :role_select) && (params[:role_select] != "0")
@@ -527,6 +535,7 @@ module Api
 							h[:name2] = ""
 						end
 					end			
+					h[:group_name] = !user.group_id.blank? ? user.group.name : ''
 					#if params[:tipo] == "1"
 					#	if user.enlace_id && user.enlace_id != 0
 					#		parent = User.find(user.enlace_id)
@@ -587,6 +596,7 @@ module Api
 					end
 
 				end		
+
 				respond_with h		
 					
 			end

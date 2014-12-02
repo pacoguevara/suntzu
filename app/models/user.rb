@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   ROLES_COORDINADOR = %w[jugador enlace subenlace ]
   ROLES_ENLACE=       %w[jugador subenlace]
   ROLES_SUBENLACE =   %w[jugador]
+
+  ROLES_ADMIN_DROPDOWN =       %w[[jugador, 1] [enlace, 1] [subenlace,1] [coordinador,1] ]
+  ROLES_COORDINADOR_DROPDOWN = %w[[jugador, 1] [enlace, 1] [subenlace,1] ]
+  ROLES_ENLACE_DROPDOWN=       %w[[jugador, 1] [subenlace, 1]]
+  ROLES_SUBENLACE_DROPDOWN =   %w[[jugador, 1]]
   
   CELLS = {
     'rnm'=>1,
