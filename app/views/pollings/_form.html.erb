@@ -1,11 +1,11 @@
 <%= simple_form_for(@polling) do |f| %>
   <%= f.error_notification %>
-
-  <div class="inputs">
-    <%= f.input :name %>
+  <div class="form-group">
+  	<%= f.label 'Nombre:' %>
+    <%= f.input_field :name, :class => 'form-control'%>
   </div>
 
   <div class="actions">
-    <%= f.button :submit %>
+    <%= f.submit 'Guardar', :class=>"btn btn-primary" %>
   </div>
 <% end %>

@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
-    @groups = Group.all
+    #@groups = Group.all
     @user = User.new
     3.times {@user.documents.build }
     if current_user.admin? 

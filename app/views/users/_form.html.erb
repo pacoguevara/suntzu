@@ -39,7 +39,8 @@
       <div class="form-group">
         <%= f.label 'Fecha de Nacimiento' %><br>
         <input type="text" id="user_bird" 
-          class="form-control datepicker" name="user[bird]" />
+          class="form-control datepicker" name="user[bird]"
+          value="<%= @user.bird.strftime('%d/%m/%Y') if !@user.bird.nil?%>"/>
       </div>
       <div class="form-group">
         <%= f.label 'Edad' %><br>
@@ -98,7 +99,8 @@
       <div class="form-group">
         <%= f.label 'Fecha de Registro' %><br>
         <input type="text" id="user_register_date" 
-          class="form-control datepicker" name="user[register_date]" />
+          class="form-control datepicker" name="user[register_date]" 
+          value="<%= @user.register_date.strftime('%d/%m/%Y') if !@user.register_date.nil?%>"/>
       </div>
       
       <div class="form-group">
