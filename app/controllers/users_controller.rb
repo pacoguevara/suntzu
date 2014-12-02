@@ -127,6 +127,7 @@ class UsersController < ApplicationController
   end
   def update
     #@user = User.find(params[:id])
+    puts "*******************************el rooool "+@user.role.to_s
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
@@ -146,6 +147,18 @@ class UsersController < ApplicationController
         params[:user][:documents_attributes].delete "2"
       end
     end
+    puts "user params ************ "+user_params[:role].to_s
+    if user_params[:role].to_s == "subenlace"
+      params[:user][:subenlace_id] = "0"
+    elsif user_params[:role].to_s == "enlace"
+      params[:user][:subenlace_id] = "0"
+      params[:user][:enlace_id] = "0"
+    elsif user_params[:role].to_s == "coordinador"
+      params[:user][:subenlace_id] = "0"
+      params[:user][:enlace_id] = "0"
+      params[:user][:coordinador_id] = "0"
+    end
+    puts "user params depsues del if ************ "+user_params.to_s
     respond_to do |format|
       if @user.update user_params
         @user.update_subordinados
