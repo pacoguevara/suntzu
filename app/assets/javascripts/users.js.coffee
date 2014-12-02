@@ -9,7 +9,7 @@ $ ->
 		coordinadores = []
 		grupos = []
 		complete =  4
-		
+		 
 		init = ->
 			bind_witho_load()
 			getSubEnlaces()
