@@ -421,8 +421,8 @@ module Api
 						user.subenlace_id = 0
 						user.group_id = user2.group_id
 					elsif params[:tipo] == "3"
-						puts "es TRES"
 						user2 = User.find(params[:id1])
+						puts "es TRES"
 						if !user2.group_id.nil? && user2.group_id != 0
 							user.group_id = user2.group_id
 						end
