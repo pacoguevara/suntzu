@@ -5,12 +5,61 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
+    @messages = []
+        Message.where(:user_id => current_user.id).to_a.each do |k,v|
+          if k.nil? || k == 0
+            count = "Sin Grupo"
+          else
+            count = UserMessage.where(:message_id => k).count
+          end
+          puts k.id
+          puts k.message
+          puts count
+          hash = { "id" => k.id, "msg" => k.message, "count" => count}
+          @messages.push hash
+        end
+        
   end
 
   # GET /messages/1
   # GET /messages/1.json
   def show
+    id = params[:id]
+    @message_info = []
+    @users_msg = UserMessage.select("user_messages.*, users.name, users.first_name, users.last_name, users.cellphone")
+    .where(:message_id => id).joins('INNER JOIN "users" ON "users"."id" = "user_messages"."user_id"')
+    .to_a.each do |u|
+      if !u.nil? || !u == 0
+        if !u.message_sid.nil? || !u.message_sid == 0
+          if !u.cellphone.nil? || !u.cellphone == 0
+            if u.status != 'sent' || u.status != 'failed'
+              status = Message.get_sms u.message_sid
+              full_name = u.name + " " + u.first_name + " " + u.last_name
+              UserMessage.update_status u.id, status
+              if status == 'sent'
+                hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Enviado'}
+              else 
+                hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Envío fallido'}
+              end
+            else
+              if u.status == 'sent'
+                hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Enviado'}
+              else 
+                hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Envío fallido'}
+              end
+            end
+          else
+            hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => "Envío fallido"}
+          end
+        else
+          puts "*********** NO TRAE NADA! *************"
+          hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => "Envío fallido"}
+        end
+        @message_info.push hash
+      else
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>   <<<<<<<<<<<<<<<<<<<<"
+      end 
+    end
   end
 
   # GET /messages/new
