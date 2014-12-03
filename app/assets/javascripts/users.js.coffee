@@ -65,6 +65,7 @@ $ ->
 			getCoordinadores()
 			getGrupos()
 			bind()
+			showHide()
 			return
 		bind_witho_load = ->
 			$('#user_enabled').change ->
@@ -76,7 +77,29 @@ $ ->
 					$('#user_password_confirmation').addClass 'hide'
 			return 
 			#$('#role_select_form'). ->
-
+		showHide = ->
+			role=$("#role_select_form").val()
+		# if role is 'coordinador'
+		# 	show_groups()
+		# else
+		# 	hide_groups()
+		#load_parents(role)
+			if role is 'jugador'
+				$('#select_subenlace').show()
+				$('#select_enlace').show()
+				$('#select_coordinador').show()
+			if role is 'subenlace'
+				$('#select_subenlace').hide()
+				$('#select_enlace').show()
+				$('#select_coordinador').show()
+			if role is 'enlace'
+				$('#select_subenlace').hide()
+				$('#select_enlace').hide()
+				$('#select_coordinador').show()
+			if role is 'coordinador'
+				$('#select_subenlace').hide()
+				$('#select_enlace').hide()
+				$('#select_coordinador').hide()
 		bind = ->
 			$('#user_subenlace_id').change ->
 				selectSubEnlace( @ )
@@ -726,7 +749,7 @@ $ ->
 		count = data.total
 		$('#total_result').html(count)
 		data = data.data
-		$("tr:has(td)").remove();
+		$(table_id + " tr:has(td)").remove();
 		$.each data, (i, item) ->
 			#remove rows
 			if data[i].temp_chek
