@@ -25,7 +25,7 @@ module Api
 					(0..23).each{ |h| hours[h] = 0}
 					data.each do |d|
 						(7..18).each do |h|
-							if (d['hour'].to_i - 6) == h && d['name'] == g.name
+							if (d['hour'].to_i - 7) == h && d['name'] == g.name
 								hours[h] = hours[h] + 1
 							end
 						end
@@ -56,7 +56,7 @@ module Api
 						data.each do |d|
 							#this is the duration of the votation from 8 to 19 hrs
 							(7..18).each do |h|
-								if (d['hour'].to_i - 6) == h && d['coordinador_id'] == cid.id
+								if (d['hour'].to_i - 7) == h && d['coordinador_id'] == cid.id
 									hours[h] = hours[h] + 1
 								end
 							end
