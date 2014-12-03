@@ -535,7 +535,7 @@ module Api
 							h[:name2] = ""
 						end
 					end			
-					h[:group_name] = !user.group_id.blank? ? user.group.name : ''
+					h[:group_name] = !user.group_id.blank? ? user.group.name : 'Sin grupo'
 					#if params[:tipo] == "1"
 					#	if user.enlace_id && user.enlace_id != 0
 					#		parent = User.find(user.enlace_id)

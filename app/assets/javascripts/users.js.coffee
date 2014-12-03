@@ -483,10 +483,7 @@ $ ->
 					if tipo == 3
 						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
 						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
-					$(esto).parent().parent().parent().find('#td-grupo').html(json["group_name"])
-
-						
-					
+					$(esto).parent().parent().parent().find('#td-grupo').html(json["group_name"])	
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
 				alert thrownError
