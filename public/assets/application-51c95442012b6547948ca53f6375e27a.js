@@ -19015,7 +19015,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       };
     })();
     User = (function() {
-      var bind, bind_witho_load, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getGrupos, getSubEnlaces, grupos, init, searchInCoordinador, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectGrupo, selectSubEnlace, subenlaces;
+      var bind, bind_witho_load, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getGrupos, getSubEnlaces, grupos, init, searchInCoordinador, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectGrupo, selectSubEnlace, showHide, subenlaces;
       subenlaces = [];
       enlaces = [];
       coordinadores = [];
@@ -19028,6 +19028,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
         getCoordinadores();
         getGrupos();
         bind();
+        showHide();
       };
       bind_witho_load = function() {
         $('#user_enabled').change(function() {
@@ -19039,6 +19040,30 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             return $('#user_password_confirmation').addClass('hide');
           }
         });
+      };
+      showHide = function() {
+        var role;
+        role = $("#role_select_form").val();
+        if (role === 'jugador') {
+          $('#select_subenlace').show();
+          $('#select_enlace').show();
+          $('#select_coordinador').show();
+        }
+        if (role === 'subenlace') {
+          $('#select_subenlace').hide();
+          $('#select_enlace').show();
+          $('#select_coordinador').show();
+        }
+        if (role === 'enlace') {
+          $('#select_subenlace').hide();
+          $('#select_enlace').hide();
+          $('#select_coordinador').show();
+        }
+        if (role === 'coordinador') {
+          $('#select_subenlace').hide();
+          $('#select_enlace').hide();
+          return $('#select_coordinador').hide();
+        }
       };
       bind = function() {
         $('#user_subenlace_id').change(function() {
