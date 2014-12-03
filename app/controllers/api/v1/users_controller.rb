@@ -354,7 +354,7 @@ module Api
 						user_hash[:coordinador] = !(user.coordinador_id.nil? || user.coordinador_id == 0) ? User.find(user.coordinador_id).full_name : ''
 						user_hash[:group] = user.get_group
 						
-						if user.group_id == nil || user.group_id != 0 || user.group_id != '0'
+						if user.group_id == nil || user.group_id == 0 || user.group_id == '0'
 							user_hash[:group] = "Sin grupo"
 						else
 							user_hash[:group] = Group.find(user.group_id).name
