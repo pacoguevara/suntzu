@@ -25,7 +25,7 @@ module Api
 					(0..23).each{ |h| hours[h] = 0}
 					data.each do |d|
 						(7..18).each do |h|
-							if d['hour'].to_i == h && d['name'] == g.name
+							if (d['hour'].to_i - 6) == h && d['name'] == g.name
 								hours[h] = hours[h] + 1
 							end
 						end
