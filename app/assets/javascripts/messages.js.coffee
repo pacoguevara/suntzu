@@ -99,7 +99,7 @@ $ ->
 				params[this.name] = $(this).val()
 		if params
 			data:
-				role: if params['role'] isnt undefined then params['role'] else getURLParameter('role')
+				role: 'jugador'
 				register_date: params['register_date']
 				municipality_id: if params['municipality_id'] isnt '-1' then params['municipality_id']
 				age: params['age']

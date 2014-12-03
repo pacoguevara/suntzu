@@ -2,25 +2,21 @@
 <table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
-      <th>ID del mensaje</th>
       <th>Mensaje</th>
-      <th>Recibieron el mensaje</th>
+      <th>Destinatarios</th>
       <th></th>
     </tr>
   </thead>
-
-  <tbody>
+ <tbody>
     <% @messages.each do |message| %>
       <tr>
-        <td><%= message.id %></td>
-        <td><%= message.message %></td>
-        <td>#</td>
-        <td><%= link_to 'Ver detalle', message %></td>
+        <td><%= message['msg']%></td>
+        <td><%= message['count']%></td>
+        <td><%= link_to 'Ver detalle', "messages/"+message['id'].to_s %></td> 
       </tr>
     <% end %>
-  </tbody>
+  </tbody> 
 </table>
 
 <br>
 
-<%= link_to 'New Message', new_message_path %>

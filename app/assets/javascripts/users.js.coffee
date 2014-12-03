@@ -3,6 +3,54 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->	
+	PageControls = (->
+		current_page = 0
+		init = ->
+			bind()
+		bind = ->
+			$('.page_number').click (e) ->
+				filters = get_filters()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users"
+						data: filters.data
+						success: (data) ->
+							fill_table('#users_table',data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+			$('.page_number_nominal').click (e) ->
+				filters = get_lista_nominal_filters()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users"
+						data: filters.data
+						success: (data) ->
+							fill_table_nominal_list('#users_table', data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+		restartFilters = ->
+			$('#current_page').html 0
+			$('#prev_page').data 'num', 0
+			$('#next_page').data 'num', 0
+		init:init
+		restartFilters:restartFilters
+	)()
 	User = (->
 		subenlaces = []
 		enlaces = []
@@ -164,7 +212,7 @@ $ ->
 	)()
 
 	User.init()
-
+	PageControls.init()
 	load_user_in_map = (user_id) ->
 		console.log "/api/users/"+user_id+"?cols=zipcode,id,lat,lng"
 		$.ajax 
@@ -251,7 +299,7 @@ $ ->
 	  return
 	
 	$(document).on "change", "#role_select_form", ->
-		role=$("option:selected", this).val()
+		role = $("option:selected", this).val()
 		# if role is 'coordinador'
 		# 	show_groups()
 		# else
@@ -299,8 +347,13 @@ $ ->
 					console.log "succeess"
 					console.log data
 					fill_table_show('#users_table', data)
+	
 	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
+		console.log "filter"
+		console.log filters.data
+		PageControls.restartFilters()
+
 		$.ajax 
 				url:"/api/users"
 				data:
@@ -310,8 +363,8 @@ $ ->
 
 	
 	$('#head_municipality').change ->
+		PageControls.restartFilters()
 		filters = get_lista_nominal_filters()
-
 		$.ajax 
 			url:"/api/users"
 			data:
@@ -341,6 +394,7 @@ $ ->
 
 	$('.search').keypress (e) ->
 		key = e.which
+		PageControls.restartFilters()
 		if key is 13
 			$inputs = $('.search')
 			params = {}
@@ -528,24 +582,7 @@ $ ->
 	$(document).on "change", ".select_class", ->
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
-	$('.page_number').click (e) ->
-		filters = get_filters()
-		#console.log filters
-		$('.page_number').removeClass 'active'
-		$(this).addClass 'active'
-
-		page_number=$(this).data('num')
-		filters.data.page = page_number
-		console.log page_number
-		$.ajax 
-			url:"/api/users"
-			data: filters.data
-			success: (data) ->
-				console.log data
-				fill_table('#users_table',data)
-				$('html, body').animate(
-					scrollTop : 0
-				,800)
+	
 	fill_table2 = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
@@ -745,6 +782,7 @@ $ ->
 	$('.datepicker').datepicker(
 			format: 'dd/mm/yyyy'
 		).on 'changeDate', ->
+		PageControls.restartFilters()
 		filters = get_lista_nominal_filters()
 		$.ajax 
 			url:"/api/users"

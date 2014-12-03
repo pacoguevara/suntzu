@@ -18873,6 +18873,11 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       selectPollings = function(el) {
         var pollings_url;
         pollings_url = '/api/pollings' + '/' + $(el).val();
+        if ($('#votation_pollings').val() === '0') {
+          $('#container6').html('');
+          $('#container7').html('');
+          return;
+        }
         $.ajax({
           url: pollings_url + '/groups',
           success: function(data) {
@@ -18948,7 +18953,67 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
 }).call(this);
 (function() {
   $(function() {
-    var User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, fill_table_show, get_filters, get_filters2, get_filters_role, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    var PageControls, User, changeselected, draw_user_in_map, fill_table, fill_table2, fill_table_nominal_list, fill_table_show, get_filters, get_filters2, get_filters_role, get_lista_nominal_filters, hide_groups, load_parents, load_user_in_map, selectchange, show_groups;
+    PageControls = (function() {
+      var bind, current_page, init, restartFilters;
+      current_page = 0;
+      init = function() {
+        return bind();
+      };
+      bind = function() {
+        $('.page_number').click(function(e) {
+          var filters, page_number;
+          filters = get_filters();
+          page_number = $(this).data('num');
+          filters.data.page = page_number;
+          if (parseInt(page_number) >= 0) {
+            $('#current_page').html(page_number);
+            $('#prev_page').data('num', page_number - 1);
+            $('#next_page').data('num', page_number + 1);
+            return $.ajax({
+              url: "/api/users",
+              data: filters.data,
+              success: function(data) {
+                fill_table('#users_table', data);
+                return $('html, body').animate({
+                  scrollTop: 0
+                }, 800);
+              }
+            });
+          }
+        });
+        return $('.page_number_nominal').click(function(e) {
+          var filters, page_number;
+          filters = get_lista_nominal_filters();
+          page_number = $(this).data('num');
+          filters.data.page = page_number;
+          if (parseInt(page_number) >= 0) {
+            $('#current_page').html(page_number);
+            $('#prev_page').data('num', page_number - 1);
+            $('#next_page').data('num', page_number + 1);
+            return $.ajax({
+              url: "/api/users",
+              data: filters.data,
+              success: function(data) {
+                fill_table_nominal_list('#users_table', data);
+                return $('html, body').animate({
+                  scrollTop: 0
+                }, 800);
+              }
+            });
+          }
+        });
+      };
+      restartFilters = function() {
+        $('#current_page').html(0);
+        $('#prev_page').data('num', 0);
+        return $('#next_page').data('num', 0);
+      };
+      return {
+        init: init,
+        restartFilters: restartFilters
+      };
+    })();
     User = (function() {
       var bind, bind_witho_load, complete, coordinadores, enlaces, getCoordinadores, getEnlaces, getGrupos, getSubEnlaces, grupos, init, searchInCoordinador, searchInEnlaces, searchInSubenlaces, selectCoordinador, selectEnlace, selectGrupo, selectSubEnlace, subenlaces;
       subenlaces = [];
@@ -19119,6 +19184,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       };
     })();
     User.init();
+    PageControls.init();
     load_user_in_map = function(user_id) {
       console.log("/api/users/" + user_id + "?cols=zipcode,id,lat,lng");
       return $.ajax({
@@ -19289,18 +19355,18 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       filters = get_filters();
       console.log("filter");
       console.log(filters.data);
+      PageControls.restartFilters();
       return $.ajax({
         url: "/api/users",
         data: filters.data,
         success: function(data) {
-          console.log("succeess");
-          console.log(data);
           return fill_table('#users_table', data);
         }
       });
     });
     $('#head_municipality').change(function() {
       var filters;
+      PageControls.restartFilters();
       filters = get_lista_nominal_filters();
       return $.ajax({
         url: "/api/users",
@@ -19336,6 +19402,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     $('.search').keypress(function(e) {
       var $inputs, key, params;
       key = e.which;
+      PageControls.restartFilters();
       if (key === 13) {
         $inputs = $('.search');
         params = {};
@@ -19526,8 +19593,6 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
           tipo: tipo
         },
         success: function(json) {
-          console.log("succes");
-          console.log(json);
           if (json !== false) {
             console.log("respuesta");
             console.log(esto);
@@ -19545,8 +19610,9 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             }
             if (tipo === 3) {
               $(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val(json["user_id"]);
-              return $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val(json["user_id2"]);
+              $(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val(json["user_id2"]);
             }
+            return $(esto).parent().parent().parent().find('#td-grupo').html(json["group_name"]);
           }
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -19573,26 +19639,6 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
     $(document).on("change", ".select_class", function() {
       selectchange($(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
       return changeselected($(this), $(this).val(), $(this).find(":selected").data("user_id"), $(this).find(":selected").data("tipo"));
-    });
-    $('.page_number').click(function(e) {
-      var filters, page_number;
-      filters = get_filters();
-      $('.page_number').removeClass('active');
-      $(this).addClass('active');
-      page_number = $(this).data('num');
-      filters.data.page = page_number;
-      console.log(page_number);
-      return $.ajax({
-        url: "/api/users",
-        data: filters.data,
-        success: function(data) {
-          console.log(data);
-          fill_table('#users_table', data);
-          return $('html, body').animate({
-            scrollTop: 0
-          }, 800);
-        }
-      });
     });
     fill_table2 = function(table_id, data) {
       $("tr:has(td)").remove();
@@ -19686,13 +19732,13 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
             stringcoordinador = "";
           }
           string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
-          string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
+          string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
         } else {
           console.log("heyyy");
           console.log(data[i].role);
           if (data[i].role === "jugador") {
             string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
-            string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
+            string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>" + '<td><p class="small"> ' + data[i].role + "</p></td>";
           } else if (data[i].role === "subenlace") {
             string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> ";
             string_grupo = "";
@@ -19747,6 +19793,7 @@ c.setTooltipPoints(),c.render()},c.wrap(c.Axis.prototype,"render",function(c){c.
       format: 'dd/mm/yyyy'
     }).on('changeDate', function() {
       var filters;
+      PageControls.restartFilters();
       filters = get_lista_nominal_filters();
       return $.ajax({
         url: "/api/users",

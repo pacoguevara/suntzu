@@ -12,4 +12,10 @@ class UserMessage < ActiveRecord::Base
 	    new_message.save
 	    new_message.id
 	end
+
+	def self.update_status(id, status)
+		u_msg = UserMessage.find(id)
+		u_msg.status = status
+		u_msg.save
+	end
 end

@@ -64,8 +64,7 @@ Votación
   <% end %>
 </select>  
 <a href="#" class="btn btn-success btn-block" id="btn-enviar">Guardar</a>
-
-    <br><br>
+  <br><br>
   <table class="table table-bordered table-striped table-hover" id="users_table">  
     <thead>
       <tr>
@@ -160,29 +159,39 @@ Votación
   <hr />
   <div class="col-md-12 center">
   	<ul class="pagination">
-      <% if @users_t.count >= 10 %>
-        <li class="page_number active" data-num="0"><a>Primera</a></li>
-        <% pages = (@users_t.count / User.per_page).round%>
-        <% 10.times.each do |i|%>
-      	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-        <% end %>
-        <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
-      <% else %>
-        <% @users_t.count.times.each do |i|%>
-          <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-        <% end %>
-      <% end %>
-  	</ul>
+      <li class="page_number_nominal" data-num="0"><a>Primera</a></li>
+      <% pages = (@users_t.count / User.per_page).round %>
+      <% page = 0 %>
+
+      <% page_prev = page.to_i - 1 %>
+      <li class="page_number_nominal" id="prev_page" data-num="<%= page_prev %>">
+        <a >Anterior</a>
+      </li>
+
+      <li class="page_number_nominal">
+        <a >Pagina Actual <strong id="current_page"><%= page %></strong></a>
+      </li>
+
+      <% page_next = page.to_i + 1 %>
+      <li class="page_number_nominal" id="next_page" data-num="<%= page_next %>">
+        <a  >Siguiente</a>
+      </li>
+
+      <li class="page_number_nominal" data-num="<%= pages -1 %>">
+        <a >Última</a>
+      </li>
+    </ul>
     <p class="page_showing">
       (
       <strong id="total_result">
         <%= @users_t.count %> 
       </strong>
-      en total)</p>
+      en total)
+    </p>
   </div>	
 </div>
 <div id="pane2" class="tab-pane">
-  <table class="table table-bordered table-striped table-hover" id="users_table">  
+  <table class="table table-bordered table-striped table-hover" >  
     <thead>
       <tr>
         <th >

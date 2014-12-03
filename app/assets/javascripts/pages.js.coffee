@@ -119,7 +119,11 @@ $ ->
 			return
 		selectPollings = (el) ->
 			pollings_url = '/api/pollings'+'/'+$(el).val()
-
+			
+			if $('#votation_pollings').val() is '0'
+				$('#container6').html('')
+				$('#container7').html('')
+				return
 			$.ajax
 				url: pollings_url+'/groups'
 				success: (data)->
