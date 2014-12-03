@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   ROLES_COORDINADOR = %w[jugador enlace subenlace ]
   ROLES_ENLACE=       %w[jugador subenlace]
   ROLES_SUBENLACE =   %w[jugador]
+
+  ROLES_ADMIN_DROPDOWN =       %w[[jugador, 1] [enlace, 1] [subenlace,1] [coordinador,1] ]
+  ROLES_COORDINADOR_DROPDOWN = %w[[jugador, 1] [enlace, 1] [subenlace,1] ]
+  ROLES_ENLACE_DROPDOWN=       %w[[jugador, 1] [subenlace, 1]]
+  ROLES_SUBENLACE_DROPDOWN =   %w[[jugador, 1]]
   
   CELLS = {
     'rnm'=>1,
@@ -124,25 +129,28 @@ class User < ActiveRecord::Base
       users.each do |u|      
         u.enlace_id = self.enlace_id
         u.coordinador_id = self.coordinador_id
+        u.group_id = self.group_id
         u.save
       end
     elsif self.role == "enlace"
       users = User.where(:enlace_id => self.id) 
       users.each do |u|      
-        u.subenlace_id = self.subenlace_id
         u.enlace_id = self.id
         u.coordinador_id = self.coordinador_id
+        u.group_id = self.group_id
         u.save
       end 
-    elsif self.role == "enlace"
+    elsif self.role == "coordinador"
       users = User.where(:coordinador_id => self.id) 
       users.each do |u|      
-        u.subenlace_id = self.subenlace_id
-        u.enlace_id = self.enlace_id
+
         u.coordinador_id = self.id
+        u.group_id = self.group_id
         u.save
       end 
     end
+
+
   end
   def get_enlace
     return nil if self.parent == 0

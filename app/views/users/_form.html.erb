@@ -38,8 +38,9 @@
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Nacimiento' %><br>
-        <%= f.date_select :bird, class: "form-control", 
-        :order => [:day, :month, :year], :start_year => 1950 %>
+        <input type="text" id="user_bird" 
+          class="form-control datepicker" name="user[bird]"
+          value="<%= @user.bird.strftime('%d/%m/%Y') if !@user.bird.nil?%>"/>
       </div>
       <div class="form-group">
         <%= f.label 'Edad' %><br>
@@ -57,9 +58,9 @@
       <% if current_user.admin? || current_user.coordinador? %>
         <div class="form-group">
           <div class="checkbox">
-            <label>
-              <input type="checkbox" id="is_user"> ¿Es usuario del sistema?
-            </label>
+            <%= f.input(:enabled, class: "form-control", 
+            :label => '¿Es usuario del sistema?') %>
+
           </div>
         </div>
         <div class="form-group">
@@ -97,65 +98,92 @@
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Registro' %><br>
-        <%= f.date_select :register_date,  :html => { :class => 'form-control' } %>
+        <input type="text" id="user_register_date" 
+          class="form-control datepicker" name="user[register_date]" 
+          value="<%= @user.register_date.strftime('%d/%m/%Y') if !@user.register_date.nil?%>"/>
       </div>
       
       <div class="form-group">
         <%= f.label 'Nivel Jerárquico:' %>
         <% if current_user.admin? %>
-          <%= f.input_field :role, collection: User::ROLES_ADMIN, 
+          <%if @hijos.empty?%>
+      <%= f.input_field :role, collection: User::ROLES_ADMIN, 
           class: "form-control", id: "role_select_form", required: true%>
+      <%else%>
+      <%= f.input_field :role, collection: User::ROLES_ADMIN, 
+          class: "form-control", id: "role_select_form", required: true, disabled: true%>
+      <%end%>   
         <% end %>
         <% if current_user.coordinador? %>
-          <%= f.input_field :role, collection: User::ROLES_COORDINADOR, 
-          :label => "Rol", class: "form-control", required: true%>
+           <%if @hijos.empty?%>
+      <%= f.input_field :role, collection: User::ROLES_COORDINADOR, 
+          class: "form-control", id: "role_select_form", required: true%>
+      <%else%>
+      <%= f.input_field :role, collection: User::ROLES_COORDINADOR, 
+          class: "form-control", id: "role_select_form", required: true, disabled: true%>
+      <%end%>   
         <% end %>
         <% if current_user.enlace? %>
-          <%= f.input_field :role, collection: User::ROLES_ENLACE, 
-          :label => "Rol", class: "form-control", required: true%>
+           <%if @hijos.empty?%>
+            <%= f.input_field :role, collection: User::ROLES_ENLACE, 
+                class: "form-control", id: "role_select_form", required: true%>
+            <%else%>
+            <%= f.input_field :role, collection: User::ROLES_ENLACE, 
+                class: "form-control", id: "role_select_form", required: true, disabled: true%>
+            <%end%>   
         <% end %>
         <% if current_user.subenlace? %>
-          <%= f.input_field :role, collection: User::ROLES_SUBENLACE, 
-          :label => "Rol", class: "form-control", required: true%>
+           <%if @hijos.empty?%>
+            <%= f.input_field :role, collection: User::ROLES_SUBENLACE, 
+                class: "form-control", id: "role_select_form", required: true%>
+            <%else%>
+            <%= f.input_field :role, collection: User::ROLES_SUBENLACE, 
+                class: "form-control", id: "role_select_form", required: true, disabled: true%>
+            <%end%>   
         <% end %>
         <% if current_user.grupo? %>
-          <%= f.input :role, collection: User::ROLES_GRUPO, :label => "Rol", 
-          class: "form-control", required: true%>
+           <%if @hijos.empty?%>
+            <%= f.input_field :role, collection: User::ROLES_GRUPO, 
+                class: "form-control", id: "role_select_form", required: true%>
+            <%else%>
+            <%= f.input_field :role, collection: User::ROLES_GRUPO, 
+                class: "form-control", id: "role_select_form", required: true, disabled: true%>
+            <%end%>   
         <% end %>
       </div>
-      <% if @user.role == "jugador"%>
-        <div class="form-group" id="group">
+
+
+
+        <div class="form-group" id="select_subenlace">
           <%= f.label 'Subenlace:' %><br>
           <%= f.select :subenlace_id, options_for_select(
             [['', '0']].concat(
            @subenlaces.map{|c|[c.full_name, c.id]}), @user.subenlace_id), include_blank: false, class: 'form-control'%>
         </div>
-      <%end%>
-      <% if @user.role == "jugador" || @user.role == "subenlace"%>
-        <div class="form-group" id="group">
+      
+      
+        <div class="form-group" id="select_enlace">
           <%= f.label 'Enlace:' %><br>
           <%= f.select :enlace_id,options_for_select(
             [['', '0']].concat(
            @enlaces.map{|c|[c.full_name, c.id]}), @user.enlace_id), label_html: { class: 'my_class' }, include_blank: false%>
         </div>
-      <%end%>
-      <% if @user.role == "jugador" || @user.role == "subenlace" || @user.role == "enlace"%>
-        <div class="form-group" id="group">
+      
+      
+        <div class="form-group" id="select_coordinador">
           <%= f.label 'Coordinador:' %><br>
           <%= f.select :coordinador_id, options_for_select(
             [['', '0']].concat(
            @coordinadores.map{|c|[c.full_name, c.id]}), @user.coordinador_id), include_blank: false, class: 'form-control'%>
         </div>
-      <%end%>
+      
       <div class="form-group" id="group">
         <%= f.label 'Grupo:' %><br>
-        <% if current_user.admin? || current_user.coordinador?%>
-          <%= f.input_field :group_id, collection: Group.all, 
-          class: "form-control" %>
-        <% else %>
-          <%= f.input_field :group_id, collection: Group.all, 
-          class: "form-control" %>
-        <% end %>
+
+        <%= f.select :group_id, options_for_select(
+            [['', '0']].concat(
+           @groupsdropdown.map{|c|[c.name, c.id]}), @user.group_id), include_blank: false, class: 'form-control'%>
+
       </div>
       <div class="form-group">
         <%= f.label 'Ingresa el link de facebook' %><br>

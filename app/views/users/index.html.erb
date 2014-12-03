@@ -103,6 +103,7 @@
         <th>
           <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="group_id">
             <option value="0"></option>
+            <option value="-1">Sin grupo</option>
             <% @groups.each do |group| %>
               <option value="<%= group.id %>"> 
                 <%= group.name %>
@@ -276,23 +277,33 @@
 <hr />
 <div class="col-md-12 center">
 	<ul class="pagination">
-    <% if @users_t.count >= 10 %>
-      <li class="page_number active" data-num="0"><a>Primera</a></li>
-      <% pages = (@users_t.count / User.per_page).round%>
-      <% 10.times.each do |i|%>
-    	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-      <% end %>
-      <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
-    <% else %>
-      <% @users_t.count.times.each do |i|%>
-        <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-      <% end %>
-    <% end %>
+      <li class="page_number" data-num="0"><a>Primera</a></li>
+      <% pages = (@users_t.count / User.per_page).round %>
+      <% page = 0 %>
+
+      <% page_prev = page.to_i - 1 %>
+      <li class="page_number" id="prev_page" data-num="<%= page_prev %>">
+        <a >Anterior</a>
+      </li>
+
+      <li class="page_number">
+        <a >Pagina Actual <strong id="current_page"><%= page %></strong></a>
+      </li>
+
+      <% page_next = page.to_i + 1 %>
+      <li class="page_number" id="next_page" data-num="<%= page_next %>">
+        <a  >Siguiente</a>
+      </li>
+
+      <li class="page_number" data-num="<%= pages -1 %>">
+        <a >Última</a>
+      </li>
 	</ul>
   <p class="page_showing">
     (
     <strong id="total_result">
       <%= @users_t.count %> 
     </strong>
-    en total)</p>
-</div>	
+    en total)
+  </p>
+</div>

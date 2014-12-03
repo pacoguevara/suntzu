@@ -1,31 +1,34 @@
 <% if user_signed_in? %>
-<div class="container">
-	<a class="navbar-brand" href="<%=root_path%>">
+	<div class="container">
+		<a class="navbar-brand" href="<%=root_path%>">
       <%= image_tag("logo.png", class: "main_logo") %>
     </a>
-    
-	<div class="btn-group pull-right" id="profileMenu">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    	<% if current_user && current_user.image.exists?%>
-				<%= image_tag current_user.image.url(:medium), :size => '30x30' %>	
-			<%else%>
-				<%= image_tag "default.jpg", :size => '30x30' %>
-			<% end %> 
-		<%= current_user.full_name %>
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <li><%= link_to user_path(current_user) do%>Mi Perfil<% end %></li>
-      <li><%= link_to "Cerrar Sesión", destroy_user_session_path, :method => 'delete' %></li>
-    </ul>
-  </div>
-</div>
+	    
+		<div class="btn-group pull-right" id="profileMenu">
+	    <button type="button" class="btn btn-default dropdown-toggle" 
+	    	data-toggle="dropdown">
+	    	<% if current_user && current_user.image.exists?%>
+					<%= image_tag current_user.image.url(:medium), :size => '30x30' %>	
+				<%else%>
+					<%= image_tag "default.jpg", :size => '30x30' %>
+				<% end %> 
+			<%= current_user.full_name %>
+	      <span class="caret"></span>
+	    </button>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><%= link_to user_path(current_user) do%>Mi Perfil<% end %></li>
+	      <li><%= link_to "Cerrar Sesión", destroy_user_session_path, 
+	      	:method => 'delete' %></li>
+	    </ul>
+	  </div>
+	</div>
 <% end %>
 <nav class="navbar navbar-inverse" role="navigation">
 	<div class="container">
 	  <!-- Brand and toggle get grouped for better mobile display -->
 	  <div class="navbar-header">
-	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" 
+	    	data-target=".navbar-ex1-collapse">
 	      <span class="sr-only">Toggle navigation</span>
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
@@ -40,67 +43,50 @@
 	      	<li><%= link_to "Iniciar Sesión", new_user_session_path%></li> 
 	      <% else %>
 	      	<% if current_user.admin? %> 
-	      		<li><%= link_to "Lista Nominal", nominal_list_path + "?role=" %></li> 
-		        <li><%= link_to "Jugadores", users_path + "?role=jugador" %></li> 
-		        <li><%= link_to "SubEnlaces", users_path + "?role=subenlace" %></li>
-		        <li><%= link_to "Enlaces", users_path + "?role=enlace" %></li>
-	        	<li><%= link_to "Coordinadores", users_path + "?role=coordinador" %></li>
-	        	<li><%= link_to "Grupos", groups_path%></li>
-		        <!--<li><%= link_to "Candidatos", candidates_path %></li>-->
-		        <!-- <li><%= link_to new_message_path do %><b>Módulo de Comunicación</b>
-		        	<%end %></li> -->
+	      		<li>
+	      			<%= link_to "Lista Nominal", nominal_list_path + "?role=" %>
+	      		</li> 
+	      	<% end %>
+		        <li>
+		        	<%= link_to "Jugadores", users_path + "?role=jugador" %>
+		        </li> 
+		        <% if !current_user.jugador? %> 
+			        <li>
+			        	<%= link_to "SubEnlaces", users_path + "?role=subenlace" %>
+			        </li>
+			      <% end %>
+		       	<% if !current_user.subenlace? && !current_user.jugador? %> 
+			        <li>
+			        	<%= link_to "Enlaces", users_path + "?role=enlace" %>
+			        </li>
+			      <% end %>
+		       	<% if current_user.coordinador? || current_user.admin? %> 
+		        	<li>
+		        		<%= link_to "Coordinadores", users_path + "?role=coordinador" %>
+		        	</li>
+		        	<% if current_user.admin? %> 
+			        	<li>
+			        		<%= link_to "Grupos", groups_path%>
+			        	</li>
+		        	<% end %>
+		        <% end %>
 		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración <span class="caret"></span></a>
+		        	<% if current_user.admin? %> 
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			          	Administración <span class="caret"></span>
+			          </a>
+		          <% end %>
 		          <ul class="dropdown-menu" role="menu">
-		            <li><%= link_to "Votaciones", pollings_path %></li>
-		            <!--<li><%= link_to "Candidatos a Votación",candidate_votations_path %></li>  -->
-		            <li><%= link_to new_message_path do %><b>Módulo de Comunicación</b>
-		        	<%end %></li>
+		            <li>
+		            	<%= link_to "Votaciones", pollings_path %>
+		            </li>
+		            <li>
+		            	<%= link_to new_message_path do %>
+		            		<b>Módulo de Comunicación</b>
+		        			<%end %>
+		        		</li>
 		          </ul>
 		        </li>
-	        <% end %>
-	        <% if current_user.coordinador? %> 
-		        <li><%= link_to "Jugadores", users_path + "?role=jugador" %></li> 
-		        <li><%= link_to "SubEnlaces", users_path + "?role=subenlace" %></li>
-		        <li><%= link_to "Enlaces", users_path + "?role=enlace" %></li>
-		        <!--<li><%= link_to "Candidatos", candidates_path %></li>-->
-		        <li><%= link_to new_message_path do %><b>Módulo de Comunicación</b>
-		        	<%end %></li>
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><%= link_to "Votaciones", pollings_path %></li> 
-		            <li><%= link_to "Grupos a Votación", candidate_votations_path %></li> 
-		          </ul>
-		        </li>
-	        <% end %>
-	        <% if current_user.enlace? %> 
-		        <li><%= link_to "Jugadores", users_path + "?role=jugador" %></li> 
-		        <li><%= link_to "SubEnlaces", users_path + "?role=subenlace" %></li>
-		        <li><%= link_to "Candidatos", candidates_path %></li>
-		        <li><%= link_to new_message_path do %><b>Módulo de Comunicación</b>
-		        	<%end %></li>
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><%= link_to "Votaciones", pollings_path %></li> 
-		            <li><%= link_to "Candidatos a Votación", candidate_votations_path %></li> 
-		          </ul>
-		        </li>
-	        <% end %>
-	        <% if current_user.subenlace? %> 
-	        	<li><%= link_to new_message_path do %><b>Mensaje Masivo</b><% end %></li>
-		        <li><%= link_to "Jugadores", users_path + "?role=jugador" %></li> 
-		        <li><%= link_to "Candidatos", candidates_path %></li>
-		        <li><%= link_to new_message_path do %><b>Módulo de Comunicación</b><% end %></li>
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><%= link_to "Votaciones", pollings_path %></li>
-		            <li><%= link_to "Candidatos a Votación", candidate_votations_path %></li> 
-		          </ul>
-		        </li>
-	        <% end %>
 	      <% end %>
 	    </ul>
 	  </div><!-- /.navbar-collapse -->

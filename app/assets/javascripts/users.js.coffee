@@ -3,13 +3,61 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->	
+	PageControls = (->
+		current_page = 0
+		init = ->
+			bind()
+		bind = ->
+			$('.page_number').click (e) ->
+				filters = get_filters()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users"
+						data: filters.data
+						success: (data) ->
+							fill_table('#users_table',data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+			$('.page_number_nominal').click (e) ->
+				filters = get_lista_nominal_filters()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users"
+						data: filters.data
+						success: (data) ->
+							fill_table_nominal_list('#users_table', data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+		restartFilters = ->
+			$('#current_page').html 0
+			$('#prev_page').data 'num', 0
+			$('#next_page').data 'num', 0
+		init:init
+		restartFilters:restartFilters
+	)()
 	User = (->
 		subenlaces = []
 		enlaces = []
 		coordinadores = []
 		grupos = []
 		complete =  4
-		
+		 
 		init = ->
 			bind_witho_load()
 			getSubEnlaces()
@@ -19,14 +67,16 @@ $ ->
 			bind()
 			return
 		bind_witho_load = ->
-			$('#is_user').change ->
+			$('#user_enabled').change ->
 				if $(this).is(':checked')
 					$('#user_password').removeClass 'hide'
 					$('#user_password_confirmation').removeClass 'hide'
 				else
 					$('#user_password').addClass 'hide'
 					$('#user_password_confirmation').addClass 'hide'
-			return
+			return 
+			#$('#role_select_form'). ->
+
 		bind = ->
 			$('#user_subenlace_id').change ->
 				selectSubEnlace( @ )
@@ -139,7 +189,7 @@ $ ->
 	)()
 
 	User.init()
-
+	PageControls.init()
 	load_user_in_map = (user_id) ->
 		console.log "/api/users/"+user_id+"?cols=zipcode,id,lat,lng"
 		$.ajax 
@@ -226,12 +276,29 @@ $ ->
 	  return
 	
 	$(document).on "change", "#role_select_form", ->
-		role=$("option:selected", this).val()
+		role = $("option:selected", this).val()
 		# if role is 'coordinador'
 		# 	show_groups()
 		# else
 		# 	hide_groups()
-		load_parents(role)
+		#load_parents(role)
+		if role is 'jugador'
+			$('#select_subenlace').show()
+			$('#select_enlace').show()
+			$('#select_coordinador').show()
+		if role is 'subenlace'
+			$('#select_subenlace').hide()
+			$('#select_enlace').show()
+			$('#select_coordinador').show()
+		if role is 'enlace'
+			$('#select_subenlace').hide()
+			$('#select_enlace').hide()
+			$('#select_coordinador').show()
+		if role is 'coordinador'
+			$('#select_subenlace').hide()
+			$('#select_enlace').hide()
+			$('#select_coordinador').hide()
+
 		
 	$('.search3').keypress (e) ->
 		key = e.which
@@ -257,23 +324,24 @@ $ ->
 					console.log "succeess"
 					console.log data
 					fill_table_show('#users_table', data)
+	
 	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
 		console.log "filter"
 		console.log filters.data
+		PageControls.restartFilters()
+
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
-					console.log "succeess"
-					console.log data
 					fill_table('#users_table', data)
 
 	
 	$('#head_municipality').change ->
+		PageControls.restartFilters()
 		filters = get_lista_nominal_filters()
-
 		$.ajax 
 			url:"/api/users"
 			data:
@@ -303,6 +371,7 @@ $ ->
 
 	$('.search').keypress (e) ->
 		key = e.which
+		PageControls.restartFilters()
 		if key is 13
 			$inputs = $('.search')
 			params = {}
@@ -454,8 +523,6 @@ $ ->
 				id2: user_id
 				tipo: tipo
 			success: (json) ->
-				console.log "succes"
-				console.log json
 				if json isnt false
 					console.log "respuesta"
 					console.log esto
@@ -470,9 +537,7 @@ $ ->
 					if tipo == 3
 						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
 						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
-
-						
-					
+					$(esto).parent().parent().parent().find('#td-grupo').html(json["group_name"])	
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
 				alert thrownError
@@ -494,24 +559,7 @@ $ ->
 	$(document).on "change", ".select_class", ->
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
-	$('.page_number').click (e) ->
-		filters = get_filters()
-		#console.log filters
-		$('.page_number').removeClass 'active'
-		$(this).addClass 'active'
-
-		page_number=$(this).data('num')
-		filters.data.page = page_number
-		console.log page_number
-		$.ajax 
-			url:"/api/users"
-			data: filters.data
-			success: (data) ->
-				console.log data
-				fill_table('#users_table',data)
-				$('html, body').animate(
-					scrollTop : 0
-				,800)
+	
 	fill_table2 = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
@@ -632,13 +680,13 @@ $ ->
 					stringcoordinador = ""
 
 				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-				string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
+				string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 			else
 				console.log "heyyy"
 				console.log data[i].role
 				if data[i].role == "jugador"
 					string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-					string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
+					string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 				else if data[i].role == "subenlace"
 					string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 					string_grupo = ""
@@ -694,11 +742,10 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].parent + " </p></td> " +
-			'<td><p class="small"> ' + data[i].subenlace + " </p></td> "+
-			'<td><p class="small"> ' + data[i].enlace + " </p></td> "+
-			'<td><p class="small"> ' + data[i].coordinador + " </p></td> "+
-			'<td><p class="small"> ' + data[i].group + " </p></td> "+
+			'<td><p class="small"> ' + data[i].subenlace  + " </p></td> " +
+			'<td><p class="small"> ' + data[i].enlace + " </p></td> " +
+			'<td><p class="small"> ' + data[i].coordinador + " </p></td> " +
+			'<td><p class="small"> ' + data[i].group + " </p></td> " +
 			'<td><p class="small"> ' + data[i].role + " </p></td> "
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
@@ -712,6 +759,7 @@ $ ->
 	$('.datepicker').datepicker(
 			format: 'dd/mm/yyyy'
 		).on 'changeDate', ->
+		PageControls.restartFilters()
 		filters = get_lista_nominal_filters()
 		$.ajax 
 			url:"/api/users"
@@ -811,13 +859,14 @@ $ ->
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert 'no se ha podido registrar el voto '
 
-	$(document).on "click", ".btn-enviar", ->
+	$("#btn-enviar").click ->
 		municipio = $('#head_municipality').find(":selected").val()
 		polling = $('#select_polling').find(":selected").val()
 		register_start_date = $('#register_start_date').val()
 		register_end_date = $('#register_end_date').val()
 		bird_start_date = $('#bird_start_date').val()
 		bird_end_date = $('#bird_end_date').val()
+		
 		if municipio == "-1"
 			alert "Selecciona un municipio."
 		else if polling == "-1"
@@ -846,5 +895,5 @@ $ ->
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'No se ha podido registrar la nueva votación ' + thrownError
-
+		return false
 return

@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20141202222511) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "candidate_votations", force: true do |t|
     t.integer  "candidate_id"
     t.integer  "polling_id"
@@ -201,6 +198,7 @@ ActiveRecord::Schema.define(version: 20141202222511) do
     t.integer  "subenlace_id"
     t.integer  "enlace_id"
     t.integer  "coordinador_id"
+    t.boolean  "enabled"
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree

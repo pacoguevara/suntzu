@@ -22,7 +22,6 @@ module Api
 				if params.has_key? :register_start
 					ftime = Time.parse( params[:register_start] )
         	start = ftime.to_formatted_s( :db )
-        	puts params[:register_start]
 					if !where_statment.blank?
 						where_statment = where_statment +" AND register_date >= '#{start}'"
 					else
@@ -231,12 +230,20 @@ module Api
 					end
 				end
 				if (params.has_key? :group_id) && (params[:group_id] != "0")
-					if !where_statment.blank?
-						where_statment=where_statment +" AND group_id = "+
-							"#{params[:group_id].downcase}"
+					if params[:group_id] == "-1"
+						if !where_statment.blank?
+							where_statment=where_statment +" AND (group_id IS NULL OR group_id = 0) "
+						else
+							where_statment=where_statment +" (group_id IS NULL OR group_id = 0) "
+						end
 					else
-						where_statment=where_statment +" group_id = "+
-							"#{params[:group_id].downcase}"
+						if !where_statment.blank?
+							where_statment=where_statment +" AND group_id = "+
+								"#{params[:group_id].downcase}"
+						else
+							where_statment=where_statment +" group_id = "+
+								"#{params[:group_id].downcase}"
+						end
 					end
 				end
 				if (params.has_key? :role_select) && (params[:role_select] != "0")
@@ -285,7 +292,6 @@ module Api
 							where_statment=where_statment +" subenlace_id = "+
 							"#{params[:sub_enlace_id]}"
 						end
-						puts "a ver que "+where_statment.to_s
 					else
 					end
 				end		
@@ -311,7 +317,6 @@ module Api
 						end
 					end
 				end
-				puts "el whereeee "+where_statment
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page
@@ -325,7 +330,6 @@ module Api
 			    @enlace = User.where(:role => "enlace")
 			    @coordinador = User.where(:role => "coordinador")
 					users.each do |user|
-						puts user.id
 						user_hash = {}
 						user_hash[:id] = user.id
 						user_hash[:name] = user.name
@@ -406,6 +410,10 @@ module Api
 						else
 							user.coordinador_id = 0
 						end
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
+						
 					elsif params[:tipo] == "2"
 						puts "es DOS"
 						user.enlace_id = params[:id1]
@@ -415,9 +423,17 @@ module Api
 						else
 							user.coordinador_id = 0
 						end
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
 						user.subenlace_id = 0
+						user.group_id = user2.group_id
 					elsif params[:tipo] == "3"
+						user2 = User.find(params[:id1])
 						puts "es TRES"
+						if !user2.group_id.nil? && user2.group_id != 0
+							user.group_id = user2.group_id
+						end
 						user.coordinador_id = params[:id1]
 						user.subenlace_id = 0
 						user.enlace_id = 0
@@ -474,7 +490,6 @@ module Api
 			end
 			def get_parent
 				h = Hash.new				
-				puts "params "+params.to_s
 				if params[:id1] != "vacio"
 					user = User.find(params[:id1])	
 					if params[:tipo] == "1"
@@ -520,6 +535,7 @@ module Api
 							h[:name2] = ""
 						end
 					end			
+					h[:group_name] = !user.group_id.blank? ? user.group.name : 'Sin grupo'
 					#if params[:tipo] == "1"
 					#	if user.enlace_id && user.enlace_id != 0
 					#		parent = User.find(user.enlace_id)
@@ -580,6 +596,7 @@ module Api
 					end
 
 				end		
+
 				respond_with h		
 					
 			end
@@ -607,19 +624,24 @@ module Api
     				user_hash[:id] = l.id
     				user_ar.push user_hash
     			end
-				
 				respond_with user_ar
 			end
 			def groups
 				groups_by_name = {}
 				User.all.group(:group_id).count.to_a.each do |k,v|
-					if k.nil? || k == 0
-						group_name = "Sin Grupo"
+					if k.nil?
+						group_name = "Nil"
 					else
-						group_name = Group.find(k).name
+						if k == 0
+							group_name = 'Sin Grupo'
+						else
+							group_name = Group.find(k).name
+						end
 					end
 					groups_by_name[group_name] = v
 				end
+				groups_by_name['Sin Grupo'] = groups_by_name['Sin Grupo'] + groups_by_name['Nil']
+				groups_by_name.delete 'Nil'
 				respond_with groups_by_name.to_a
 			end
 			def show
@@ -667,7 +689,7 @@ module Api
 
 
 				@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)
-				@lvArray = Array.new
+				lvArray = Array.new
 
 				if !@us.empty?
 					lvh.save

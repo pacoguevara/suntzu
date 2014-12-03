@@ -56,78 +56,18 @@
 </div>
 Votación
 <hr>
-    <select class="form-control search2" id="select_polling" 
-      name="polling_id">
-      <option value="-1"> </option>
-      <% @polling.each do |p| %>
-        <option value="<%= p.id %>"> <%= p.name %></option>
-      <% end %>
-    </select>  
-    <a href="#" class="btn-enviar btn btn-success btn-block">Guardar</a>
+<select class="form-control search2" id="select_polling" name="polling_id"
+  style="margin-bottom:10px;">
+  <option value="-1"> </option>
+  <% @polling.each do |p| %>
+    <option value="<%= p.id %>"> <%= p.name %></option>
+  <% end %>
+</select>  
+<a href="#" class="btn btn-success btn-block" id="btn-enviar">Guardar</a>
 
     <br><br>
   <table class="table table-bordered table-striped table-hover" id="users_table">  
     <thead>
-      <tr>
-        <th>
-          <input type="text" placeholder="Nombre" class="form-control search2" 
-            name="name"/>
-        </th>
-        <th>
-          <input type="text" placeholder="Primer Apellido" 
-          class="form-control search2" name="first_name"/>
-        </th>
-        <th>
-          <input type="text" placeholder="Segundo Apellido" 
-          class="form-control search2" name="last_name"/>
-        </th>
-        <th>
-          <!-- <input type="text" placeholder="age" class="form-control search2" 
-            name="age"/> -->
-        </th>
-        <th>
-          <input type="text" placeholder="Sección" class="form-control search2" 
-            name="section"/>
-        </th>
-        <th>
-          <!-- <input type="text" placeholder="city" class="form-control search2" 
-            name="city"/> -->
-          
-        </th>
-        <th >
-
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @sub_links.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @links.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-          <!-- <select class="form-control">
-            <option value="0"> Sin Asignar</option>
-            <% @coordinators.each do |user| %>
-              <option value="<%= user.id %>"> <%= user.full_name %></option>
-            <% end %>
-          </select> -->
-        </th>
-        <th >
-
-        </th>
-        <th >
-
-        </th>
-      </tr>
       <tr>
         <th >
           <p class="small">Nombre</p>
@@ -146,9 +86,6 @@ Votación
         </th>
         <th>
           <p class="small">Municipio</p>
-        </th>
-        <th>
-          <p class="small">Reporta a</p>
         </th>
         <th>
           <p class="small">Sub Enlace</p>
@@ -207,11 +144,6 @@ Votación
           </td>
           <td>
             <p class="small">
-              <%= user.parent != 0 ? User.find(user.parent).full_name : "Sin Asignar" %>
-            </p>
-          </td>
-          <td>
-            <p class="small">
               <%= user.get_group %>
             </p>
           </td>
@@ -228,25 +160,35 @@ Votación
   <hr />
   <div class="col-md-12 center">
   	<ul class="pagination">
-      <% if @users_t.count >= 10 %>
-        <li class="page_number active" data-num="0"><a>Primera</a></li>
-        <% pages = (@users_t.count / User.per_page).round%>
-        <% 10.times.each do |i|%>
-      	  <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-        <% end %>
-        <li class="page_number" data-num="<%= pages -1 %>"><a >Última</a></li>
-      <% else %>
-        <% @users_t.count.times.each do |i|%>
-          <li class="page_number" data-num="<%= i %>"><a> <%=i+1 %></a></li>
-        <% end %>
-      <% end %>
-  	</ul>
+      <li class="page_number_nominal" data-num="0"><a>Primera</a></li>
+      <% pages = (@users_t.count / User.per_page).round %>
+      <% page = 0 %>
+
+      <% page_prev = page.to_i - 1 %>
+      <li class="page_number_nominal" id="prev_page" data-num="<%= page_prev %>">
+        <a >Anterior</a>
+      </li>
+
+      <li class="page_number_nominal">
+        <a >Pagina Actual <strong id="current_page"><%= page %></strong></a>
+      </li>
+
+      <% page_next = page.to_i + 1 %>
+      <li class="page_number_nominal" id="next_page" data-num="<%= page_next %>">
+        <a  >Siguiente</a>
+      </li>
+
+      <li class="page_number_nominal" data-num="<%= pages -1 %>">
+        <a >Última</a>
+      </li>
+    </ul>
     <p class="page_showing">
       (
       <strong id="total_result">
         <%= @users_t.count %> 
       </strong>
-      en total)</p>
+      en total)
+    </p>
   </div>	
 </div>
 <div id="pane2" class="tab-pane">
@@ -263,9 +205,9 @@ Votación
       <% @algo.each do |a| %>
         <tr>
           <td >
-            <p class="small"><%=link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
+            <p class="small">
+              <%= link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
           </td>
-          
           <td >
         </td>
       <%end%>
