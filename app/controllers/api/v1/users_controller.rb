@@ -699,6 +699,8 @@ module Api
 						newlv.list_votation_header_id = lvh.id
 						newlv.user_id = u.id
 						newlv.number = cont
+						newlv.created_at = Time.zone.now
+						newlv.updated_at = Time.zone.now
 						cont+=1
 						if u.temp_chek.nil?
 							newlv.check = false
@@ -718,6 +720,7 @@ module Api
 				else
 					vl.check = false
 				end
+				vl.updated_at = Time.zone.now
 				vl.save
 				respond_with true
 			end
