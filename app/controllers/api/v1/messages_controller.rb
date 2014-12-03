@@ -20,8 +20,12 @@ module Api
 				Message.send_sms cellphone, msg, user_id, message_id
 
 				#Message.send_sms({:user_id => user_id, :message_id => id})
-				#h = {:user_id => user_id, :message_id => id}
-				#respond_with h
+				h = {:user_id => user_id, :message_id => message_id}
+				
+				respond_to do |format|
+				  format.json { render json: h }
+				  format.js   { render json: h }
+				end
 			end
 		end
 	end
