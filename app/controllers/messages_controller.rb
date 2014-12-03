@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
   # GET /messages.json
   def index
     @messages = []
-        Message.where(:user_id => current_user.id).to_a.each do |k,v|
+        Message.where(:user_id => current_user.id).order(created_at: :desc).to_a.each do |k,v|
           if k.nil? || k == 0
             count = "Sin Grupo"
           else
