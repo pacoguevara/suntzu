@@ -324,18 +324,18 @@ $ ->
 					console.log "succeess"
 					console.log data
 					fill_table_show('#users_table', data)
+	
 	$(document).on "change", ".filtro_dropdown", ->	
 		filters = get_filters()
 		console.log "filter"
 		console.log filters.data
 		PageControls.restartFilters()
+
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
-					console.log "succeess"
-					console.log data
 					fill_table('#users_table', data)
 
 	
@@ -523,8 +523,6 @@ $ ->
 				id2: user_id
 				tipo: tipo
 			success: (json) ->
-				console.log "succes"
-				console.log json
 				if json isnt false
 					console.log "respuesta"
 					console.log esto
@@ -539,9 +537,7 @@ $ ->
 					if tipo == 3
 						$(esto).parent().parent().parent().find('#td-subenlace').find('.subenlace').val json["user_id"]
 						$(esto).parent().parent().parent().find('#td-enlace').find('.enlace').val json["user_id2"]
-
-						
-					
+					$(esto).parent().parent().parent().find('#td-grupo').html(json["group_name"])	
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
 				alert thrownError
@@ -684,13 +680,13 @@ $ ->
 					stringcoordinador = ""
 
 				string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-				string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
+				string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 			else
 				console.log "heyyy"
 				console.log data[i].role
 				if data[i].role == "jugador"
 					string_selects = '<td id="td-subenlace"><p class="small"> ' + stringsubenlace + "</p></td> " + '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
-					string_grupo = '<td><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
+					string_grupo = '<td id="td-grupo"><p class="small"> ' + data[i].group + "</p></td>"+'<td><p class="small"> ' + data[i].role + "</p></td>"
 				else if data[i].role == "subenlace"
 					string_selects = '<td id="td-enlace"><p class="small"> ' + stringenlace + "</p></td> " + '<td id="td-coordinador"><p class="small"> ' + stringcoordinador + "</p></td> "
 					string_grupo = ""

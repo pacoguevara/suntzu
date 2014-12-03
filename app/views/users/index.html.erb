@@ -103,6 +103,7 @@
         <th>
           <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="group_id">
             <option value="0"></option>
+            <option value="-1">Sin grupo</option>
             <% @groups.each do |group| %>
               <option value="<%= group.id %>"> 
                 <%= group.name %>

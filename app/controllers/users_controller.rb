@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
-
+    @hijos = Array.new
     @groupsdropdown = Group.all
     @user = User.new
     3.times {@user.documents.build }
@@ -95,6 +95,7 @@ class UsersController < ApplicationController
     @groups = Group.all
     @coordinadores = User.where(:role => 'coordinador')
     @groupsdropdown = Group.all
+    @hijos = Array.new
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
@@ -147,6 +148,16 @@ class UsersController < ApplicationController
         params[:user][:documents_attributes].delete "2"
       end
     end
+    if user_params[:role].to_s == "subenlace"
+      params[:user][:subenlace_id] = "0"
+    elsif user_params[:role].to_s == "enlace"
+      params[:user][:subenlace_id] = "0"
+      params[:user][:enlace_id] = "0"
+    elsif user_params[:role].to_s == "coordinador"
+      params[:user][:subenlace_id] = "0"
+      params[:user][:enlace_id] = "0"
+      params[:user][:coordinador_id] = "0"
+    end
     respond_to do |format|
       if @user.update user_params
         @user.update_subordinados
@@ -165,7 +176,24 @@ class UsersController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
-
+    if current_user.admin?
+      @nivel = User::ROLES_ADMIN_DROPDOWN
+    elsif current_user.coordinador?
+      @nivel = User::ROLES_COORDINADOR_DROPDOWN
+    elsif current_user.enlace?
+      @nivel = User::ROLES_ENLACE_DROPDOWN
+    elsif current_user.subenlace?
+      @nivel = User::ROLES_SUBENLACE_DROPDOWN
+    end
+    if @user.role == "coordinador"
+      @hijos = User.where("coordinador_id = ? AND (role = 'subenlace' OR role = 'enlace' OR role = 'jugador')",@user.id)
+    elsif @user.role == "enlace"
+      @hijos = User.where(:enlace_id => @user.id)
+    elsif @user.role == "subenlace"
+      @hijos = User.where(:subenlace_id => @user.id)
+    else
+      @hijos = Array.new
+    end
     if @user.documents.count < 1
       3.times {@user.documents.build }
       #@user.documents.build
