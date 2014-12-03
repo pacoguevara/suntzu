@@ -619,13 +619,19 @@ module Api
 			def groups
 				groups_by_name = {}
 				User.all.group(:group_id).count.to_a.each do |k,v|
-					if k.nil? || k == 0
-						group_name = "Sin Grupo"
+					if k.nil?
+						group_name = "Nil"
 					else
-						group_name = Group.find(k).name
+						if k == 0
+							group_name = 'Sin Grupo'
+						else
+							group_name = Group.find(k).name
+						end
 					end
 					groups_by_name[group_name] = v
 				end
+				groups_by_name['Sin Grupo'] = groups_by_name['Sin Grupo'] + groups_by_name['Nil']
+				groups_by_name.delete 'Nil'
 				respond_with groups_by_name.to_a
 			end
 			def show
