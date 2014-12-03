@@ -158,7 +158,7 @@
           <%= f.label 'Subenlace:' %><br>
           <%= f.select :subenlace_id, options_for_select(
             [['', '0']].concat(
-           @subenlaces.map{|c|[c.full_name, c.id]}), @user.subenlace_id), include_blank: false, class: 'form-control'%>
+           @subenlaces.map{|c|[c.full_name, c.id]}), @user.subenlace_id), include_blank: false, class: 'form-control dropdown_form'%>
         </div>
       
       
@@ -166,7 +166,7 @@
           <%= f.label 'Enlace:' %><br>
           <%= f.select :enlace_id,options_for_select(
             [['', '0']].concat(
-           @enlaces.map{|c|[c.full_name, c.id]}), @user.enlace_id), label_html: { class: 'my_class' }, include_blank: false%>
+           @enlaces.map{|c|[c.full_name, c.id]}), @user.enlace_id), label_html: { class: 'my_class dropdown_form' }, include_blank: false%>
         </div>
       
       
@@ -174,7 +174,7 @@
           <%= f.label 'Coordinador:' %><br>
           <%= f.select :coordinador_id, options_for_select(
             [['', '0']].concat(
-           @coordinadores.map{|c|[c.full_name, c.id]}), @user.coordinador_id), include_blank: false, class: 'form-control'%>
+           @coordinadores.map{|c|[c.full_name, c.id]}), @user.coordinador_id), include_blank: false, class: 'form-control dropdown_form'%>
         </div>
       
       <div class="form-group" id="group">
