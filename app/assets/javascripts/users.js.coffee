@@ -573,6 +573,18 @@ $ ->
 				tipo: tipo
 			success: (json) ->
 				console.log "se pudoooooo"
+				filters = get_filters()
+				console.log "filter"
+				console.log filters.data
+				PageControls.restartFilters()
+
+				$.ajax 
+						url:"/api/users"
+						data:
+							filters.data
+						success: (data) ->
+							console.log "Refresh"
+							fill_table('#users_table', data)
 			error: (xhr, ajaxOptions, thrownError) ->
 				alert xhr.status 
 				alert thrownError
