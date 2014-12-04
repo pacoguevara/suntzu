@@ -61,82 +61,82 @@ module Api
 				if params.has_key? :email
 					if !where_statment.blank?
 						where_statment = where_statment + " AND lower(email) LIKE "+
-							"'%#{params[:email].downcase}%'"
+							"'%#{params[:email].downcase.strip}%'"
 					else
 						where_statment = where_statment +" lower(email) LIKE "+
-							"'%#{params[:email].downcase}%'"
+							"'%#{params[:email].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :cellphone
 					if !where_statment.blank?
 						where_statment = where_statment +" AND lower(cellphone) LIKE "+
-							"'%#{params[:cellphone].downcase}%'"
+							"'%#{params[:cellphone].downcase.strip}%'"
 					else
 						where_statment = where_statment +" lower(cellphone) LIKE "+
-							"'%#{params[:cellphone].downcase}%'"
+							"'%#{params[:cellphone].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :rnm
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(rnm) LIKE "+
-							"'%#{params[:rnm].downcase}%'"
+							"'%#{params[:rnm].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(rnm) LIKE "+
-							"'%#{params[:rnm].downcase}%'"
+							"'%#{params[:rnm].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :name
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(name) LIKE '"+
-							"%#{params[:name].downcase}%'"
+							"%#{params[:name].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(name) LIKE "+
-							"'%#{params[:name].downcase}%'"
+							"'%#{params[:name].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :first_name
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(first_name) LIKE "+
-							"'%#{params[:first_name].downcase}%'"
+							"'%#{params[:first_name].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(first_name) LIKE "+
-							"'%#{params[:first_name].downcase}%'"
+							"'%#{params[:first_name].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :last_name
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(last_name) LIKE "+
-							"'%#{params[:last_name].downcase}%'"
+							"'%#{params[:last_name].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(last_name) LIKE "+
-							"'%#{params[:last_name].downcase}%'"
+							"'%#{params[:last_name].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :parent
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(parent) LIKE "+
-							"'%#{params[:parent].downcase}%'"
+							"'%#{params[:parent].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(parent) LIKE "+
-							"'%#{params[:parent].downcase}%'"
+							"'%#{params[:parent].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :gender
 					if !where_statment.blank?
 						where_statment=where_statment +" AND lower(gender) LIKE "+
-							"'%#{params[:gender].downcase}%'"
+							"'%#{params[:gender].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(gender) LIKE "+
-							"'%#{params[:gender].downcase}%'"
+							"'%#{params[:gender].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :ife_key
 					if !where_statment.blank?
 						where_stafull_nametment=where_statment +" AND lower(ife_key) LIKE "+
-							"'%#{params[:ife_key].downcase}%'"
+							"'%#{params[:ife_key].downcase.strip}%'"
 					else
 						where_statment=where_statment +" lower(ife_key) LIKE "+
-							"'%#{params[:ife_key].downcase}%'"
+							"'%#{params[:ife_key].downcase.strip}%'"
 					end
 				end
 				if params.has_key? :register_date
