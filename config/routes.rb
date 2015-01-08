@@ -16,6 +16,8 @@ Pan::Application.routes.draw do
       resources :messages do 
         collection do 
           post '/:id/user', :action => 'create_user_message'
+          post '/email', :action => 'send_email'
+
         end     
       end 
 

@@ -22,7 +22,7 @@
 				<div class="panel-footer">
         	<%= f.submit 'Guardar Mensaje', :class => "btn btn-primary" %>
         	<a href="#" class="btn btn-primary" id="send_twilio">Enviar SMS Masivo</a>
-        	<a href="#" class="btn btn-primary">Enviar Correo Masivo</a>
+        	<a href="#" class="btn btn-primary" id="sendgrid_email">Enviar Correo Masivo</a>
         	<a href="<%= messages_path %>" class="btn btn-primary">Mensajes enviados</a>
       	</div>
 			<% end %>
@@ -191,7 +191,7 @@
 		          <p class="small cellphone" id="<%=user.id%>"><%= user.cellphone %></p>
 		        </td>
 		        <td>
-		          <p class="small"><%= user.email %></p>
+		          <p class="small mail"><%= user.email %></p>
 		        </td>
 		        <td>
 		          <p class="small"><%= user.gender %></p>

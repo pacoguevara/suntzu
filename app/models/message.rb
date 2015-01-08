@@ -4,6 +4,9 @@ class Message < ActiveRecord::Base
   @twilio_token = "6e26775044f3087e7d9f44f003db29ae"
   @twilio_phone_number = "+18027339326"
 
+  @sendgrid_user = 'fguevara'
+  @sendgrid_password = 'aspg.1424'
+
   def self.send_sms(to, message, user_id, message_id)
   	number_to_send_to = "+528341444418"
     @twilio_client = Twilio::REST::Client.new @twilio_sid, @twilio_token
@@ -43,6 +46,20 @@ class Message < ActiveRecord::Base
     new_message.save
     new_message.id
   end 
+  
+  def self.send_email(message, email)
+    require 'sendgrid-ruby'
  
+    client = SendGrid::Client.new(api_user: 'fguevara', api_key: 'aspg.1424')
+     
+    email = SendGrid::Mail.new do |m|
+      m.to      = email
+      m.from    = 'fguevara@tegik.com'
+      m.subject = 'Sending with SendGrid is Fun'
+      m.html    = message
+    end
+     
+    puts client.send(email)
+  end
 
 end

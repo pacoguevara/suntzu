@@ -27,6 +27,18 @@ module Api
 				  format.js   { render json: h }
 				end
 			end
+
+			def send_email
+				msg = params[:message]
+				email = params[:email]
+				Message.send_email(msg, email)
+				h = {:message => msg, :mail => email}
+				
+				respond_to do |format|
+				  format.json { render json: h }
+				  format.js   { render json: h }
+				end
+			end
 		end
 	end
 end

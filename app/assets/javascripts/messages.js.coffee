@@ -32,6 +32,20 @@ message =
 				 		success:(data)->
 				 			console.log data
 
+mail =
+	send: (msg, table_items)->
+		console.log "entramos"
+		table_items.each ->
+			mail = $(this).find('td > p.mail').html()
+			$.ajax
+				type: 'POST'
+			 url:"/api/messages/email"
+			 data:
+		 		email: mail
+		 		message: msg
+	 		success:(data)->
+					console.log mail
+
 			
 $ ->
 	$('#send_twilio').click ->
@@ -44,6 +58,11 @@ $ ->
 		#	console.log cellphone
 		message.send($('#message_message').val(), table_items)
 		false
+
+	$('#sendgrid_email').click ->
+		table_items = $('#militants_table > tbody > tr')
+		msg = $('#message_message').val()
+		mail.send(msg, table_items)
 
 
 	#Trying to create the filters
@@ -152,7 +171,7 @@ $ ->
 				'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].first_name + " </a> </p></td> " +
 				'<td><p class="small"> <a href="/users/'+data[i].id+'"> ' + data[i].last_name + " </a> </p></td> " +
 				'<td><p class="small cellphone" id="'+data[i].id+'"> ' + data[i].cellphone + " </p></td> " +
-				'<td><p class="small"> ' + data[i].email + " </p></td> " +
+				'<td><p class="small mail"> ' + data[i].email + " </p></td> " +
 				'<td><p class="small"> ' + data[i].gender + " </p></td> " +
 				'<td><p class="small"> ' + data[i].age + " </p></td> " +
 				'<td><p class="small"> ' + data[i].city + " </p></td> " +

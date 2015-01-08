@@ -66,3 +66,4 @@ gem 'aws-sdk', '~> 1.20.0'
 
 gem 'writeexcel'
 gem 'bootstrap-datepicker-rails'
+gem 'sendgrid-ruby'
