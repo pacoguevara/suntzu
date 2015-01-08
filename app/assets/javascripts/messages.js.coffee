@@ -60,6 +60,7 @@ $ ->
 		false
 
 	$('#sendgrid_email').click ->
+		console.log "Click en correo"
 		table_items = $('#militants_table > tbody > tr')
 		msg = $('#message_message').val()
 		mail.send(msg, table_items)

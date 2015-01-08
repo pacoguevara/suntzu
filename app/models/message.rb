@@ -55,7 +55,7 @@ class Message < ActiveRecord::Base
     email = SendGrid::Mail.new do |m|
       m.to      = email
       m.from    = 'fguevara@tegik.com'
-      m.subject = 'Sending with SendGrid is Fun'
+      m.subject = 'Sin asunto'
       m.html    = message
     end
      
