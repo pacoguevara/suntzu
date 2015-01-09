@@ -64,7 +64,7 @@ $ ->
 		table_items = $('#militants_table > tbody > tr')
 		msg = $('#message_message').val()
 		mail.send(msg, table_items)
-
+		false
 
 	#Trying to create the filters
 	$('.search_m').keypress (e) ->
