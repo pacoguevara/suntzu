@@ -26,4 +26,13 @@ class Municipality < ActiveRecord::Base
       else raise "Unknown file type: #{file_path}"
     end
   end
+
+  def self.get_city_key(mun)
+    municipality = Municipality.where(:name => mun).first
+    if !municipality.nil?
+      return municipality.id
+    else
+      return ''
+    end
+  end
 end

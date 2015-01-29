@@ -10,6 +10,8 @@
 				<div class="panel-body">
 			  	<%= f.error_notification %>
 			  	<%= f.hidden_field :user_id , :value=> current_user.id%>
+			  	<%= f.hidden_field :user_role , :value=> current_user.role%>
+
 				  <div class="form-group">
 				  	<%= f.label 'Mensaje' %><br>
 				    <%= f.text_area :message, class: "form-control" %>
@@ -60,7 +62,10 @@
 		      <th>
 		        <input type="text" placeholder="Edad" class="form-control search_m" 
 		          name="age"/>
+		          <input type="hidden" class="form-control search_m" 
+		          name="role" value="<%= current_user.role %>"/>
 		      </th>
+		    <% if current_user.role != "communication" %>
 		      <th>
 		        <select class="form-control search_m select_search_m municipality" id="select_municipality" 
 		        name="municipality_id">
@@ -71,6 +76,7 @@
 			        <% end %>
 			      </select> 
 		      </th>
+		      
 		      <th>
 		        <select class="form-control search_m select_search_m search_m municipality" id="select_group" 
 		        name="group_id">
@@ -125,6 +131,7 @@
             <option value="2">Falló</option>
           </select>
         </th>
+        <% end %>
 		  	</tr>
 		    <tr>
 		      <th >
@@ -148,9 +155,11 @@
 		      <th>
 		        <p class="small">Edad</p>
 		      </th>
+		    <% if current_user.role != "communication" %>
 		      <th>
 		        <p class="small">Municipio</p>
 		      </th>
+		      
 		      <th>
 		      	<p class="small">Grupo</p>
 		      </th>
@@ -172,6 +181,7 @@
 		      <th>
 	          	<p class="small">Status</p>
 	          </th>
+	        <% end %>
 		    </tr>
 		  </thead>
 
@@ -199,9 +209,11 @@
 		        <td>
 		          <p class="small"><%= user.age %></p>
 		        </td>
+		      <% if current_user.role != "communication" %>
 		        <td>
 		          <p class="small"><%= user.municipality.name if !user.municipality.nil? %></p>
 		        </td>
+		        
 		        <td>
 		        	<p>#</p>
 		        </td>
@@ -241,6 +253,7 @@
 		        <td>
 		        	<p>#</p>
 		        </td>
+		       <% end %>
 	        </tr>
 		  	 <% end %>
 		  <!--  

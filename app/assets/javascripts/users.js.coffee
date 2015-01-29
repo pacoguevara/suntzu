@@ -349,17 +349,17 @@ $ ->
 					fill_table_show('#users_table', data)
 	
 	$(document).on "change", ".filtro_dropdown", ->	
+
 		filters = get_filters()
 		console.log "filter"
-		console.log filters.data
+		console.log filters.data['role_hidden']
 		PageControls.restartFilters()
-
 		$.ajax 
 				url:"/api/users"
 				data:
 					filters.data
 				success: (data) ->
-					fill_table('#users_table', data)
+					fill_table('#users_table', data, filters.data['role_hidden'])
 
 	
 	$('#head_municipality').change ->
@@ -432,7 +432,7 @@ $ ->
 						parent: params['parent']
 					success: (data) ->
 						console.log data
-						fill_table('#users_table', data)
+						fill_table('#users_table', data, params['role_hidden'])
 	get_lista_nominal_filters = ->
 		$inputs = $('.search2')
 		params = {}
@@ -521,6 +521,7 @@ $ ->
 				coordinador_id: params['coordinador_id']
 				group_id: params['group_id']
 				role_select: params['role_select']
+				role_hidden: params['role_hidden']
 	selectchange = (id, user_id, tipo) ->
 	  $.ajax
 	    url: "/api/users/enlace"
@@ -624,7 +625,8 @@ $ ->
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo table_id
 
-	fill_table = (table_id, data) ->
+	fill_table = (table_id, data, role) ->
+		
 		count = data.total
 		subenlaces = data.subenlaces
 		enlaces = data.enlaces
@@ -736,8 +738,9 @@ $ ->
 			'<td><p class="small"> ' + data[i].age + " </p></td> " +
 			'<td><p class="small"> ' + parseInt(data[i].section)+ " </p></td> " +
 			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " + string_selects +
-			string_grupo
+			'<td><p class="small"> ' + data[i].neighborhood + " </p></td> " 
+			if role != 'communication'
+				tds = tds + string_selects + string_grupo
 
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			#console.log cleared_tds

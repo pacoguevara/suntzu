@@ -33,27 +33,28 @@ class User < ActiveRecord::Base
   ROLES_SUBENLACE_DROPDOWN =   %w[[jugador, 1]]
   
   CELLS = {
-    'rnm'=>1,
-    'register_date'=>2,
-    'ife_key'=>3,
-    'bird'=>4,
-    'name'=>5,
+    'rnm'=>25,
+    'register_date'=>24,
+    'ife_key'=>2,
+    'bird'=>31,
+    'name'=>8,
     'first_name'=>6,
     'last_name'=>7,
-    'gender'=>8,
-    'section'=>9, 
-    'dto_fed'=>10,
-    'dto_loc'=>11,
-    'city_key'=>12,
-    'city'=>13,
-    'street_number'=>14,
-    'outside_number'=>15,
-    'internal_number'=>16,
-    'neighborhood'=>17,
-    'zipcode'=>18,
-    'phone'=>19,
-    'cellphone'=>20,
-    'email'=>21,
+    'gender'=>27,
+    'section'=>26, 
+    'dto_fed'=>21,
+    'dto_loc'=>22,
+    'city_key'=>31,
+    'city'=>9,
+    'street_number'=>12,
+    'outside_number'=>13,
+    'internal_number'=>14,
+    'neighborhood'=>18,
+    'zipcode'=>17,
+    'phone'=>28,
+    'cellphone'=>16,
+    'email'=>31,
+    'age'=>23
   }
   self.per_page = 50
 
@@ -95,6 +96,9 @@ class User < ActiveRecord::Base
   end
   def grupo?
     self.role == "grupo"
+  end
+  def communication?
+    self.role == "communication"
   end
   def set_enlazado
     if !get_subenlace.nil?
@@ -187,13 +191,25 @@ class User < ActiveRecord::Base
   end
   private
   def self.import 
-    file_path=Rails.public_path.to_s + '/xls/users.xlsx'
+    file_path=Rails.public_path.to_s + '/xls/users2.xlsx'
     spreadsheet = open_spreadsheet(file_path)
     #(2..spreadsheet.last_row).each do |i|
+    ifes = []
+    count = 0
     (2..spreadsheet.last_row).each do |i|
       puts spreadsheet.cell(i,CELLS['register_date'])
-      save_row(spreadsheet, i)
+      ife_k = spreadsheet.cell(i,CELLS['ife_key'])
+      
+      
+      if !User.exists?(:ife_key => ife_k)
+        save_row(spreadsheet, i)
+      else
+        count = count + 1
+        ifes.push(i)
+      end
     end
+    puts count
+    puts ifes
   end
 
   private
@@ -214,7 +230,12 @@ class User < ActiveRecord::Base
     user.age = spreadsheet.cell(i,CELLS['age']) || ""
     user.gender = spreadsheet.cell(i,CELLS['gender']) || ""
     user.city = spreadsheet.cell(i,CELLS['city']) || ""
-    user.municipality_id = spreadsheet.cell(i,CELLS['city_key']) || ""
+    #user.municipality_id = spreadsheet.cell(i,CELLS['city_key']) || ""
+    city_name = spreadsheet.cell(i,CELLS['city']) || ""
+    puts city_name
+    mun_id = Municipality.get_city_key(city_name)
+    user.municipality_id = mun_id
+    puts mun_id
     user.street_number = spreadsheet.cell(i,CELLS['street_number']) || ""
     user.neighborhood = spreadsheet.cell(i,CELLS['neighborhood']) || ""
     user.dto_fed = spreadsheet.cell(i,CELLS['dto_fed']) || ""

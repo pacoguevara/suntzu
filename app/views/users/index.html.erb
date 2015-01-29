@@ -2,7 +2,6 @@
   <span class="glyphicon glyphicon-plus-sign"></span> 
   Nuevo Jugador
 <%end%>
-
 <!--
 <%= link_to downloads_path+"?role=#{params[:role]}", 
   :class=>"btn btn-info pull-right" do %>
@@ -43,6 +42,7 @@
         <input type="text" placeholder="Seccion" class="form-control search" 
           name="section"/>
       </th>
+    
       <th>
         <!--<input type="text" placeholder="city" class="form-control search" 
           name="city"/>-->
@@ -59,6 +59,7 @@
         <input type="text" placeholder="Colonia" 
           class="form-control search" name="neighborhood"/>
       </th>
+    <% if current_user.role != "communication" %>
       <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
           <select class="form-control filtro_dropdown select_search search"  style="width:100%" 
@@ -122,6 +123,7 @@
           </select>
         </th>
       <%end%>
+    <% end %>
     </tr>
     <tr>
       <th >
@@ -142,12 +144,15 @@
       <th>
         <p class="small">Sección</p>
       </th>
+    
       <th>
         <p class="small">Municipio</p>
       </th>
       <th>
         <p class="small">Colonia</p>
+        <input class="search" type="hidden" name="role_hidden" id="role_hidden" value="<%= current_user.role %>">
       </th>
+    <% if current_user.role != "communication" %>
       <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
           <p class="small">Subenlace</p>
@@ -171,6 +176,7 @@
           Rol
         </th>
       <%end%>
+    <%end%>
     </tr>
   </thead>
 
@@ -195,12 +201,14 @@
         <td>
           <p class="small"><%= user.section.to_i %></p>
         </td>
+      
         <td>
           <p class="small"><%= user.municipality.name if !user.municipality.nil? %></p>
         </td>
         <td>
           <p class="small"><%= user.neighborhood %></p>
         </td>
+      <% if current_user.role != "communication" %>
         <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
           
           <td id="td-subenlace">
@@ -269,6 +277,7 @@
           <%=user.role%>
         </td>
         <%end%>
+      <%end%>
       </tr>
     <% end %>
   </tbody>

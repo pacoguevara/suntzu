@@ -19,20 +19,20 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <%= f.label 'Nombre' %><br>
-            <%= f.text_field :name, class: "form-control" %>
+            <%= f.label 'Nombre*' %><br>
+            <%= f.text_field :name, class: "form-control", required: true %>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <%= f.label 'Paterno' %><br>
-            <%= f.text_field :first_name, class: "form-control" %>
+            <%= f.label 'Paterno*' %><br>
+            <%= f.text_field :first_name, class: "form-control",required: true %>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <%= f.label 'Materno' %><br>
-            <%= f.text_field :last_name, class: "form-control" %>
+            <%= f.label 'Materno*' %><br>
+            <%= f.text_field :last_name, class: "form-control", required: true %>
           </div>
         </div>
       </div>
@@ -52,8 +52,8 @@
          :first, :last %>
       </div>
       <div class="form-group">
-        <%= f.label 'Correo Electrónico' %><br>
-        <%= f.text_field :email, class: "form-control" %>
+        <%= f.label 'Correo Electrónico*' %><br>
+        <%= f.text_field :email, class: "form-control", required: true %>
       </div>
       <% if current_user.admin? || current_user.coordinador? %>
         <div class="form-group">
@@ -64,12 +64,12 @@
           </div>
         </div>
         <div class="form-group">
-          <%= f.label 'Contraseña' %><br>
-          <%= f.password_field :password, class: "form-control hide" %>
+          <%= f.label 'Contraseña*' %><br>
+          <%= f.password_field :password, class: "form-control hide", required: true %>
         </div>
         <div class="form-group">
-          <%= f.label 'Confirmar Contraseña' %><br>
-          <%= f.password_field :password_confirmation, class: "form-control hide" %>
+          <%= f.label 'Confirmar Contraseña*' %><br>
+          <%= f.password_field :password_confirmation, class: "form-control hide", required: true %>
         </div>
       <% end %>
       <div class="row">
@@ -93,8 +93,8 @@
         <%= f.text_field :rnm, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label 'Clave del IFE' %><br>
-        <%= f.text_field :ife_key, class: "form-control" %>
+        <%= f.label 'Clave del IFE*' %><br>
+        <%= f.text_field :ife_key, class: "form-control", required: true %>
       </div>
       <div class="form-group">
         <%= f.label 'Fecha de Registro' %><br>
@@ -104,7 +104,7 @@
       </div>
       
       <div class="form-group">
-        <%= f.label 'Nivel Jerárquico:' %>
+        <%= f.label 'Nivel Jerárquico*:' %>
         <% if current_user.admin? %>
           <%if @hijos.empty?%>
       <%= f.input_field :role, collection: User::ROLES_ADMIN, 
@@ -196,9 +196,9 @@
     </div>
     <div class="col-md-4">
       <div class="form-group">
-        <%= f.label 'Municipio' %><br>
+        <%= f.label 'Municipio*' %><br>
         <%= f.input_field :municipality_id, collection: @municipalities,
-          class: "form-control" %>
+          class: "form-control", required: true %>
       </div>
       <div class="form-group">
         <%= f.label 'DtoFed' %><br>
@@ -251,8 +251,13 @@
           <%= builder.file_field :doc, class: "form-control" %>
         </div>
       </div>
+
       </div>    
     <% end %>
+    <div class="col-md-4">
+      <p>(*) Son campos requeridos </p>
+    </div>
+
   </div>
   <div class="actions">
     <hr>

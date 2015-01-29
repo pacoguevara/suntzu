@@ -1,9 +1,10 @@
 <% if user_signed_in? %>
 	<div class="container">
+	    <% if current_user.communication? %>
 		<a class="navbar-brand" href="<%=root_path%>">
-      <%= image_tag("logo.png", class: "main_logo") %>
-    </a>
-	    
+	      <%= image_tag("logo.png", class: "main_logo") %>
+	    </a>
+	    <% end %>
 		<div class="btn-group pull-right" id="profileMenu">
 	    <button type="button" class="btn btn-default dropdown-toggle" 
 	    	data-toggle="dropdown">
@@ -50,12 +51,12 @@
 		        <li>
 		        	<%= link_to "Jugadores", users_path + "?role=jugador" %>
 		        </li> 
-		        <% if !current_user.jugador? %> 
+		        <% if !current_user.jugador? && !current_user.communication? %> 
 			        <li>
 			        	<%= link_to "SubEnlaces", users_path + "?role=subenlace" %>
 			        </li>
 			      <% end %>
-		       	<% if !current_user.subenlace? && !current_user.jugador? %> 
+		       	<% if !current_user.subenlace? && !current_user.jugador? && !current_user.communication?%> 
 			        <li>
 			        	<%= link_to "Enlaces", users_path + "?role=enlace" %>
 			        </li>
@@ -70,6 +71,11 @@
 			        	</li>
 		        	<% end %>
 		        <% end %>
+				<% if current_user.communication? %> 
+		        	<li>
+		        		<%= link_to "Modulo de Comunicación", new_message_path%>
+		        	</li>
+	        	<% end %>
 		        <li class="dropdown">
 		        	<% if current_user.admin? %> 
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">

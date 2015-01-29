@@ -82,19 +82,20 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @message = Message.new(message_params)
-    twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
-    twilio_token = "6e26775044f3087e7d9f44f003db29ae"
-    twilio_phone_number = "+18027339326"
+    puts "Estamos entrando aqui"
+    #@message = Message.new(message_params)
+    #twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
+    #twilio_token = "6e26775044f3087e7d9f44f003db29ae"
+    #twilio_phone_number = "+18027339326"
     #number_to_send_to = "+528341444418"
-    number_to_send_to = "+528180291458"
-    @twilio_client = Twilio::REST::Client.new twilio_sid, twilio_token
-    @twilio_client.account.sms.messages.create(
-      :from => "#{twilio_phone_number}",
-      :to => number_to_send_to,
-      :body => message_params[:message]
-    )
-    redirect_to :back
+    #number_to_send_to = "+528180291458"
+    #@twilio_client = Twilio::REST::Client.new twilio_sid, twilio_token
+    #@twilio_client.account.sms.messages.create(
+    #  :from => "#{twilio_phone_number}",
+    #  :to => number_to_send_to,
+    #  :body => message_params[:message]
+    #)
+    #redirect_to :back
     #respond_to do |format|
       #if @message.save
         # format.html { redirect_to @message, notice: 'Message was successfully created.' }
