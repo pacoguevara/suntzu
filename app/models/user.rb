@@ -186,6 +186,24 @@ class User < ActiveRecord::Base
       return  User.find self.parent
     end
   end
+
+  def self.save_user_municipality
+    municipalities = Municipality.all
+    municipalities.each do |mun|
+      mun_name = mun.name.downcase.gsub(/[\s,]+/, "")
+      user = User.new
+      user.name = mun.name
+      user.first_name = mun.name
+      user.email = mun_name + "@pan.gob.mx"
+      user.password = mun_name + "2015"
+      user.password_confirmation = mun_name + "2015"
+      user.ife_key = mun_name + "12345"
+      user.city = mun.name
+      user.municipality_id = mun.id
+      user.role = "communication"
+      user.save
+    end
+  end
   def full_name
     return "#{self.name} #{self.first_name} #{self.last_name}"
   end
