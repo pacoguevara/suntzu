@@ -51,6 +51,9 @@
 	      <% if !user_signed_in? %> 
 	      	<li><%= link_to "Iniciar Sesión", new_user_session_path%></li> 
 	      <% else %>
+	      	<li>
+      			<%= link_to "Inicio", "/" %>
+      		</li> 
 	      	<% if current_user.admin? %> 
 	      		<li>
 	      			<%= link_to "Lista Nominal", nominal_list_path + "?role=" %>
