@@ -72,9 +72,13 @@ $ ->
 				if $(this).is(':checked')
 					$('#user_password').removeClass 'hide'
 					$('#user_password_confirmation').removeClass 'hide'
+					$('#user_password').prop('required', true)
+					$('#user_password_confirmation').prop('required', true)
 				else
 					$('#user_password').addClass 'hide'
 					$('#user_password_confirmation').addClass 'hide'
+					$('#user_password').prop('required', false)
+					$('#user_password_confirmation').prop('required', false)
 			return 
 			#$('#role_select_form'). ->
 		showHide = ->
