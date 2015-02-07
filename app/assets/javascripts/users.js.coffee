@@ -326,7 +326,7 @@ $ ->
 			$('#select_enlace').hide()
 			$('#select_coordinador').hide()
 
-		
+	# Busqueda de los filtros en detalle de lista nominal	
 	$('.search3').keypress (e) ->
 		key = e.which
 		if key is 13
@@ -364,6 +364,19 @@ $ ->
 					filters.data
 				success: (data) ->
 					fill_table('#users_table', data, filters.data['role_hidden'])
+
+
+	$(document).on "change", ".d_filtro_dropdown", ->	
+		filters = get_filters2()
+		$.ajax 
+			url:"/api/users/get_list_votation"
+			data:
+				filters.data
+			success: (data) ->
+				console.log "data"
+				console.log data
+				fill_table2("#detalle_table", data)
+
 
 	
 	$('#head_municipality').change ->
@@ -453,6 +466,8 @@ $ ->
 				register_end: if $('#register_end_date').val() isnt '' then $('#register_end_date').val()
 				bird_start: if $('#bird_start_date').val() isnt '' then $('#bird_start_date').val()
 				bird_end: if $('#bird_end_date').val() isnt '' then $('#bird_end_date').val()
+	
+	# Funcion para obtener los valores de los filtros en la tabla de detalle de lista de votaciones
 	get_filters2 = ->
 		$inputs = $('.search3')
 		params = {}
@@ -460,10 +475,22 @@ $ ->
 		$inputs.each ->
 			unless $(this).val() is ''
 				params[this.name] = $(this).val()
+		console.log params
 		if params
 			data:
 				number: params['number']
 				name: params['name']
+				first_name: params['first_name']
+				last_name: params['last_name']
+				age: params['age']
+				section: params['section']
+				city: params['city']
+				municipality_id: params['d_municipality_id']
+				subenlace: params['d_subenlace_id']
+				enlace: params['d_enlace_id']
+				coordinador: params['d_coordinador_id']
+				group: params['d_group_id']
+				role: params['d_role']
 				polling_id: $('.hidd')[0].value
 				
 	get_filters_role = ->
@@ -600,6 +627,7 @@ $ ->
 		selectchange $(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 		changeselected $(this),$(this).val(),$(this).find(":selected").data("user_id"),$(this).find(":selected").data("tipo") 
 	
+	# Funcion para llenar la tabla de detale de lista de votacion
 	fill_table2 = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$.each data, (i, item) ->
@@ -609,6 +637,16 @@ $ ->
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
 			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
 			'<td><p class="small"> ' + data[i].name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
+			'<td><p class="small"> ' + data[i].age + " </p></td> " +
+			'<td><p class="small"> ' + data[i].section + " </p></td> " +
+			'<td><p class="small"> ' + data[i].city + " </p></td> " +
+			'<td><p class="small"> ' + data[i].subenlace_id + " </p></td> " +
+			'<td><p class="small"> ' + data[i].enlace_id + " </p></td> " +
+			'<td><p class="small"> ' + data[i].coordinador_id + " </p></td> " +
+			'<td><p class="small"> ' + data[i].group + " </p></td> " +
+			'<td><p class="small"> ' + data[i].role + " </p></td> " +
 			'<td><p class="small"> ' + checkaux + " </p></td> "
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
@@ -938,4 +976,19 @@ $ ->
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'No se ha podido registrar la nueva votación ' + thrownError
 		return false
+
+	$('#export_xls').click -> 
+		filtros_url = get_url_export_filters()
+		url = "/pollings/download_xls"
+		window.location= url+filtros_url
+
+
+	get_url_export_filters = ->
+		filters = get_filters2()
+		filtros_url = "?number="+filters.data['number']+"&name="+filters.data['name']+"&first_name="+
+						filters.data['first_name']+"&section="+filters.data['section']+"&municipality_id="+
+						filters.data['municipality_id']+"&subenlace="+filters.data['subenlace']+"&enlace="+
+						filters.data['enlace']+"&coordinador="+filters.data['coordinador']+"&group="+
+						filters.data['group']+"&role="+filters.data['role']+"&polling_id="+filters.data['polling_id']
+		return filtros_url
 return

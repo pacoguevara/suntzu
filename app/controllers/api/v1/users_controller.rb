@@ -601,26 +601,69 @@ module Api
 					
 			end
 			def get_list_votation
-				swhere = ""
-				if params[:number]
-					swhere = "number = "+params[:number]
-				end
 				@lvh = ListVotationHeader.find(params[:polling_id])
-				if swhere == ""
-  				@listvotation = ListVotation.where(:list_votation_header_id => 
-  					@lvh.id).order(:number)
-  			else
-  				@listvotation = ListVotation.where(:list_votation_header_id => 
-  					@lvh.id).where(swhere).order(:number)
+				@listvotation = ListVotation.select("list_votations.*, users.*")
+	  				.where(:list_votation_header_id => @lvh.id)
+	  				.joins(:user).order(:number)
+
+	  			if params[:number]
+	  				@listvotation = @listvotation.where(:number => params[:number])	
 				end
+
+				if params[:name]
+	  				@listvotation = @listvotation.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")	
+				end
+
+				if params[:first_name]
+	  				@listvotation = @listvotation.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")	
+				end
+
+				if params[:last_name]
+	  				@listvotation = @listvotation.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")	
+				end
+
+				if params[:section]
+	  				@listvotation = @listvotation.where("users.section = '#{params[:section].to_i}'")	
+				end
+
+				if params[:municipality_id]
+	  				@listvotation = @listvotation.where("users.municipality_id = '#{params[:municipality_id].to_i}'")	
+				end
+
+				if params[:subenlace]
+	  				@listvotation = @listvotation.where("users.subenlace_id = '#{params[:subenlace].to_i}'")	
+				end
+
+				if params[:enlace]
+	  				@listvotation = @listvotation.where("users.enlace_id = '#{params[:enlace].to_i}'")	
+				end
+
+				if params[:coordinador]
+	  				@listvotation = @listvotation.where("users.coordinador_id = '#{params[:coordinador].to_i}'")	
+				end
+
+				if params[:group]
+	  				@listvotation = @listvotation.where("users.group_id = '#{params[:group].to_i}'")	
+				end
+				
 				
     			user_hash = Hash.new
     			user_ar = Array.new
     			@listvotation.each do |l|
     				user_hash = {}
     				user_hash[:number] = l.number
-    				user_hash[:name] = l.user.full_name
+    				user_hash[:name] = l.user.name
+    				user_hash[:first_name] = l.user.first_name
+    				user_hash[:last_name] = l.user.last_name
+    				user_hash[:age] = l.user.age
+    				user_hash[:section] = l.user.section
+    				user_hash[:city] = l.user.city
     				user_hash[:check] = l.check
+    				user_hash[:subenlace_id] = l.user.subenlace_id != 0 ? User.find(l.user.subenlace_id).full_name : "Sin Asignar"
+    				user_hash[:enlace_id] = l.user.enlace_id != 0 ? User.find(l.user.enlace_id).full_name : "Sin Asignar"
+    				user_hash[:coordinador_id] = l.user.coordinador_id != 0 ? User.find(l.user.coordinador_id).full_name : "Sin Asignar"
+    				user_hash[:group] = l.user.get_group
+    				user_hash[:role] = l.user.role
     				user_hash[:id] = l.id
     				user_ar.push user_hash
     			end

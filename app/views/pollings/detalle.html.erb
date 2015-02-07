@@ -1,25 +1,146 @@
-
-<table class="table table-bordered table-striped table-hover" id="detalle_table">  
+<div class="row">
+  <div class="col-md-3 col-md-offset-6">
+    <button class="btn btn-success form-control" id="export_xls">Exportar Excel</button>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-success form-control" id="export_pdf">Exportar PDF</button>
+  </div>
+</div>
+<div class="row">
+  <table class="table table-bordered table-striped table-hover" id="detalle_table">  
   <thead>
   	<tr>
   		<th>
       	<input type="text" placeholder="numero" data-tipo = "1" class="form-control search3" 
         name="number"/>
     	</th>
+      <th>
+        <input type="text" placeholder="nombre" data-tipo = "1" class="form-control search3" 
+        name="name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="apellido paterno" data-tipo = "1" class="form-control search3" 
+        name="first_name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="apellido materno" data-tipo = "1" class="form-control search3" 
+        name="last_name"/>
+      </th>
+      <th>
+        <input type="text" placeholder="edad" data-tipo = "1" class="form-control search3" 
+        name="age"/>
+      </th>
+      <th>
+        <input type="text" placeholder="sección" data-tipo = "1" class="form-control search3" 
+        name="section"/>
+      </th>
+      <th>
+        <select class="form-control search3 d_filtro_dropdown municipality" id="d_municipality_id" 
+        name="d_municipality_id">
+          <option value=""> </option>
+          <option value=""> Otros </option>
+          <% @municipalities.each do |mun| %>
+            <option value="<%= mun.id %>"> <%= mun.name %></option>
+          <% end %>
+        </select> 
+      </th>
+      <th>
+        <select class="form-control d_filtro_dropdown select_search search3"  style="width:100%" 
+          name="d_subenlace_id">
+          <option value=""></option>
+          <%@subenlaces.each do |sbenlace|%>
+            <option value="<%= sbenlace.id %>"> 
+              <%= sbenlace.full_name %>
+            </option>
+          <%end%>
+        </select>
+      </th>
+      <th>
+        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" 
+          name="d_enlace_id">
+          <option value=""></option>
+          <%@enlaces.each do |enlace|%>
+            <option value="<%= enlace.id %>"> 
+              <%= enlace.full_name %>
+            </option>
+          <%end%>
+        </select>
+      </th>
+      <th>
+        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" 
+        name="d_coordinador_id">
+          <option value=""></option>
+          <% @coordinadores.each do |coor| %>
+            <option value="<%= coor.id %>"> 
+              <%= coor.full_name %>
+            </option>
+          <%end%>
+        </select>
+      </th>
+      <th>
+        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" name="d_group_id">
+          <option value=""></option>
+          <option value="0">Sin grupo</option>
+          <% @groupsdropdown.each do |group| %>
+            <option value="<%= group.id %>"> 
+              <%= group.name %>
+            </option>
+          <%end%>
+        </select>
+      </th>
+      <th>
+        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" name="d_role">
+          <option value=""></option>
+          <% @roles.each do |role| %>
+            <option value="<%= role[0] %>"> 
+              <%= role[1] %>
+            </option>
+          <%end%>
+        </select>
+      </th>
     	<th>
-    	</th>
-    	<th>
-      	<input type="hidden" value="<%=params[:polling_id]%>" class="form-control hidd" 
+        <input type="hidden" value="<%=params[:polling_id]%>" class="form-control hidd" 
           name="polling_id"/>
     	</th>
+    	
   	</tr>
     <tr>
   	  <th >
         <p class="small">Numero</p>
       </th>
       <th >
-        <p class="small">Nombre</p>
-      </th>
+          <p class="small">Nombre</p>
+        </th>
+        <th >
+          <p class="small">Paterno</p>
+        </th>
+        <th >
+          <p class="small">Materno</p>
+        </th>
+        <th>
+          <p class="small">Edad</p>
+        </th>
+        <th>
+          <p class="small">Sección</p>
+        </th>
+        <th>
+          <p class="small">Municipio</p>
+        </th>
+        <th>
+          <p class="small">Sub Enlace</p>
+        </th>
+        <th>
+          <p class="small">Enlace</p>
+        </th>
+        <th>
+          <p class="small">Coordinador</p>
+        </th>
+        <th>
+          <p class="small">Grupo</p>
+        </th>
+        <th>
+          <p class="small">Rol</p>
+        </th>
       <th >
       </th>
     </tr>
@@ -30,11 +151,49 @@
         <td >
           <p class="small"><%=a.number%></p>
         </td>
-        <td>
-        	<p class="small">
-            <%= link_to a.user.full_name, user_path(a.user_id) %>
-          </p>	
-        </td>
+        <td >
+            <p class="small"><%=link_to a.name, "/users/"+a.id.to_s %></p>
+          </td>
+          <td >
+            <p class="small"><%=link_to a.first_name, "/users/"+a.id.to_s%></p>
+          </td>
+          <td >
+            <p class="small"><%=link_to a.last_name, "/users/"+a.id.to_s %></p>
+          </td>
+          <td>
+            <p class="small"><%= a.age %></p>
+          </td>
+          <td>
+            <p class="small"><%= a.section.to_i %></p>
+          </td>
+          <td>
+            <p class="small"><%= a.city %></p>
+          </td>
+          <td>
+            <p class="small">
+              <%= a.subenlace_id != 0 ? User.find(a.subenlace_id).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= a.enlace_id != 0 ? User.find(a.enlace_id).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= a.coordinador_id != 0 ? User.find(a.coordinador_id).full_name : "Sin Asignar" %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= User.find(a.id).get_group %>
+            </p>
+          </td>
+          <td>
+            <p class="small">
+              <%= a.role %>
+            </p>
+          </td>
         <td >
           <p class="small">
           <% if a.check %>
@@ -50,4 +209,5 @@
       </td>
     <%end%>
   </tbody>
-</table>
+  </table>
+</div>

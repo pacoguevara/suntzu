@@ -58,7 +58,11 @@ Pan::Application.routes.draw do
     end
   end
   resources :candidate_votations
-  resources :pollings
+  resources :pollings do
+    collection do
+      get "download_xls", :action=>"download_xls"
+    end
+  end
   resources :militants
 
   root "pages#dashboard"
