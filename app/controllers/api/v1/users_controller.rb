@@ -665,8 +665,10 @@ module Api
     				user_hash[:group] = l.user.get_group
     				user_hash[:role] = l.user.role
     				user_hash[:id] = l.id
+    				
     				user_ar.push user_hash
     			end
+    			
 				respond_with user_ar
 			end
 			def groups

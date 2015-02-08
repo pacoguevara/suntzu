@@ -630,9 +630,12 @@ $ ->
 	# Funcion para llenar la tabla de detale de lista de votacion
 	fill_table2 = (table_id, data) ->
 		$("tr:has(td)").remove();
+		count = 0
+		checkcount = 0
 		$.each data, (i, item) ->
 			if data[i].check == true
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'" checked>Ya votó'
+				checkcount = checkcount+1
 			else
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
 			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
@@ -650,6 +653,13 @@ $ ->
 			'<td><p class="small"> ' + checkaux + " </p></td> "
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
+			count = count+1
+		votos = $('#votos_span')
+		porcentaje = (checkcount/count)*100
+		porcentaje = parseFloat(porcentaje).toFixed(2)
+		if isNaN(porcentaje)
+			porcentaje = 0
+		votos.html(checkcount+"/"+count+" "+porcentaje+"%")
 	fill_table_show = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$("#total_result").html(data.data.length)
