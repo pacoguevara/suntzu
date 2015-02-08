@@ -35,7 +35,7 @@
         name="section"/>
       </th>
       <th>
-        <select class="form-control search3 d_filtro_dropdown municipality" id="d_municipality_id" 
+        <select class="form-control  d_filtro_dropdown municipality search3" id="d_municipality_id" 
         name="d_municipality_id">
           <option value=""> </option>
           <option value=""> Otros </option>
@@ -45,7 +45,7 @@
         </select> 
       </th>
       <th>
-        <select class="form-control d_filtro_dropdown select_search search3"  style="width:100%" 
+        <select class="form-control d_filtro_dropdown search3"  style="width:100%" 
           name="d_subenlace_id">
           <option value=""></option>
           <%@subenlaces.each do |sbenlace|%>
@@ -56,7 +56,7 @@
         </select>
       </th>
       <th>
-        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" 
+        <select class="form-control  d_filtro_dropdown search3"  style="width:100%" 
           name="d_enlace_id">
           <option value=""></option>
           <%@enlaces.each do |enlace|%>
@@ -67,7 +67,7 @@
         </select>
       </th>
       <th>
-        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" 
+        <select class="form-control  d_filtro_dropdown search3"  style="width:100%" 
         name="d_coordinador_id">
           <option value=""></option>
           <% @coordinadores.each do |coor| %>
@@ -78,7 +78,7 @@
         </select>
       </th>
       <th>
-        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" name="d_group_id">
+        <select class="form-control  d_filtro_dropdown search3"  style="width:100%" name="d_group_id">
           <option value=""></option>
           <option value="0">Sin grupo</option>
           <% @groupsdropdown.each do |group| %>
@@ -89,7 +89,7 @@
         </select>
       </th>
       <th>
-        <select class="form-control select_search d_filtro_dropdown search3"  style="width:100%" name="d_role">
+        <select class="form-control  d_filtro_dropdown search3 "  style="width:100%" name="d_role">
           <option value=""></option>
           <% @roles.each do |role| %>
             <option value="<%= role[0] %>"> 
