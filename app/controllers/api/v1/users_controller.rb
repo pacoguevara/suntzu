@@ -602,7 +602,7 @@ module Api
 			end
 			def get_list_votation
 				@lvh = ListVotationHeader.find(params[:polling_id])
-				@listvotation = ListVotation.select("list_votations.*, users.*")
+				@listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
 	  				.where(:list_votation_header_id => @lvh.id)
 	  				.joins(:user).order(:number)
 
@@ -665,6 +665,8 @@ module Api
     				user_hash[:group] = l.user.get_group
     				user_hash[:role] = l.user.role
     				user_hash[:id] = l.id
+    				user_hash[:lid] = l.lid
+
     				
     				user_ar.push user_hash
     			end
