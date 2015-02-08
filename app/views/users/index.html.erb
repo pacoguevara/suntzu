@@ -62,7 +62,7 @@
     <% if current_user.role != "communication" %>
       <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
-          <select class="form-control filtro_dropdown select_search search"  style="width:100%" 
+          <select class="form-control filtro_dropdown  search"  style="width:100%" 
           name="sub_enlace_id">
             <option value="0"></option>
             <%@subenlace.each do |sbenlace|%>
@@ -75,7 +75,7 @@
       <%end%>
       <%if params[:role] != "enlace" && params[:role] != "coordinador"%>
         <th>
-          <select class="form-control select_search filtro_dropdown search"  style="width:100%" 
+          <select class="form-control  filtro_dropdown search"  style="width:100%" 
           name="enlace_id">
             <option value="0"></option>
             <%@enlace.each do |enlace|%>
@@ -89,7 +89,7 @@
       <%if params[:role]!="coordinador"%>
         <th>
 
-        <select class="form-control select_search filtro_dropdown search"  style="width:100%" 
+        <select class="form-control  filtro_dropdown search"  style="width:100%" 
           name="coordinador_id">
             <option value="0"></option>
             <% @coordinador.each do |coor| %>
@@ -102,7 +102,7 @@
       <%end%>
       <%if params[:role]=="jugador"%>
         <th>
-          <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="group_id">
+          <select class="form-control  filtro_dropdown search"  style="width:100%" name="group_id">
             <option value="0"></option>
             <option value="-1">Sin grupo</option>
             <% @groups.each do |group| %>
@@ -113,7 +113,7 @@
           </select>
         </th>
         <th>
-          <select class="form-control select_search filtro_dropdown search"  style="width:100%" name="role_select">
+          <select class="form-control  filtro_dropdown search"  style="width:100%" name="role_select">
             <option value="0"></option>
             <% @roles.each do |role| %>
               <option value="<%= role[0] %>"> 
