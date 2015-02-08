@@ -634,10 +634,10 @@ $ ->
 		checkcount = 0
 		$.each data, (i, item) ->
 			if data[i].check == true
-				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'" checked>Ya votó'
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].lid+'" checked>Ya votó'
 				checkcount = checkcount+1
 			else
-				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].id+'">Ya votó'
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].lid+'">Ya votó'
 			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
 			'<td><p class="small"> ' + data[i].name + " </p></td> " +
 			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +

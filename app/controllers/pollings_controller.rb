@@ -40,7 +40,7 @@ class PollingsController < ApplicationController
       @roles = User::ROLES_SUBENLACE
     end 
     @lvh = ListVotationHeader.find(params[:polling_id])
-    @listvotation = ListVotation.select("list_votations.*, users.*")
+    @listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
                     .where(:list_votation_header_id => @lvh.id)
                     .joins(:user).order(:number)
   end
