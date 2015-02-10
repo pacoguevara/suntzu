@@ -5,8 +5,10 @@
 		</div>
 		<div class="col-md-2">
 			<%= link_to 'Regresar', :back, class: "btn btn-primary btn-large"%>
+			<% if !current_user.communication? %>
 			<%= link_to 'Editar', edit_user_path(@user)+"?role=#{@user.role}", 
 				class: 	"btn btn-default btn-large"%>
+			<% end %>
 		</div>
 	</div>
 	<hr/>
@@ -60,6 +62,7 @@
 				<dt>Nivel Jerárquico:</dt>
 				<dd><%= @user.role %></dd>
 			</dl>
+				<% if !current_user.communication? %>
 				<dl>
 						
 						<dt> SubEnlace </dt>
@@ -98,6 +101,7 @@
 							<% end %>
 						</dd>
 				</dl>
+				<% end %>
 		</div>
 		<div class="col-md-2">
 			<dl>
