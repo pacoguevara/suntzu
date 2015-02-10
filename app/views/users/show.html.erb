@@ -59,8 +59,10 @@
 					<dt>Fecha de Registro:</dt> 
 					<dd><%= @user.register_date.strftime "%m/%d/%Y" %></dd>
 				<%end%>
+				<% if !current_user.communication? %>
 				<dt>Nivel Jerárquico:</dt>
 				<dd><%= @user.role %></dd>
+				<% end %>
 			</dl>
 				<% if !current_user.communication? %>
 				<dl>
