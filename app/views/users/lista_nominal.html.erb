@@ -128,17 +128,17 @@ Votación
           </td>
           <td>
             <p class="small">
-              <%= user.subenlace_id != 0 ? User.find(user.subenlace_id).full_name : "Sin Asignar" %>
+              <%= user.subenlace_id != 0 && user.subenlace_id ? User.find(user.subenlace_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
             <p class="small">
-              <%= user.enlace_id != 0 ? User.find(user.enlace_id).full_name : "Sin Asignar" %>
+              <%= user.enlace_id != 0 && user.enlace_id ? User.find(user.enlace_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
             <p class="small">
-              <%= user.coordinador_id != 0 ? User.find(user.coordinador_id).full_name : "Sin Asignar" %>
+              <%= user.coordinador_id != 0 && user.coordinador_id ? User.find(user.coordinador_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
