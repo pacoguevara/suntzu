@@ -361,6 +361,68 @@ class User < ActiveRecord::Base
       duplicates.each{|double| double.destroy} # duplicates can now be destroyed
     end
   end
+
+  def self.import_candidates(file, role)
+    spreadsheet = open_spreadsheet(file)
+    folio = 120000
+    (2..spreadsheet.last_row).each do |i|
+      puts spreadsheet.cell(i,1)
+      name = spreadsheet.cell(i,1) 
+      if !name.nil? || !name.blank?
+        user = User.new
+        user.email = name.strip+"@pan.gob.mx"
+        user.name = name
+        user.ife_key = folio+i
+        user.role = role
+        user.save(validate: false)
+      end
+    end
+  end
+
+  def self.find_by_name_and_role(name, role)
+    user = User.where(:name => name, :role => role)
+    if user.first.nil?
+      return nil
+    else
+      return user.first.id
+    end 
+  end
+
+  def self.import_players(file)
+    spreadsheet = open_spreadsheet(file)
+    (20..40).each do |i|
+      folio = spreadsheet.cell(i,1).to_i.to_s 
+      first_name = spreadsheet.cell(i,2)
+      last_name = spreadsheet.cell(i,3)
+      name = spreadsheet.cell(i,4)
+      coord_name = spreadsheet.cell(i,6)
+      enlace_name = spreadsheet.cell(i,7)
+      subenlace_name = spreadsheet.cell(i,8)
+      coord_id = self.find_by_name_and_role(coord_name, "coordinador")
+      enlace_id = self.find_by_name_and_role(enlace_name, "enlace")
+      subenlace_id = self.find_by_name_and_role(subenlace_name, "subenlace")
+
+      puts "Folio: #{folio}"
+      puts "coordinador #{coord_id}"
+      puts "enlace: #{enlace_id}"
+      puts "subenlace: #{subenlace_id}"
+      puts "================================="  
+      if !name.nil? || !name.blank?
+        user = User.new
+        user.email = name.strip+"@pan.gob.mx"
+        user.name = name
+        user.first_name = first_name
+        user.last_name = last_name
+        user.ife_key = folio
+        user.role = "jugador"
+        user.coordinador_id = coord_id
+        user.enlace_id = enlace_id
+        user.subenlace_id = subenlace_id
+        user.save(validate: false)
+      end
+    end
+  end
+
   protected
   def email_required?
     false
