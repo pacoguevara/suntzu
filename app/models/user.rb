@@ -364,7 +364,14 @@ class User < ActiveRecord::Base
 
   def self.import_candidates(file, role)
     spreadsheet = open_spreadsheet(file)
-    folio = 120000
+    if role == "coordinador"
+      folio = 120000
+    elsif role == "enlace"
+      folio = 110000
+    else 
+      folio = 100000
+    end
+      
     (2..spreadsheet.last_row).each do |i|
       puts spreadsheet.cell(i,1)
       name = spreadsheet.cell(i,1) 
@@ -390,7 +397,7 @@ class User < ActiveRecord::Base
 
   def self.import_players(file)
     spreadsheet = open_spreadsheet(file)
-    (20..40).each do |i|
+    (2..spreadsheet.last_row).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s 
       first_name = spreadsheet.cell(i,2)
       last_name = spreadsheet.cell(i,3)
