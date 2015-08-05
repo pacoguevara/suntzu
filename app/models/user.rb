@@ -397,7 +397,31 @@ class User < ActiveRecord::Base
 
   def self.import_players(file)
     spreadsheet = open_spreadsheet(file)
-    (2..spreadsheet.last_row).each do |i|
+    coordinadores = {}
+    enlaces = {}
+    subenlaces = {}
+
+    @_coordinadores = User.where(:role => 'coordinador')
+    @_enlaces = User.where(:role => 'enlace')
+    @_subenlaces = User.where(:role => 'subenlace')
+
+    @_coordinadores.each do |coord|
+      coordinadores[coord.name] = coord.id
+    end
+
+    @_enlaces.each do |enl|
+      enlaces[enl.name] = enl.id
+    end
+
+    @_subenlaces.each do |sub|
+      subenlaces[sub.name] = sub.id
+    end
+
+    puts coordinadores
+    puts enlaces
+    puts subenlaces
+
+    (2117..spreadsheet.last_row).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s 
       first_name = spreadsheet.cell(i,2)
       last_name = spreadsheet.cell(i,3)
@@ -405,9 +429,24 @@ class User < ActiveRecord::Base
       coord_name = spreadsheet.cell(i,6)
       enlace_name = spreadsheet.cell(i,7)
       subenlace_name = spreadsheet.cell(i,8)
-      coord_id = self.find_by_name_and_role(coord_name, "coordinador")
-      enlace_id = self.find_by_name_and_role(enlace_name, "enlace")
-      subenlace_id = self.find_by_name_and_role(subenlace_name, "subenlace")
+      
+      if coordinadores.has_key?(coord_name)
+        coord_id = coordinadores[coord_name]
+      else
+        coord_id = nil
+      end
+
+      if enlaces.has_key?(enlace_name)
+        enlace_id = enlaces[enlace_name]
+      else
+        enlace_id = nil
+      end
+
+      if subenlaces.has_key?(subenlace_name)
+        subenlace_id = subenlaces[subenlace_name]
+      else
+        subenlace_id = nil
+      end
 
       puts "Folio: #{folio}"
       puts "coordinador #{coord_id}"
