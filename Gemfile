@@ -68,3 +68,7 @@ gem 'writeexcel'
 gem 'bootstrap-datepicker-rails'
 gem 'sendgrid-ruby'
 gem 'unicorn'
+
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
+gem 'foreman', '~> 0.78.0'

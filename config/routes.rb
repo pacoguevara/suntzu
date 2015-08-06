@@ -80,4 +80,6 @@ Pan::Application.routes.draw do
   get 'lista_nominal' => 'users#lista_nominal', :as => 'nominal_list'
   get 'detalle' => 'pollings#detalle'
   get 'downloads_subordinados' => 'users#downloads_subordinados'
+
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 end
