@@ -453,7 +453,7 @@ class User < ActiveRecord::Base
       puts "enlace: #{enlace_id}"
       puts "subenlace: #{subenlace_id}"
       puts "================================="  
-      if !name.nil? || !name.blank?
+      if !name.nil? & !name.blank?
         user = User.new
         user.email = name.strip+"@pan.gob.mx"
         user.name = name
