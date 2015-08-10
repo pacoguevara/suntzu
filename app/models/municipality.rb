@@ -18,6 +18,7 @@ class Municipality < ActiveRecord::Base
       user.update_attribute :municipality_id, city_key
     end
 	end
+
 	def self.open_spreadsheet(file_path)
     case File.extname(file_path)
       when ".csv" then Csv.new(file_path, nil, :ignore)
@@ -33,6 +34,14 @@ class Municipality < ActiveRecord::Base
       return municipality.id
     else
       return ''
+    end
+  end
+
+  def self.import_from_xls(file)
+    spreadsheet = open_spreadsheet(file)
+    (2..spreadsheet.last_row).each do |i|
+      municipality  = spreadsheet.cell(i,1) 
+      self.create(:name => municipality, :id => i)
     end
   end
 end

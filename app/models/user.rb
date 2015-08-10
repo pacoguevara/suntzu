@@ -421,14 +421,23 @@ class User < ActiveRecord::Base
     puts enlaces
     puts subenlaces
 
-    (7682..spreadsheet.last_row).each do |i|
+    (2..10).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s 
       first_name = spreadsheet.cell(i,2)
       last_name = spreadsheet.cell(i,3)
       name = spreadsheet.cell(i,4)
-      coord_name = spreadsheet.cell(i,6)
-      enlace_name = spreadsheet.cell(i,7)
-      subenlace_name = spreadsheet.cell(i,8)
+      coord_name = spreadsheet.cell(i,5)
+      enlace_name = spreadsheet.cell(i,6)
+      subenlace_name = spreadsheet.cell(i,7)
+      municipality = spreadsheet.cell(i,8)
+      street_number = spreadsheet.cell(i,9)
+      outside_number = spreadsheet.cell(i,10)
+      internal_number = spreadsheet.cell(i,11)
+      neighborhood = spreadsheet.cell(i,12)
+      zipcode = spreadsheet.cell(i,13)
+      cellphone = spreadsheet.cell(i,14)
+      phone = spreadsheet.cell(i,15)
+      email = spreadsheet.cell(i, 18)
       
       if coordinadores.has_key?(coord_name)
         coord_id = coordinadores[coord_name]
@@ -448,12 +457,13 @@ class User < ActiveRecord::Base
         subenlace_id = nil
       end
 
-      puts "Folio: #{folio}"
-      puts "coordinador #{coord_id}"
-      puts "enlace: #{enlace_id}"
-      puts "subenlace: #{subenlace_id}"
-      puts "================================="  
+       
       if !name.nil? & !name.blank?
+        puts "Folio: #{folio}"
+        puts "coordinador #{coord_id}"
+        puts "enlace: #{enlace_id}"
+        puts "subenlace: #{subenlace_id}"
+        puts "=================================" 
         user = User.new
         user.email = name.strip+"@pan.gob.mx"
         user.name = name
@@ -464,6 +474,16 @@ class User < ActiveRecord::Base
         user.coordinador_id = coord_id
         user.enlace_id = enlace_id
         user.subenlace_id = subenlace_id
+        user.municipality_id = Municipality.get_city_key(municipality)
+        user.city = municipality
+        user.street_number = street_number
+        user.outside_number = outside_number
+        user.internal_number = internal_number
+        user.neighborhood = neighborhood
+        user.zipcode = zipcode.to_i.to_s
+        user.cellphone = cellphone
+        user.phone = phone
+        user.email = email
         user.save(validate: false)
       end
     end
