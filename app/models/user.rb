@@ -421,7 +421,7 @@ class User < ActiveRecord::Base
     puts enlaces
     puts subenlaces
 
-    (2..10).each do |i|
+    (2..spreadsheet.last_row).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s 
       first_name = spreadsheet.cell(i,2)
       last_name = spreadsheet.cell(i,3)
