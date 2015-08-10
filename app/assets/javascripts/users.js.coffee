@@ -957,17 +957,18 @@ $ ->
 		bird_start_date = $('#bird_start_date').val()
 		bird_end_date = $('#bird_end_date').val()
 		
-		if municipio == "-1"
-			alert "Selecciona un municipio."
-		else if polling == "-1"
+		#if municipio == "-1"
+		#	alert "Selecciona un municipio."
+		#else if polling == "-1"
+		if polling == "-1"
 			alert "Selecciona un polling."
-		else if register_start_date == ""
+		else if register_start_date == "" && municipio != "-1"
 			alert "Selecciona una fecha de registro inicial."
-		else if register_end_date == ""
+		else if register_end_date == "" && municipio != "-1"
 			alert "Selecciona una fecha de registro final."
-		else if bird_start_date == ""
+		else if bird_start_date == ""&& municipio != "-1"
 			alert "Selecciona una fecha de nacimiento inicial."
-		else if bird_end_date == ""
+		else if bird_end_date == ""&& municipio != "-1"
 			alert "Selecciona una fecha de nacimiento final."
 		else
 			$.ajax 

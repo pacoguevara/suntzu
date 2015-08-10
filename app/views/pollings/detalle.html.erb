@@ -171,17 +171,17 @@
           </td>
           <td>
             <p class="small">
-              <%= a.subenlace_id != 0 ? User.find(a.subenlace_id).full_name : "Sin Asignar" %>
+              <%= a.subenlace_id.to_i != 0 ? User.find(a.subenlace_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
             <p class="small">
-              <%= a.enlace_id != 0 ? User.find(a.enlace_id).full_name : "Sin Asignar" %>
+              <%= a.enlace_id.to_i != 0 ? User.find(a.enlace_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
             <p class="small">
-              <%= a.coordinador_id != 0 ? User.find(a.coordinador_id).full_name : "Sin Asignar" %>
+              <%= a.coordinador_id.to_i != 0 ? User.find(a.coordinador_id).full_name : "Sin Asignar" %>
             </p>
           </td>
           <td>
