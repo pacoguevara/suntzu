@@ -731,40 +731,10 @@ module Api
 				respond_with users 
 			end
 			def list_votation
-				lvh = ListVotationHeader.new
-
-				lvh.polling_id = params[:prueba][:polling]
-
-				if params[:prueba][:municipio] == "-1"
-					@us = User.all
-				else
-					@us = User.where("municipality_id = ? AND register_date >= ? AND register_date <= ? AND bird >= ? AND bird <=?",
-						params[:prueba][:municipio], params[:prueba][:register_start_date].to_date, params[:prueba][:register_end_date].to_date, params[:prueba][:bird_start_date].to_date, params[:prueba][:bird_end_date].to_date)		
-				end
-
-				lvArray = Array.new
-
-				if !@us.empty?
-					lvh.save
-					cont = 1
-					@us.each do |u|
-						newlv = ListVotation.new
-						newlv.list_votation_header_id = lvh.id
-						newlv.user_id = u.id
-						newlv.number = cont
-						newlv.created_at = Time.zone.now
-						newlv.updated_at = Time.zone.now
-						cont+=1
-						if u.temp_chek.nil?
-							newlv.check = false
-						else
-							newlv.check = true
-						end
-						newlv.save!
-						lvArray.push(newlv)
-					end
-				end
-				respond_with lvArray
+				puts params
+				ListVotation.delay.new_lista_nominal(params)
+				array = []
+				respond_with array
 			end
 			def list_check
 				vl = ListVotation.find(params[:user][:votation_list_id])
