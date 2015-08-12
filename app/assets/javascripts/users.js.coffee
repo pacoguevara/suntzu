@@ -44,6 +44,25 @@ $ ->
 							$('html, body').animate(
 								scrollTop : 0
 							,800)
+			$('.page_number_detalle').click (e) ->
+				filters = get_filters2()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users/get_list_votation"
+						data: filters.data
+						success: (data) ->
+							fill_table2('#detalle_table', data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+
 		restartFilters = ->
 			$('#current_page').html 0
 			$('#prev_page').data 'num', 0
@@ -983,7 +1002,7 @@ $ ->
 						bird_start_date: bird_start_date
 						bird_end_date: bird_end_date
 				success: (data) ->
-					alert("La lista nominal estará creada en 3min")
+					alert("La lista nominal estará creada en 5 min")
 					location.reload()
 				error: (xhr, ajaxOptions, thrownError) ->
 					alert 'No se ha podido registrar la nueva votación ' + thrownError

@@ -320,8 +320,11 @@ module Api
 				if params.has_key? :role
 					users_count = User.where(where_statment).count
 					if params.has_key? :page
+						page = params[:page].to_i
+						per_page = User.per_page.to_i
+						off = page * per_page
 						users = User.where(where_statment).limit(User.per_page).
-						offset(params[:page])
+						offset(off)
 					else
 						users = User.where(where_statment).limit(User.per_page).offset(0)
 					end					
@@ -606,6 +609,17 @@ module Api
 	  				.where(:list_votation_header_id => @lvh.id)
 	  				.joins(:user).order(:number)
 
+	  			###### Aqui debe de ir lo del paginado ########
+	  			if params.has_key? :page
+					page = params[:page].to_i
+					per_page = User.per_page.to_i
+					off = page * per_page
+					@listvotation = @listvotation.limit(User.per_page).
+					offset(off)
+				else
+					@listvotation = @listvotation.limit(User.per_page).offset(0)
+				end			
+
 	  			if params[:number]
 	  				@listvotation = @listvotation.where(:number => params[:number])	
 				end
@@ -659,9 +673,9 @@ module Api
     				user_hash[:section] = l.user.section
     				user_hash[:city] = l.user.city
     				user_hash[:check] = l.check
-    				user_hash[:subenlace_id] = l.user.subenlace_id != 0 ? User.find(l.user.subenlace_id).full_name : "Sin Asignar"
-    				user_hash[:enlace_id] = l.user.enlace_id != 0 ? User.find(l.user.enlace_id).full_name : "Sin Asignar"
-    				user_hash[:coordinador_id] = l.user.coordinador_id != 0 ? User.find(l.user.coordinador_id).full_name : "Sin Asignar"
+    				user_hash[:subenlace_id] = l.user.subenlace_id.to_i != 0 ? User.find(l.user.subenlace_id).full_name : "Sin Asignar"
+    				user_hash[:enlace_id] = l.user.enlace_id.to_i != 0 ? User.find(l.user.enlace_id).full_name : "Sin Asignar"
+    				user_hash[:coordinador_id] = l.user.coordinador_id.to_i != 0 ? User.find(l.user.coordinador_id).full_name : "Sin Asignar"
     				user_hash[:group] = l.user.get_group
     				user_hash[:role] = l.user.role
     				user_hash[:id] = l.id
