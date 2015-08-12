@@ -649,36 +649,28 @@ $ ->
 	# Funcion para llenar la tabla de detale de lista de votacion
 	fill_table2 = (table_id, data) ->
 		$("tr:has(td)").remove();
-		count = 0
-		checkcount = 0
-		$.each data, (i, item) ->
-			if data[i].check == true
-				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].lid+'" checked>Ya votó'
-				checkcount = checkcount+1
+		$.each data[0], (i, item) ->
+			if item.check == true
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+item.lid+'" checked>Ya votó'
 			else
-				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+data[i].lid+'">Ya votó'
-			tds = '<td><p class="small"> ' + data[i].number + " </p></td> " +
-			'<td><p class="small"> ' + data[i].name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].first_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].last_name + " </p></td> " +
-			'<td><p class="small"> ' + data[i].age + " </p></td> " +
-			'<td><p class="small"> ' + data[i].section + " </p></td> " +
-			'<td><p class="small"> ' + data[i].city + " </p></td> " +
-			'<td><p class="small"> ' + data[i].subenlace_id + " </p></td> " +
-			'<td><p class="small"> ' + data[i].enlace_id + " </p></td> " +
-			'<td><p class="small"> ' + data[i].coordinador_id + " </p></td> " +
-			'<td><p class="small"> ' + data[i].group + " </p></td> " +
-			'<td><p class="small"> ' + data[i].role + " </p></td> " +
+				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+item.lid+'">Ya votó'
+			tds = '<td><p class="small"> ' + item.number + " </p></td> " +
+			'<td><p class="small"> ' + item.name + " </p></td> " +
+			'<td><p class="small"> ' + item.first_name + " </p></td> " +
+			'<td><p class="small"> ' + item.last_name + " </p></td> " +
+			'<td><p class="small"> ' + item.age + " </p></td> " +
+			'<td><p class="small"> ' + item.section + " </p></td> " +
+			'<td><p class="small"> ' + item.city + " </p></td> " +
+			'<td><p class="small"> ' + item.subenlace_id + " </p></td> " +
+			'<td><p class="small"> ' + item.enlace_id + " </p></td> " +
+			'<td><p class="small"> ' + item.coordinador_id + " </p></td> " +
+			'<td><p class="small"> ' + item.group + " </p></td> " +
+			'<td><p class="small"> ' + item.role + " </p></td> " +
 			'<td><p class="small"> ' + checkaux + " </p></td> "
 			cleared_tds = ((tds.replace 'null', '').replace 'null', '').replace 'NaN', ''
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
-			count = count+1
 		votos = $('#votos_span')
-		porcentaje = (checkcount/count)*100
-		porcentaje = parseFloat(porcentaje).toFixed(2)
-		if isNaN(porcentaje)
-			porcentaje = 0
-		votos.html(checkcount+"/"+count+" "+porcentaje+"%")
+		votos.html("("+data[1].checked+"/"+data[1].total+") "+data[1].porcentaje+"%")	
 	fill_table_show = (table_id, data) ->
 		$("tr:has(td)").remove();
 		$("#total_result").html(data.data.length)

@@ -609,6 +609,12 @@ module Api
 	  				.where(:list_votation_header_id => @lvh.id)
 	  				.joins(:user).order(:number)
 
+	  			total_users = @listvotation.count
+	  			checked = @listvotation.where(:check => true).count
+	  			votes = {}
+	  			votes['total'] = total_users
+	  			votes['checked'] = checked
+	  			votes['porcentaje'] = (checked.to_f/total_users*100).round(2)
 	  			###### Aqui debe de ir lo del paginado ########
 	  			if params.has_key? :page
 					page = params[:page].to_i
@@ -685,7 +691,10 @@ module Api
     				user_ar.push user_hash
     			end
     			
-				respond_with user_ar
+    			data = []
+    			data.push(user_ar)
+    			data.push(votes)
+				respond_with data
 			end
 			def groups
 				groups_by_name = {}
