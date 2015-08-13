@@ -153,9 +153,8 @@ class User < ActiveRecord::Base
         u.save
       end 
     end
-
-
   end
+
   def get_enlace
     return nil if self.parent == 0
     if self.get_deep == 0
@@ -171,6 +170,7 @@ class User < ActiveRecord::Base
       return  User.find self.get_subenlace
     end
   end
+
   def get_coordinador
     return nil if self.parent == 0 
     if self.get_deep == 0
@@ -204,9 +204,11 @@ class User < ActiveRecord::Base
       user.save
     end
   end
+
   def full_name
     return "#{self.name} #{self.first_name} #{self.last_name}"
   end
+
   private
   def self.import 
     file_path=Rails.public_path.to_s + '/xls/users2.xlsx'
@@ -489,6 +491,20 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.download_sub(params)
+    if params[:role] == "subenlace"
+      users = User.where(:subenlace_id => params[:id])
+    elsif params[:role] == "enlace"
+      users = User.where(:enlace_id => params[:id])
+    elsif params[:role] == "coordinador"
+      users = User.where(:coordinador_id => params[:id])
+    end
+    filename = "subordinados_#{params[:role]}.xls"
+    file = User.array_to_xls( users)
+
+    mail = UserMailer.download_subordinados(file, filename)
+    mail.deliver
+  end
   protected
   def email_required?
     false

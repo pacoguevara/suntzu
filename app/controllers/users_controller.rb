@@ -263,16 +263,9 @@ class UsersController < ApplicationController
       :type=> "application/vnd.ms-excel" )
   end
   def downloads_subordinados
-    if params[:role] == "subenlace"
-      users = User.where(:subenlace_id => params[:id])
-    elsif params[:role] == "enlace"
-      users = User.where(:enlace_id => params[:id])
-    elsif params[:role] == "coordinador"
-      users = User.where(:coordinador_id => params[:id])
-    end
-    filename = "subordinados_#{params[:role]}.xls"
-    send_data( User.array_to_xls( users), :filename => filename, 
-      :type=> "application/vnd.ms-excel" )
+    User.delay.download_sub(params)
+    flash[:notice] = 'La lista de subordinados se enviará por correo electrónico una vez que sea procesada'
+    redirect_to :back
   end
   private
   # Use callbacks to share common setup or constraints between actions.
