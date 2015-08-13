@@ -5,11 +5,11 @@ class UsersController < ApplicationController
   def show
     user = User.find(params[:id])
     if user.role == "subenlace"
-      @subordinados = User.where(:subenlace_id => params[:id])
+      @subordinados = User.where(:subenlace_id => params[:id]).limit(User.per_page)
     elsif user.role == "enlace"
-      @subordinados = User.where(:enlace_id => params[:id])
+      @subordinados = User.where(:enlace_id => params[:id]).limit(User.per_page)
     elsif user.role == "coordinador"
-      @subordinados = User.where(:coordinador_id => params[:id])
+      @subordinados = User.where(:coordinador_id => params[:id]).limit(User.per_page)
     else
       @subordinados = []
     end

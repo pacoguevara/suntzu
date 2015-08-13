@@ -26,6 +26,7 @@ $ ->
 							$('html, body').animate(
 								scrollTop : 0
 							,800)
+
 			$('.page_number_nominal').click (e) ->
 				filters = get_lista_nominal_filters()
 				page_number = $(this).data('num')
@@ -44,6 +45,7 @@ $ ->
 							$('html, body').animate(
 								scrollTop : 0
 							,800)
+
 			$('.page_number_detalle').click (e) ->
 				filters = get_filters2()
 				page_number = $(this).data('num')
@@ -59,6 +61,25 @@ $ ->
 						data: filters.data
 						success: (data) ->
 							fill_table2('#detalle_table', data)
+							$('html, body').animate(
+								scrollTop : 0
+							,800)
+
+			$('.page_number_role').click (e) ->
+				filters = get_filters_role()
+				page_number = $(this).data('num')
+				filters.data.page = page_number
+
+				if parseInt(page_number) >= 0
+					$('#current_page').html page_number
+					$('#prev_page').data 'num', page_number - 1
+					$('#next_page').data 'num', page_number + 1
+
+					$.ajax 
+						url:"/api/users/tabla_show"
+						data: filters.data
+						success: (data) ->
+							fill_table_show("#users_table", data)
 							$('html, body').animate(
 								scrollTop : 0
 							,800)
@@ -691,9 +712,10 @@ $ ->
 			$('<tr>').html(cleared_tds).appendTo '#detalle_table'
 		votos = $('#votos_span')
 		votos.html("("+data[1].checked+"/"+data[1].total+") "+data[1].porcentaje+"%")	
+
 	fill_table_show = (table_id, data) ->
 		$("tr:has(td)").remove();
-		$("#total_result").html(data.data.length)
+		$("#total_result").html(data.total)
 		data = data.data
 		$.each data, (i, item) ->
 			tds = '<td><p class="small"> ' + data[i].name + " </p></td> " +

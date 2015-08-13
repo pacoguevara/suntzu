@@ -484,6 +484,14 @@ module Api
 				end
 				
 				users_count = users.count
+
+				if params[:page]
+					page = params[:page].to_i
+					per_page = User.per_page.to_i
+					off = page * per_page
+					users = users.limit(User.per_page).
+					offset(off)
+				end
 				users_ar = []
 				users.each do |user|
 					user_hash = {}
