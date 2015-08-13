@@ -358,6 +358,21 @@ $ ->
 					console.log "data"
 					console.log data
 					fill_table2("#detalle_table", data)
+
+	# Busqueda de los filtros en detalle de lista nominal	
+	$('.search4').keypress (e) ->
+		key = e.which
+		if key is 13
+			filters = get_filters_role()
+			$.ajax 
+				url:"/api/users/tabla_show"
+				data:
+					filters.data
+				success: (data) ->
+					console.log "data"
+					console.log data
+					fill_table_show("#users_table", data)
+
 	$(document).on "change", ".filtro_role", ->	
 		filters = get_filters_role()
 		console.log "filters"
@@ -526,6 +541,11 @@ $ ->
 				role: params['role_select']
 				usuario_id: params['usuario_id']
 				usuario_role: params['usuario_role']
+				name: params['name']
+				first_name: params['first_name']
+				last_name: params['last_name']
+				municipality_id: params['municipality_select']
+				
 	get_filters = ->
 		$inputs = $('.search')
 		params = {}

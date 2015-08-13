@@ -450,22 +450,40 @@ module Api
 			end
 			def tabla_show
 				where_statment = ""
-				if (params.has_key? :role) && (params[:role] != 0)
-					if !where_statment.blank?
-							where_statment = where_statment +" AND role = '#{params[:role]}'"
-						else
-							where_statment = where_statment +" role = '#{params[:role]}'"
-						end
-				end
+
 				if params[:usuario_role] == "subenlace"
-					where_statment = where_statment + " AND subenlace_id = #{params[:usuario_id]}"
+					where_statment = where_statment + "subenlace_id = #{params[:usuario_id]}"
 				elsif params[:usuario_role] == "enlace"
-					where_statment = where_statment + " AND enlace_id = #{params[:usuario_id]}"
+					where_statment = where_statment + "enlace_id = #{params[:usuario_id]}"
 				elsif params[:usuario_role] == "coordinador"
-					where_statment = where_statment + " AND coordinador_id = #{params[:usuario_id]}"
+					where_statment = where_statment + "coordinador_id = #{params[:usuario_id]}"
 				end
+
 				users = User.where(where_statment)
-				users_count = User.where(where_statment).count
+
+				if params[:name]
+	  				users = users.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")	
+				end
+
+				if params[:first_name]
+	  				users = users.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")	
+				end
+
+				if params[:last_name]
+	  				users = users.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")	
+				end
+
+				if params[:municipality_id]
+	  				users = users.where("users.municipality_id = '#{params[:municipality_id].to_i}'")	
+				end
+
+				if params[:role]
+					if params[:role] != '0'
+						users = users.where("role = '#{params[:role]}'")
+					end
+				end
+				
+				users_count = users.count
 				users_ar = []
 				users.each do |user|
 					user_hash = {}

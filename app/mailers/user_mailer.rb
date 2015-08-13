@@ -5,6 +5,6 @@ class UserMailer < ActionMailer::Base
   	attachments['lista_nominal.xls'] = file.string
     
     #mail(to: 'pacoguevaraa@gmail.com', subject: 'Descarga de lista nominal')
-    mail(to: 'dederico@gmail.com', subject: 'Descarga de lista nominal')
+    mail(to: 'heladosnuevoleon@gmail.com', cc: 'dederico@gmail.com', subject: 'Descarga de lista nominal')
   end
 end

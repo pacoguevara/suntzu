@@ -184,16 +184,34 @@
 			 id="users_table" style="margin-top:10px;">  
 	      <thead>
 	      	<tr>
-	      		<th></th>
-	      		<th></th>
-	      		<th></th>
-	      		<th></th>
-	      		<th></th>
+	      		<th>
+	      			<input type="text" placeholder="nombre" data-tipo = "1" class="form-control search4" 
+        name="name"/>
+	      		</th>
+	      		<th>
+	      			<input type="text" placeholder="apellido paterno" data-tipo = "1" class="form-control search4" 
+        name="first_name"/>
+	      		</th>
+	      		<th>
+	      			<input type="text" placeholder="apellido materno" data-tipo = "1" class="form-control search4" 
+        name="last_name"/>
+	      		</th>
 	      		<th></th>
 	      		<th></th>
 	      		<th></th>
 	      		<th>
-	      			<select class="filtro_role search4"  style="width:100%" name="role_select">
+	      			<select class="form-control  filtro_role municipality search4" id="municipality_select" 
+        name="municipality_select">
+			          <option value=""> </option>
+			          <option value=""> Otros </option>
+			          <% @municipalities.each do |mun| %>
+			            <option value="<%= mun.id %>"> <%= mun.name %></option>
+			          <% end %>
+			        </select> 
+	      		</th>
+	      		<th></th>
+	      		<th>
+	      			<select class="form-control filtro_role search4"  style="width:100%" name="role_select">
 		            <option value="0"></option>
 		            <% @roles.each do |role| %>
 		              <option value="<%= role[0] %>"> 

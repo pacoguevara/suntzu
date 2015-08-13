@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     else
       @subordinados = []
     end
+    @municipalities = Municipality.order(:name).all
     @roles = {
       "jugador" => "Jugador",
       "subenlace" => "Subenlace",
