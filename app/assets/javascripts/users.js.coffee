@@ -1055,6 +1055,7 @@ $ ->
 						filters.data['first_name']+"&section="+filters.data['section']+"&municipality_id="+
 						filters.data['municipality_id']+"&subenlace="+filters.data['subenlace']+"&enlace="+
 						filters.data['enlace']+"&coordinador="+filters.data['coordinador']+"&group="+
-						filters.data['group']+"&role="+filters.data['role']+"&polling_id="+filters.data['polling_id']
+						filters.data['group']+"&role="+filters.data['role']+"&polling_id="+filters.data['polling_id']+
+						"&vote="+filters.data['vote']
 		return filtros_url
 return

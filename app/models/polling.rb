@@ -7,10 +7,11 @@ class Polling < ActiveRecord::Base
     @lvh = ListVotationHeader.find(params[:polling_id])
     @listvotation = ListVotation.select("list_votations.*, users.*")
         .where(:list_votation_header_id => @lvh.id)
-        .joins(:user).order(:number)
+        .joins(:user).order('users.first_name')
 
     if params[:number] && params[:number] != "undefined"
-      @listvotation = @listvotation.where(:number => params[:number]) 
+      #@listvotation = @listvotation.where(:number => params[:number]) 
+      @listvotation = @listvotation.where("users.ife_key = #{params[:ife_key]}")
     end
 
     if params[:name] && params[:name] != "undefined"
@@ -50,6 +51,18 @@ class Polling < ActiveRecord::Base
 
     if params[:group] && params[:group] != "undefined"
         @listvotation = @listvotation.where("users.group_id = '#{params[:group].to_i}'")  
+    end
+
+    if params[:role] && params[:role] != "undefined"
+        @listvotation = @listvotation.where("users.role = '#{params[:role]}'")  
+    end
+
+    if params[:vote] && params[:vote] != "undefined"
+      if params[:vote] == '1'
+        @listvotation = @listvotation.where(:check => true)
+      elsif params[:vote] == '0'
+        @listvotation = @listvotation.where(:check => false)
+      end    
     end
 
     
@@ -277,7 +290,7 @@ class Polling < ActiveRecord::Base
 
     if order == 0
       @listvotation.each do |s|
-        worksheet.write(i, 0, s.number)
+        worksheet.write(i, 0, s.user.ife_key)
         worksheet.write(i, 1, s.user.name)
         worksheet.write(i, 2, s.user.first_name)
         worksheet.write(i, 3, s.user.last_name)
