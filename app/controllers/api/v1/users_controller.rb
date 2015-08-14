@@ -633,7 +633,7 @@ module Api
 				@lvh = ListVotationHeader.find(params[:polling_id])
 				@listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
 	  				.where(:list_votation_header_id => @lvh.id)
-	  				.joins(:user).order(:number)
+	  				.joins(:user).order('users.first_name')
 
 	  			total_users = @listvotation.count
 	  			checked = @listvotation.where(:check => true).count

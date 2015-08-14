@@ -42,7 +42,7 @@ class PollingsController < ApplicationController
     @lvh = ListVotationHeader.find(params[:polling_id])
     @listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
                     .where(:list_votation_header_id => @lvh.id)
-                    .joins(:user).order(:number).limit(User.per_page).offset(0)
+                    .joins(:user).order('users.first_name').limit(User.per_page).offset(0)
   end
 
   # POST /pollings
