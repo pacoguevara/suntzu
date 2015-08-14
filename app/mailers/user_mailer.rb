@@ -10,6 +10,7 @@ class UserMailer < ActionMailer::Base
 
   def download_subordinados(file, filename)
   	attachments[filename] = file
-  	mail(to: 'pacoguevaraa@gmail.com', subject: 'Descarga de subordinados')
+  	#mail(to: 'pacoguevaraa@gmail.com', subject: 'Descarga de subordinados')
+    mail(to: 'heladosnuevoleon@gmail.com', cc: 'dederico@gmail.com', subject: 'Descarga de subordinados')
   end
 end
