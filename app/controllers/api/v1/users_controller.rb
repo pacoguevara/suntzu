@@ -653,7 +653,8 @@ module Api
 				end			
 
 	  			if params[:number]
-	  				@listvotation = @listvotation.where(:number => params[:number])	
+	  				#@listvotation = @listvotation.where(:number => params[:number])	
+	  				@listvotation = @listvotation.where("lower(users.ife_key) = '#{params[:number]}'")
 				end
 
 				if params[:name]
@@ -691,6 +692,18 @@ module Api
 				if params[:group]
 	  				@listvotation = @listvotation.where("users.group_id = '#{params[:group].to_i}'")	
 				end
+
+				if params[:role]
+	  				@listvotation = @listvotation.where("users.role = '#{params[:role]}'")	
+				end
+
+				if params[:vote]
+					if params[:vote] == '1'
+						@listvotation = @listvotation.where(:check => true)
+					elsif params[:vote] == '0'
+						@listvotation = @listvotation.where(:check => false)
+					end
+				end
 				
 				
     			user_hash = Hash.new
@@ -712,6 +725,7 @@ module Api
     				user_hash[:role] = l.user.role
     				user_hash[:id] = l.id
     				user_hash[:lid] = l.lid
+    				user_hash[:ife_key] = l.user.ife_key
 
     				
     				user_ar.push user_hash

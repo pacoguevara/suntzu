@@ -91,14 +91,18 @@
       <th>
         <select class="form-control  d_filtro_dropdown search3 "  style="width:100%" name="d_role">
           <option value=""></option>
-          <% @roles.each do |role| %>
-            <option value="<%= role[0] %>"> 
-              <%= role[1] %>
-            </option>
-          <%end%>
+          <option value="coordinador">Coordinador</option>
+          <option value="enlace">Enlace</option>
+          <option value="jugador">Jugador</option>
+          
         </select>
       </th>
     	<th>
+        <select class="form-control d_filtro_dropdown search3" name="d_vote" id="d_vote">
+          <option value=""></option>
+          <option value="1">Ya votó</option>
+          <option value="0">No ha votado</option>
+        </select>
         <input type="hidden" value="<%=params[:polling_id]%>" class="form-control hidd" 
           name="polling_id"/>
     	</th>
@@ -149,7 +153,8 @@
     <% @listvotation.each do |a| %>
       <tr>
         <td >
-          <p class="small"><%=a.number%></p>
+        <!--  <p class="small"><%=a.number%></p> -->
+          <p class="small"><%=a.ife_key%></p>
         </td>
         <td >
             <p class="small"><%=link_to a.name, "/users/"+a.id.to_s %></p>

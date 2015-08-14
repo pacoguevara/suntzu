@@ -547,6 +547,7 @@ $ ->
 				group: params['d_group_id']
 				role: params['d_role']
 				polling_id: $('.hidd')[0].value
+				vote: params['d_vote']
 				
 	get_filters_role = ->
 		$inputs = $('.search4')
@@ -695,7 +696,7 @@ $ ->
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+item.lid+'" checked>Ya votó'
 			else
 				checkaux = '<input type="checkbox" name="temp_chek" class="check2" data-id="'+item.lid+'">Ya votó'
-			tds = '<td><p class="small"> ' + item.number + " </p></td> " +
+			tds = '<td><p class="small"> ' + item.ife_key + " </p></td> " +
 			'<td><p class="small"> ' + item.name + " </p></td> " +
 			'<td><p class="small"> ' + item.first_name + " </p></td> " +
 			'<td><p class="small"> ' + item.last_name + " </p></td> " +
