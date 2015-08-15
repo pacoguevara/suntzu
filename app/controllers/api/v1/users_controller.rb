@@ -754,6 +754,39 @@ module Api
 				groups_by_name.delete 'Nil'
 				respond_with groups_by_name.to_a
 			end
+
+			def players_by_coords
+				coords = {}
+				User.where(:role => 'jugador').group(:coordinador_id).count.to_a.each do |k,v|
+					if k.to_i == 0
+        		coord_name = 'Sin Asignar'
+        	else
+        		coord_name = User.find(k.to_i).full_name
+        	end
+					coords[coord_name] = v
+				end
+				respond_with coords.to_a
+			end
+
+			def votes_by_coords
+				polling_id = params[:id]
+				@lvh = ListVotationHeader.where(:polling_id => polling_id).first
+    		@listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
+                    .where(:list_votation_header_id => @lvh.id).where(:check => true)
+                    .where('users.role' => 'jugador')
+                    .joins(:user).group(:coordinador_id).count.to_a
+        users = {}
+        @listvotation.each do |k,v|
+        	if k.to_i == 0
+        		coord_name = 'Sin Asignar'
+        	else
+        		coord_name = User.find(k.to_i).full_name
+        	end
+        	users[coord_name] = v
+        end
+        respond_with users.to_a
+			end
+
 			def show
 				if !params.has_key? :cols
 					respond_with User.find params[:id] 

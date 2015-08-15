@@ -6,6 +6,8 @@ $ ->
 	$container5=$('#container5')
 	$container6=$('#container6')
 	$container7=$('#container7')
+	$container_coord = $('#container_coord')
+	$container_votes = $('#container_votes')
 
 	VotationPanel = (->
 		options_groups = 
@@ -94,6 +96,24 @@ $ ->
 		    align: "right"
 		    verticalAlign: "middle"
 		    borderWidth: 0
+		
+		options_votes = 
+			chart:
+					type: "pie"
+					renderTo: 'container_votes'
+			  plotBackgroundColor:null
+			  plotBorderWidth: null
+			  plotShadow: false
+			title:
+			  text: "Jugadores por coordinadores"
+			plotOptions:
+			  pie:
+			   allowPointSelect: true
+			   cursor: 'pointer'
+			   dataLabels:
+			   	enabled: false
+			   showInLegend: true
+			series: []	
 		init = ->
 			bind()
 			return
@@ -102,7 +122,8 @@ $ ->
 				selectGroups(@)
 				return
 			$('#votation_pollings').change ->
-				selectPollings(@)
+				pollingSelected(@)
+				#selectPollings(@)
 				return
 			return
 		selectGroups = (el)->
@@ -131,6 +152,34 @@ $ ->
 					options_pollings.series = data
 					chart = new Highcharts.Chart(options_pollings)
 			return
+
+		pollingSelected = (polling) ->
+			votes_url = "/api/users/votes_by_coords/"+$(polling).val()
+			$.ajax
+				url: votes_url
+				success: (data) ->
+					console.log data
+					$container_votes.highcharts
+						chart:
+							type: "pie"
+					  plotBackgroundColor:null
+					  plotBorderWidth: null
+					  plotShadow: false
+					 	plotOptions:
+						  pie:
+						   allowPointSelect: true
+						   cursor: 'pointer'
+				   	dataLabels:
+				   		enabled: false
+				   		showInLegend: true
+					 series: [
+					  {
+					   name: "Pie"
+					   data: data
+					  }
+					 ]		
+			return
+
 		init:init
 		)()
 	VotationPanel.init()
@@ -152,6 +201,7 @@ $ ->
 	      console.log xhr.status + " " + url_root
 	      console.log thrownError
 	      return
+	
 	if $container4?
 		$.get('/api/users/groups').success (data) ->
 			$container4.highcharts 
@@ -175,4 +225,33 @@ $ ->
 			   data: data
 			  }
 			 ]		
-		return
+			return
+
+	if $container_coord?
+		$.get('/api/users/players_by_coords').success (data) ->
+			$container_coord.highcharts 
+				chart:
+					type: "pie"
+			  plotBackgroundColor:null
+			  plotBorderWidth: null
+			  plotShadow: false
+			 title:
+			  text: "Jugadores por coordinadores"
+			 plotOptions:
+			  pie:
+			   allowPointSelect: true
+			   cursor: 'pointer'
+			   dataLabels:
+			   	enabled: false
+			   showInLegend: true
+			 series: [
+			  {
+			   name: "Pie"
+			   data: data
+			  }
+			 ]		
+			return
+    
+
+
+

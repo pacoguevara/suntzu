@@ -204,15 +204,17 @@ Votación
     </thead>
     <tbody>
       <% @algo.each do |a| %>
+      <% if !a.polling.nil? %>
         <tr>
           <td >
             <p class="small">
-              <% if !a.polling.nil? %>
+              
                 <%= link_to a.polling.name, detalle_path(:polling_id => a.id)%></p>
-              <% end %>
+              
           </td>
           <td >
         </td>
+        <% end %>
       <%end%>
     </tbody>
   </table>

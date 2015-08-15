@@ -40,6 +40,8 @@ Pan::Application.routes.draw do
           get 'coordinadores', :action => 'coordinadores'
       		get "parents", :action=>"parents"
           get "groups", :action=>"groups"
+          get "players_by_coords", :action=>"players_by_coords"
+          get "votes_by_coords/:id", :action=>"votes_by_coords"
           get "enlace", :action => "enlace"
           get "list_check", :action => "list_check"
           get "get_list_votation", :action => "get_list_votation"
