@@ -379,7 +379,7 @@ class User < ActiveRecord::Base
       name = spreadsheet.cell(i,1) 
       if !name.nil? || !name.blank?
         user = User.new
-        user.email = name.strip+"@pan.gob.mx"
+        user.email = name.downcase.gsub(/\s+/, "")+"@pan.gob.mx"
         user.name = name
         user.ife_key = folio+i
         user.role = role
@@ -425,27 +425,28 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s 
-      first_name = spreadsheet.cell(i,2)
-      last_name = spreadsheet.cell(i,3)
-      name = spreadsheet.cell(i,4)
-      coord_name = spreadsheet.cell(i,5)
-      enlace_name = spreadsheet.cell(i,6)
-      subenlace_name = spreadsheet.cell(i,7)
-      municipality = spreadsheet.cell(i,8)
-      street_number = spreadsheet.cell(i,9)
-      outside_number = spreadsheet.cell(i,10)
-      internal_number = spreadsheet.cell(i,11)
-      neighborhood = spreadsheet.cell(i,12)
+      first_name = spreadsheet.cell(i,9)
+      last_name = spreadsheet.cell(i,10)
+      name = spreadsheet.cell(i,11)
+      #coord_name = spreadsheet.cell(i,5)
+      enlace_name = spreadsheet.cell(i,3)
+      subenlace_name = spreadsheet.cell(i,4)
+      municipality = spreadsheet.cell(i,12)
+      street_number = spreadsheet.cell(i,15)
+      outside_number = spreadsheet.cell(i,16)
+      internal_number = spreadsheet.cell(i,17)
+      neighborhood = spreadsheet.cell(i,21)
       zipcode = spreadsheet.cell(i,13)
-      cellphone = spreadsheet.cell(i,14)
-      phone = spreadsheet.cell(i,15)
-      email = spreadsheet.cell(i, 18)
+      cellphone = spreadsheet.cell(i,19)
+      phone = spreadsheet.cell(i,31)
+      email = spreadsheet.cell(i, 32)
+      ife_key = spreadsheet.cell(i, 5)
       
-      if coordinadores.has_key?(coord_name)
-        coord_id = coordinadores[coord_name]
-      else
-        coord_id = nil
-      end
+      # if coordinadores.has_key?(coord_name)
+      #   coord_id = coordinadores[coord_name]
+      # else
+      #   coord_id = nil
+      # end
 
       if enlaces.has_key?(enlace_name)
         enlace_id = enlaces[enlace_name]
@@ -462,7 +463,7 @@ class User < ActiveRecord::Base
        
       if !name.nil? & !name.blank?
         puts "Folio: #{folio}"
-        puts "coordinador #{coord_id}"
+        #puts "coordinador #{coord_id}"
         puts "enlace: #{enlace_id}"
         puts "subenlace: #{subenlace_id}"
         puts "=================================" 
@@ -471,9 +472,13 @@ class User < ActiveRecord::Base
         user.name = name
         user.first_name = first_name
         user.last_name = last_name
-        user.ife_key = folio
+        if User.exists?(:ife_key => ife_key)
+          user.ife_key = ife_key+"b"
+        else
+          user.ife_key = ife_key
+        end
         user.role = "jugador"
-        user.coordinador_id = coord_id
+        #user.coordinador_id = coord_id
         user.enlace_id = enlace_id
         user.subenlace_id = subenlace_id
         user.municipality_id = Municipality.get_city_key(municipality)
