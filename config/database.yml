@@ -23,5 +23,11 @@ test:
   database: pan_test
 
 production:
-  <<: *default
-  database: pan_production
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+  host:  aa1nv7mbzvf8e7v.ckhjgx8swabs.us-east-1.rds.amazonaws.com
+  username: suntzudb
+  password: kopoyeba
+  database: ebdb
