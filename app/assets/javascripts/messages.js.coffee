@@ -105,7 +105,7 @@ $ ->
 					$.ajax 
 						url:"/api/users"
 						data:
-							role: params['role']
+							role: 0
 							municipality_id: params['municipality_id']
 							age: params['age']
 							section: params['section']

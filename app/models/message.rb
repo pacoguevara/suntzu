@@ -1,10 +1,13 @@
 class Message < ActiveRecord::Base
   belongs_to :user_message
-  # @twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
-  # @twilio_token = "6e26775044f3087e7d9f44f003db29ae"
-  @twilio_sid = "AC74dd92a27a5be877c27c66a669fcc121"
-  @twilio_token = "c9f94704135cbe61122f58770ded147c"
+  @twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
+  @twilio_token = "6e26775044f3087e7d9f44f003db29ae"
   @twilio_phone_number = "+18027339326"
+  
+  # Credenciales del PAN
+  #@twilio_sid = "AC74dd92a27a5be877c27c66a669fcc121"
+  #@twilio_token = "c9f94704135cbe61122f58770ded147c"
+  
 
   @sendgrid_user = 'fguevara'
   @sendgrid_password = 'aspg.1424'
