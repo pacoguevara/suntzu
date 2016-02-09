@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   attr_accessor :full_name
-  has_attached_file :image, :styles => { :medium => "300x300>", 
+  has_attached_file :image, :styles => { :medium => "300x300>",
     :thumb => "24x24>" }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   ROLES_COORDINADOR_DROPDOWN = %w[[jugador, 1] [enlace, 1] [subenlace,1] ]
   ROLES_ENLACE_DROPDOWN=       %w[[jugador, 1] [subenlace, 1]]
   ROLES_SUBENLACE_DROPDOWN =   %w[[jugador, 1]]
-  
+
   CELLS = {
     'rnm'=>25,
     'register_date'=>24,
@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
     'first_name'=>6,
     'last_name'=>7,
     'gender'=>27,
-    'section'=>26, 
+    'section'=>26,
     'dto_fed'=>21,
     'dto_loc'=>22,
     'city_key'=>31,
@@ -63,14 +63,14 @@ class User < ActiveRecord::Base
     (1..spreadsheet.last_row).each do |i|
       if self.subenlace?
         User.where(:ife_key => spreadsheet.cell(i,1))
-          .update_all :subenlace_id => self.id 
+          .update_all :subenlace_id => self.id
       elsif self.enlace_id?
         User.where(:ife_key => spreadsheet.cell(i,1))
-          .update_all :subenlace_id => self.id 
+          .update_all :subenlace_id => self.id
       elsif self.coordinator_id
         User.where(:ife_key => spreadsheet.cell(i,1))
-          .update_all :coordinador_id => self.id 
-      end 
+          .update_all :coordinador_id => self.id
+      end
     end
   end
   def age
@@ -130,28 +130,28 @@ class User < ActiveRecord::Base
   def update_subordinados
     if self.role == "subenlace"
       users = User.where(:subenlace_id => self.id)
-      users.each do |u|      
+      users.each do |u|
         u.enlace_id = self.enlace_id
         u.coordinador_id = self.coordinador_id
         u.group_id = self.group_id
         u.save
       end
     elsif self.role == "enlace"
-      users = User.where(:enlace_id => self.id) 
-      users.each do |u|      
+      users = User.where(:enlace_id => self.id)
+      users.each do |u|
         u.enlace_id = self.id
         u.coordinador_id = self.coordinador_id
         u.group_id = self.group_id
         u.save
-      end 
+      end
     elsif self.role == "coordinador"
-      users = User.where(:coordinador_id => self.id) 
-      users.each do |u|      
+      users = User.where(:coordinador_id => self.id)
+      users.each do |u|
 
         u.coordinador_id = self.id
         u.group_id = self.group_id
         u.save
-      end 
+      end
     end
   end
 
@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
   end
 
   def get_coordinador
-    return nil if self.parent == 0 
+    return nil if self.parent == 0
     if self.get_deep == 0
       return nil if self.get_enlace.nil?
       return nil if self.get_enlace.parent == 0
@@ -210,7 +210,7 @@ class User < ActiveRecord::Base
   end
 
   private
-  def self.import 
+  def self.import
     file_path=Rails.public_path.to_s + '/xls/users2.xlsx'
     spreadsheet = open_spreadsheet(file_path)
     #(2..spreadsheet.last_row).each do |i|
@@ -219,8 +219,8 @@ class User < ActiveRecord::Base
     (2..spreadsheet.last_row).each do |i|
       puts spreadsheet.cell(i,CELLS['register_date'])
       ife_k = spreadsheet.cell(i,CELLS['ife_key'])
-      
-      
+
+
       if !User.exists?(:ife_key => ife_k)
         save_row(spreadsheet, i)
       else
@@ -288,9 +288,9 @@ class User < ActiveRecord::Base
   def self.array_to_xls( users )
     io = StringIO.new
     workbook = WriteExcel.new(io)
-    
+
     worksheet  = workbook.add_worksheet
-    
+
     worksheet.write(0, 0, 'RNM')
     worksheet.write(0, 1, 'Fecha Inicio')
     worksheet.write(0, 2, 'IFE')
@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
 
     workbook.close
     return io.string
-  end 
+  end
 
   def self.dedupe
     # find all models and group them on keys which should be common
@@ -370,18 +370,20 @@ class User < ActiveRecord::Base
       folio = 120000
     elsif role == "enlace"
       folio = 110000
-    else 
+    else
       folio = 100000
     end
-      
+
     (2..spreadsheet.last_row).each do |i|
-      puts spreadsheet.cell(i,1)
-      name = spreadsheet.cell(i,1) 
+      #puts spreadsheet.cell(i,1)
+      folio = spreadsheet.cell(i,1)
+      name = spreadsheet.cell(i,2)
       if !name.nil? || !name.blank?
         user = User.new
         user.email = name.downcase.gsub(/\s+/, "")+"@pan.gob.mx"
         user.name = name
-        user.ife_key = folio+i
+        #user.ife_key = folio+i
+        user.ife_key = folio
         user.role = role
         user.save(validate: false)
       end
@@ -394,7 +396,7 @@ class User < ActiveRecord::Base
       return nil
     else
       return user.first.id
-    end 
+    end
   end
 
   def self.import_players(file)
@@ -424,7 +426,7 @@ class User < ActiveRecord::Base
     puts subenlaces
 
     (2..spreadsheet.last_row).each do |i|
-      folio = spreadsheet.cell(i,1).to_i.to_s 
+      folio = spreadsheet.cell(i,1).to_i.to_s
       first_name = spreadsheet.cell(i,9)
       last_name = spreadsheet.cell(i,10)
       name = spreadsheet.cell(i,11)
@@ -441,7 +443,7 @@ class User < ActiveRecord::Base
       phone = spreadsheet.cell(i,31)
       email = spreadsheet.cell(i, 32)
       ife_key = spreadsheet.cell(i, 5)
-      
+
       # if coordinadores.has_key?(coord_name)
       #   coord_id = coordinadores[coord_name]
       # else
@@ -460,13 +462,13 @@ class User < ActiveRecord::Base
         subenlace_id = nil
       end
 
-       
+
       if !name.nil? & !name.blank?
         puts "Folio: #{folio}"
         #puts "coordinador #{coord_id}"
         puts "enlace: #{enlace_id}"
         puts "subenlace: #{subenlace_id}"
-        puts "=================================" 
+        puts "================================="
         user = User.new
         user.email = name.strip+"@pan.gob.mx"
         user.name = name
