@@ -376,12 +376,14 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       #puts spreadsheet.cell(i,1)
-      folio = spreadsheet.cell(i,1)
+      folio = spreadsheet.cell(i,1).to_i.to_s
       name = spreadsheet.cell(i,2)
       if !name.nil? || !name.blank?
         user = User.new
         user.email = name.downcase.gsub(/\s+/, "")+"@pan.gob.mx"
         user.name = name
+        user.first_name = name
+        user.last_name = name
         #user.ife_key = folio+i
         user.ife_key = folio
         user.role = role
@@ -427,28 +429,28 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       folio = spreadsheet.cell(i,1).to_i.to_s
-      first_name = spreadsheet.cell(i,9)
-      last_name = spreadsheet.cell(i,10)
-      name = spreadsheet.cell(i,11)
-      #coord_name = spreadsheet.cell(i,5)
-      enlace_name = spreadsheet.cell(i,3)
-      subenlace_name = spreadsheet.cell(i,4)
-      municipality = spreadsheet.cell(i,12)
-      street_number = spreadsheet.cell(i,15)
-      outside_number = spreadsheet.cell(i,16)
-      internal_number = spreadsheet.cell(i,17)
-      neighborhood = spreadsheet.cell(i,21)
-      zipcode = spreadsheet.cell(i,13)
-      cellphone = spreadsheet.cell(i,19)
-      phone = spreadsheet.cell(i,31)
-      email = spreadsheet.cell(i, 32)
-      ife_key = spreadsheet.cell(i, 5)
+      first_name = spreadsheet.cell(i,2)
+      last_name = spreadsheet.cell(i,3)
+      name = spreadsheet.cell(i,4)
+      coord_name = spreadsheet.cell(i,5)
+      enlace_name = spreadsheet.cell(i,6)
+      subenlace_name = spreadsheet.cell(i,7)
+      # municipality = spreadsheet.cell(i,12)
+      # street_number = spreadsheet.cell(i,15)
+      # outside_number = spreadsheet.cell(i,16)
+      # internal_number = spreadsheet.cell(i,17)
+      # neighborhood = spreadsheet.cell(i,21)
+      # zipcode = spreadsheet.cell(i,13)
+      # cellphone = spreadsheet.cell(i,19)
+      # phone = spreadsheet.cell(i,31)
+      # email = spreadsheet.cell(i, 32)
+      ife_key = spreadsheet.cell(i,1).to_i.to_s
 
-      # if coordinadores.has_key?(coord_name)
-      #   coord_id = coordinadores[coord_name]
-      # else
-      #   coord_id = nil
-      # end
+      if coordinadores.has_key?(coord_name)
+        coord_id = coordinadores[coord_name]
+      else
+        coord_id = nil
+      end
 
       if enlaces.has_key?(enlace_name)
         enlace_id = enlaces[enlace_name]
@@ -465,7 +467,7 @@ class User < ActiveRecord::Base
 
       if !name.nil? & !name.blank?
         puts "Folio: #{folio}"
-        #puts "coordinador #{coord_id}"
+        puts "coordinador #{coord_id}"
         puts "enlace: #{enlace_id}"
         puts "subenlace: #{subenlace_id}"
         puts "================================="
@@ -480,19 +482,19 @@ class User < ActiveRecord::Base
           user.ife_key = ife_key
         end
         user.role = "jugador"
-        #user.coordinador_id = coord_id
+        user.coordinador_id = coord_id
         user.enlace_id = enlace_id
         user.subenlace_id = subenlace_id
-        user.municipality_id = Municipality.get_city_key(municipality)
-        user.city = municipality
-        user.street_number = street_number
-        user.outside_number = outside_number
-        user.internal_number = internal_number
-        user.neighborhood = neighborhood
-        user.zipcode = zipcode.to_i.to_s
-        user.cellphone = cellphone
-        user.phone = phone
-        user.email = email
+        # user.municipality_id = Municipality.get_city_key(municipality)
+        # user.city = municipality
+        # user.street_number = street_number
+        # user.outside_number = outside_number
+        # user.internal_number = internal_number
+        # user.neighborhood = neighborhood
+        # user.zipcode = zipcode.to_i.to_s
+        # user.cellphone = cellphone
+        # user.phone = phone
+        # user.email = email
         user.save(validate: false)
       end
     end
