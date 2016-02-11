@@ -3,14 +3,14 @@ module Api
 		class UsersController < ApplicationController
 			skip_authorization_check
 			respond_to :json
-			def index	
+			def index
 				where_statment = ""
 				if params.has_key? :role
 					if params[:role] != "jugador" && params[:role] != "0"
 						where_statment = "lower(role) = '#{params[:role].downcase}' "
 					end
 				end
-				if params.has_key? :municipality_id 
+				if params.has_key? :municipality_id
 			 		if params[:municipality_id].to_s != "-1"
 						if !where_statment.blank?
 							where_statment = where_statment +" AND municipality_id = '#{params[:municipality_id]}'"
@@ -261,7 +261,7 @@ module Api
 							"'%#{params[:neighborhood].downcase}%'"
 					else
 						where_statment=where_statment +" lower(neighborhood) LIKE "+
-							"'%#{params[:neighborhood].downcase}%'"						
+							"'%#{params[:neighborhood].downcase}%'"
 					end
 
 				end
@@ -282,7 +282,7 @@ module Api
 						where_statment=where_statment +" phone LIKE "+
 							"'%#{params[:phone].downcase}%'"
 					end
-				end		
+				end
 				if params.has_key? :sub_enlace_id
 					if params[:sub_enlace_id] != '0'
 						if !where_statment.blank?
@@ -294,7 +294,7 @@ module Api
 						end
 					else
 					end
-				end		
+				end
 				if params.has_key? :enlace_id
 					if params[:enlace_id] != '0'
 						if !where_statment.blank?
@@ -327,7 +327,7 @@ module Api
 						offset(off)
 					else
 						users = User.where(where_statment).limit(User.per_page).offset(0)
-					end					
+					end
 					users_ar = []
 				 	@subenlace = User.where(:role => "subenlace")
 			    @enlace = User.where(:role => "enlace")
@@ -356,7 +356,7 @@ module Api
 						user_hash[:enlace] = !(user.enlace_id.nil? || user.enlace_id == 0) ? User.find(user.enlace_id).full_name : ''
 						user_hash[:coordinador] = !(user.coordinador_id.nil? || user.coordinador_id == 0) ? User.find(user.coordinador_id).full_name : ''
 						user_hash[:group] = user.get_group
-						
+
 						if user.group_id == nil || user.group_id == 0 || user.group_id == '0'
 							user_hash[:group] = "Sin grupo"
 						else
@@ -391,7 +391,7 @@ module Api
 					elsif params[:tipo] == "3"
 						user.coordinador_id = 0
 						user.subenlace_id = 0
-						user.enlace_id = 0		
+						user.enlace_id = 0
 					elsif params[:tipo] == "4"
 						user.coordinador_id = 0
 						user.subenlace_id = 0
@@ -409,14 +409,14 @@ module Api
 							user.enlace_id = 0
 						end
 						if !user2.coordinador_id.nil? && user2.coordinador_id != 0
-							user.coordinador_id = user2.coordinador_id	
+							user.coordinador_id = user2.coordinador_id
 						else
 							user.coordinador_id = 0
 						end
 						if !user2.group_id.nil? && user2.group_id != 0
 							user.group_id = user2.group_id
 						end
-						
+
 					elsif params[:tipo] == "2"
 						puts "es DOS"
 						user.enlace_id = params[:id1]
@@ -441,9 +441,9 @@ module Api
 						user.subenlace_id = 0
 						user.enlace_id = 0
 					end
-					
+
 				end
-				
+
 
 				user.save!
 				respond_with true
@@ -462,19 +462,19 @@ module Api
 				users = User.where(where_statment)
 
 				if params[:name]
-	  				users = users.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")	
+	  				users = users.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")
 				end
 
 				if params[:first_name]
-	  				users = users.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")	
+	  				users = users.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")
 				end
 
 				if params[:last_name]
-	  				users = users.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")	
+	  				users = users.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")
 				end
 
 				if params[:municipality_id]
-	  				users = users.where("users.municipality_id = '#{params[:municipality_id].to_i}'")	
+	  				users = users.where("users.municipality_id = '#{params[:municipality_id].to_i}'")
 				end
 
 				if params[:role]
@@ -482,7 +482,7 @@ module Api
 						users = users.where("role = '#{params[:role]}'")
 					end
 				end
-				
+
 				users_count = users.count
 
 				if params[:page]
@@ -518,9 +518,9 @@ module Api
 				respond_with true
 			end
 			def get_parent
-				h = Hash.new				
+				h = Hash.new
 				if params[:id1] != "vacio"
-					user = User.find(params[:id1])	
+					user = User.find(params[:id1])
 					if params[:tipo] == "1"
 						if user.enlace_id && user.enlace_id != 0
 							user1 = User.find(user.enlace_id)
@@ -563,7 +563,7 @@ module Api
 							h[:user_id2] = 0
 							h[:name2] = ""
 						end
-					end			
+					end
 					h[:group_name] = !user.group_id.blank? ? user.group.name : 'Sin grupo'
 					#if params[:tipo] == "1"
 					#	if user.enlace_id && user.enlace_id != 0
@@ -584,12 +584,12 @@ module Api
 				#			h[:user_id2] = 0
 				#			h[:name2] = ""
 				#		end
-					#elsif params[:tipo] == "2" 
+					#elsif params[:tipo] == "2"
 				#		parent = User.find(user.coordinador_id)
 				#		h[:user_id] = parent.id
 				##		h[:name] = parent.full_name
 				##		h[:user_id2] = 0
-				#	#	h[:name2] = ""					
+				#	#	h[:name2] = ""
 			#		elsif params[:tipo] == "3"
 					#end
 				else
@@ -624,10 +624,10 @@ module Api
 						h[:name3] = "vacio"
 					end
 
-				end		
+				end
 
-				respond_with h		
-					
+				respond_with h
+
 			end
 			def get_list_votation
 				@lvh = ListVotationHeader.find(params[:polling_id])
@@ -650,51 +650,51 @@ module Api
 					offset(off)
 				else
 					@listvotation = @listvotation.limit(User.per_page).offset(0)
-				end			
+				end
 
 	  			if params[:number]
-	  				#@listvotation = @listvotation.where(:number => params[:number])	
+	  				#@listvotation = @listvotation.where(:number => params[:number])
 	  				@listvotation = @listvotation.where("lower(users.ife_key) = '#{params[:number]}'")
 				end
 
 				if params[:name]
-	  				@listvotation = @listvotation.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")	
+	  				@listvotation = @listvotation.where("lower(users.name) LIKE '%#{params[:name].downcase.strip}%'")
 				end
 
 				if params[:first_name]
-	  				@listvotation = @listvotation.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")	
+	  				@listvotation = @listvotation.where("lower(users.first_name) LIKE '%#{params[:first_name].downcase.strip}%'")
 				end
 
 				if params[:last_name]
-	  				@listvotation = @listvotation.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")	
+	  				@listvotation = @listvotation.where("lower(users.last_name) LIKE '%#{params[:last_name].downcase.strip}%'")
 				end
 
 				if params[:section]
-	  				@listvotation = @listvotation.where("users.section = '#{params[:section].to_i}'")	
+	  				@listvotation = @listvotation.where("users.section = '#{params[:section].to_i}'")
 				end
 
 				if params[:municipality_id]
-	  				@listvotation = @listvotation.where("users.municipality_id = '#{params[:municipality_id].to_i}'")	
+	  				@listvotation = @listvotation.where("users.municipality_id = '#{params[:municipality_id].to_i}'")
 				end
 
 				if params[:subenlace]
-	  				@listvotation = @listvotation.where("users.subenlace_id = '#{params[:subenlace].to_i}'")	
+	  				@listvotation = @listvotation.where("users.subenlace_id = '#{params[:subenlace].to_i}'")
 				end
 
 				if params[:enlace]
-	  				@listvotation = @listvotation.where("users.enlace_id = '#{params[:enlace].to_i}'")	
+	  				@listvotation = @listvotation.where("users.enlace_id = '#{params[:enlace].to_i}'")
 				end
 
 				if params[:coordinador]
-	  				@listvotation = @listvotation.where("users.coordinador_id = '#{params[:coordinador].to_i}'")	
+	  				@listvotation = @listvotation.where("users.coordinador_id = '#{params[:coordinador].to_i}'")
 				end
 
 				if params[:group]
-	  				@listvotation = @listvotation.where("users.group_id = '#{params[:group].to_i}'")	
+	  				@listvotation = @listvotation.where("users.group_id = '#{params[:group].to_i}'")
 				end
 
 				if params[:role]
-	  				@listvotation = @listvotation.where("users.role = '#{params[:role]}'")	
+	  				@listvotation = @listvotation.where("users.role = '#{params[:role]}'")
 				end
 
 				if params[:vote]
@@ -704,8 +704,8 @@ module Api
 						@listvotation = @listvotation.where(:check => false)
 					end
 				end
-				
-				
+
+
     			user_hash = Hash.new
     			user_ar = Array.new
     			@listvotation.each do |l|
@@ -727,10 +727,10 @@ module Api
     				user_hash[:lid] = l.lid
     				user_hash[:ife_key] = l.user.ife_key
 
-    				
+
     				user_ar.push user_hash
     			end
-    			
+
     			data = []
     			data.push(user_ar)
     			data.push(votes)
@@ -789,7 +789,7 @@ module Api
 
 			def show
 				if !params.has_key? :cols
-					respond_with User.find params[:id] 
+					respond_with User.find params[:id]
 				else
 					respond_with User.where(:id=>params[:id]).select("#{params[:cols]}")
 				end
@@ -800,13 +800,13 @@ module Api
 					if @user.update_attributes user_params
 						format.json {render json: @user.to_json, status: :ok}
 					else
-						format.json {render json: error_hash.to_json(root: :error), 
+						format.json {render json: error_hash.to_json(root: :error),
 							status: :unprocessable_entity }
 					end
 				end
 			end
 			def subenlaces
-				respond_with User.where :role => 'subenlace'	
+				respond_with User.where :role => 'subenlace'
 			end
 			def enlaces
 				respond_with User.where :role => 'enlace'
@@ -815,7 +815,7 @@ module Api
 				respond_with User.where :role => 'coordinador'
 			end
 			def parents
-				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace", 
+				parent = {"jugador"=>"subenlace", "subenlace"=>"enlace",
 					"enlace"=>"coordinador", "coordinador"=>"grupo	"}
 				users=User.where(:role => parent[params[:role]])
 				u = User.new
@@ -824,7 +824,7 @@ module Api
 				u.last_name="_"
 				u.id=0
 				users.push u
-				respond_with users 
+				respond_with users
 			end
 			def list_votation
 				puts params
@@ -846,39 +846,39 @@ module Api
 			private
 			def user_params
      		params.require( :user ).permit(
-     			:register_date, 
-     			:first_name, 
-     			:last_name, 
-     			:name, 
-     			:bird, 
-     			:rnm, 
-     			:linking, 
-     			:sub_linking, 
-     			:group_id, 
-     			:suburb, 
-     			:section, 
-     			:sector, 
-     			:cp, 
-     			:phone, 
-     			:cellphone, 
-     			:email, 
-     			:password, 
-     			:password_confirmation, 
-     			:role, 
-     			:age, 
-     			:gender, 
-     			:city, 
-     			:street_number, 
-     			:neighborhood, 
-     			:parent, 
-     			:group_id, 
-     			:dto_fed, 
-     			:dto_loc, 
-     			:ife_key, 
-     			:internal_number, 
-     			:outside_number, 
-     			:lat, 
-     			:lng, 
+     			:register_date,
+     			:first_name,
+     			:last_name,
+     			:name,
+     			:bird,
+     			:rnm,
+     			:linking,
+     			:sub_linking,
+     			:group_id,
+     			:suburb,
+     			:section,
+     			:sector,
+     			:cp,
+     			:phone,
+     			:cellphone,
+     			:email,
+     			:password,
+     			:password_confirmation,
+     			:role,
+     			:age,
+     			:gender,
+     			:city,
+     			:street_number,
+     			:neighborhood,
+     			:parent,
+     			:group_id,
+     			:dto_fed,
+     			:dto_loc,
+     			:ife_key,
+     			:internal_number,
+     			:outside_number,
+     			:lat,
+     			:lng,
      			:temp_chek)
 			end
 		end
@@ -886,7 +886,7 @@ module Api
 			skip_authorization_check
 			respond_to :json
 			def index
-				respond_with Polling.where( 
+				respond_with Polling.where(
 					"id = ?","%#{params[:id]}%"
 				 )
 			end

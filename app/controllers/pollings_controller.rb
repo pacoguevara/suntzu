@@ -27,18 +27,18 @@ class PollingsController < ApplicationController
     @enlaces = User.where(:role => 'enlace')
     @coordinadores = User.where(:role => 'coordinador')
     @municipalities = Municipality.all
-    if current_user.admin? 
+    if current_user.admin?
       @roles = User::ROLES_ADMIN
-    end 
-    if current_user.coordinador? 
+    end
+    if current_user.coordinador?
       @roles = User::ROLES_COORDINADOR
-    end 
-    if current_user.enlace? 
+    end
+    if current_user.enlace?
       @roles = User::ROLES_ENLACE
-    end 
-    if current_user.subenlace? 
+    end
+    if current_user.subenlace?
       @roles = User::ROLES_SUBENLACE
-    end 
+    end
     @lvh = ListVotationHeader.find(params[:polling_id])
     @listvotation = ListVotation.select("list_votations.id AS lid, list_votations.*, users.*")
                     .where(:list_votation_header_id => @lvh.id)
@@ -86,8 +86,8 @@ class PollingsController < ApplicationController
   end
 
   def download_xls
-    Polling.delay.download_xls(params)
-    flash[:notice] = 'La lista nominal se enviará por correo electrónico una vez que sea procesada'
+    Polling.download_xls(params)
+    #flash[:notice] = 'La lista nominal se enviará por correo electrónico una vez que sea procesada'
     redirect_to :back
   end
 
