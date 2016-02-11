@@ -87,7 +87,7 @@ class PollingsController < ApplicationController
 
   def download_xls
     Polling.download_xls(params)
-    #flash[:notice] = 'La lista nominal se enviará por correo electrónico una vez que sea procesada'
+    flash[:notice] = 'La lista nominal se enviará por correo electrónico una vez que sea procesada'
     redirect_to :back
   end
 
