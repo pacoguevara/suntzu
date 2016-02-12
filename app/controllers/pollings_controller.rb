@@ -21,6 +21,7 @@ class PollingsController < ApplicationController
   # GET /pollings/1/edit
   def edit
   end
+  
   def detalle
     @groupsdropdown = Group.all
     @subenlaces = User.where(:role => 'subenlace')
