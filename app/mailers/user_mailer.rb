@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "fguevara@tegik.com"
+  default from: ""
 
   def download_polling(file)
   	attachments['lista_nominal.xls'] = file.string

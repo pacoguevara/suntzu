@@ -34,9 +34,9 @@ Pan::Application.configure do
   config.action_mailer.smtp_settings = {
   :address              => "smtp.gmail.com",
   :port                 => 587,
-  :domain               => 'tegik.com',
-  :user_name            => 'fguevara@tegik.com',
-  :password             => 'skylight.10',
+  :domain               => '',
+  :user_name            => '',
+  :password             => '',
   :authentication       => 'plain',
   :enable_starttls_auto => true  }
 end

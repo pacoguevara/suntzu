@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
           hash = { "id" => k.id, "msg" => k.message, "count" => count}
           @messages.push hash
         end
-        
+
   end
 
   # GET /messages/1
@@ -38,13 +38,13 @@ class MessagesController < ApplicationController
               UserMessage.update_status u.id, status
               if status == 'sent'
                 hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Enviado'}
-              else 
+              else
                 hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Envío fallido'}
               end
             else
               if u.status == 'sent'
                 hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Enviado'}
-              else 
+              else
                 hash = {"message_id" => u.id, "user_id" => u.user_id, "user_name" => full_name, "message_status" => 'Envío fallido'}
               end
             end
@@ -58,7 +58,7 @@ class MessagesController < ApplicationController
         @message_info.push hash
       else
         puts ">>>>>>>>>>>>>>>>>>>>>>>>   <<<<<<<<<<<<<<<<<<<<"
-      end 
+      end
     end
   end
 
@@ -83,28 +83,7 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     puts "Estamos entrando aqui"
-    #@message = Message.new(message_params)
-    #twilio_sid = "ACed7a7ef98a126abc33ff867370d890c9"
-    #twilio_token = "6e26775044f3087e7d9f44f003db29ae"
-    #twilio_phone_number = "+18027339326"
-    #number_to_send_to = "+528341444418"
-    #number_to_send_to = "+528180291458"
-    #@twilio_client = Twilio::REST::Client.new twilio_sid, twilio_token
-    #@twilio_client.account.sms.messages.create(
-    #  :from => "#{twilio_phone_number}",
-    #  :to => number_to_send_to,
-    #  :body => message_params[:message]
-    #)
-    #redirect_to :back
-    #respond_to do |format|
-      #if @message.save
-        # format.html { redirect_to @message, notice: 'Message was successfully created.' }
-        #format.json { render action: 'show', status: :created, location: @message }
-      # else
-      #   format.html { render action: 'new' }
-      #   format.json { render json: @message.errors, status: :unprocessable_entity }
-      # end
-    #end
+    
   end
 
   # PATCH/PUT /messages/1

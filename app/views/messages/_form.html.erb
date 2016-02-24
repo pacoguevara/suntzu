@@ -36,61 +36,61 @@
 		  <thead>
 		  	<tr>
 		  		<th>
-		        <input type="text" placeholder="Nombre" class="form-control search_m" 
+		        <input type="text" placeholder="Nombre" class="form-control search_m"
 		          name="name"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="Primer apellido" class="form-control search_m" 
+		        <input type="text" placeholder="Primer apellido" class="form-control search_m"
 		          name="first_name"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="Segundo apellido" class="form-control search_m" 
+		        <input type="text" placeholder="Segundo apellido" class="form-control search_m"
 		          name="last_name"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="# Celular" class="form-control search_m" 
+		        <input type="text" placeholder="# Celular" class="form-control search_m"
 		          name="cellphone_number"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="Email" class="form-control search_m" 
+		        <input type="text" placeholder="Email" class="form-control search_m"
 		          name="email_address"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="Género" class="form-control search_m" 
+		        <input type="text" placeholder="Género" class="form-control search_m"
 		          name="gender"/>
 		      </th>
 		      <th>
-		        <input type="text" placeholder="Edad" class="form-control search_m" 
+		        <input type="text" placeholder="Edad" class="form-control search_m"
 		          name="age"/>
-		          <input type="hidden" class="form-control search_m" 
+		          <input type="hidden" class="form-control search_m"
 		          name="role" value="<%= current_user.role %>"/>
 		      </th>
 		    <% if current_user.role != "communication" %>
 		      <th>
-		        <select class="form-control search_m select_search_m municipality" id="select_municipality" 
+		        <select class="form-control search_m select_search_m municipality" id="select_municipality"
 		        name="municipality_id">
 			        <option value="-1"> </option>
 			        <option value="0"> Otros </option>
 			        <% @municipalities.each do |mun| %>
 			          <option value="<%= mun.id %>"> <%= mun.name %></option>
 			        <% end %>
-			      </select> 
+			      </select>
 		      </th>
-		      
+
 		      <th>
-		        <select class="form-control search_m select_search_m search_m municipality" id="select_group" 
+		        <select class="form-control search_m select_search_m search_m municipality" id="select_group"
 		        name="group_id">
 			        <option value="-1"> </option>
 			        <option value="0"> Otros </option>
-			      </select> 
+			      </select>
 		      </th>
 		      <%if params[:role]!="subenlace" && params[:role] != "enlace" && params[:role] != "coordinador"%>
 	        <th>
-	          <select class="form-control select_search_m search_m"  style="width:100%" 
+	          <select class="form-control select_search_m search_m"  style="width:100%"
 	          name="sub_enlace_id">
 	            <option value="0"></option>
 	            <%@subenlace.each do |sbenlace|%>
-	              <option value="<%= sbenlace.id %>"> 
+	              <option value="<%= sbenlace.id %>">
 	                <%= sbenlace.full_name %>
 	              </option>
 	            <%end%>
@@ -99,11 +99,11 @@
 	      <%end%>
 	      <%if params[:role] != "enlace" && params[:role] != "coordinador"%>
 	        <th>
-	          <select class="form-control select_search_m search_m"  style="width:100%" 
+	          <select class="form-control select_search_m search_m"  style="width:100%"
 	          name="enlace_id">
 	            <option value="0"></option>
 	            <%@enlace.each do |enlace|%>
-	              <option value="<%= enlace.id %>"> 
+	              <option value="<%= enlace.id %>">
 	                <%= enlace.full_name %>
 	              </option>
 	            <%end%>
@@ -112,11 +112,11 @@
 	      <%end%>
 	      <%if params[:role]!="coordinador"%>
 	        <th>
-						<select class="form-control select_search_m search_m"  style="width:100%" 
+						<select class="form-control select_search_m search_m"  style="width:100%"
 	          name="coordinador_id">
 	            <option value="0"></option>
 	            <% @coordinador.each do |coor| %>
-	              <option value="<%= coor.id %>"> 
+	              <option value="<%= coor.id %>">
 	                <%= coor.full_name %>
 	              </option>
 	            <%end%>
@@ -124,7 +124,7 @@
 	        </th>
 	      <%end%>
 	      <th>
-					<select class="form-control select_search_m search_m" id="status_id" style="width:100%" 
+					<select class="form-control select_search_m search_m" id="status_id" style="width:100%"
           name="status_id">
             <option value="0">Enviado</option>
             <option value="1">En proceso</option>
@@ -159,7 +159,7 @@
 		      <th>
 		        <p class="small">Municipio</p>
 		      </th>
-		      
+
 		      <th>
 		      	<p class="small">Grupo</p>
 		      </th>
@@ -213,7 +213,7 @@
 		        <td>
 		          <p class="small"><%= user.municipality.name if !user.municipality.nil? %></p>
 		        </td>
-		        
+
 		        <td>
 		        	<p>#</p>
 		        </td>
@@ -223,7 +223,7 @@
 		              <%@subenlace.each do |a|%>
 	                    <%if user.subenlace_id == a.id%>
 	                    	<%=a.full_name%>
-	                    <%end%> 
+	                    <%end%>
 	                <%end%>
 		            </p>
 		          </td>
@@ -256,37 +256,6 @@
 		       <% end %>
 	        </tr>
 		  	 <% end %>
-		  <!--  
-		    <tr id="<%= current_user.id %>">
-		      <td>Francisco</td> 
-		      <td>Guevara</td>
-		      <td>Zavala</td>
-		      <td class="cellphone">8341182625</td>
-		      <td>fguevara@tegik.com</td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		    </tr>
-		 		<tr id="12345">
-		      <td>Daniel</td> 
-		      <td>Guevara</td> 
-		      <td>Zavala</td>
-		      <td class="cellphone">9981287260</td>
-		      <td>fguevara@tegik.com</td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		    </tr>-->
 		  </tbody>
 	</table>
 	</div>
@@ -309,7 +278,7 @@
   <p class="page_showing">
     (
     <strong id="total_result">
-      <%= @users_t.count %> 
+      <%= @users_t.count %>
     </strong>
     en total)</p>
-</div>	
+</div>
